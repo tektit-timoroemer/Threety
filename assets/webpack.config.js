@@ -27,7 +27,7 @@ module.exports = (env, options) => {
     devtool: devMode ? 'eval-cheap-module-source-map' : undefined,
     module: {
       rules: [
-        {
+       {
           test: /\.js$/,
           exclude: /node_modules/,
           use: {
@@ -39,7 +39,7 @@ module.exports = (env, options) => {
           use: [
             MiniCssExtractPlugin.loader,
             'css-loader',
-            'sass-loader',
+            'sass-loader'
           ],
         }
       ]

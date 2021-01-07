@@ -13,6 +13,7 @@ import css from "../css/app.scss"
 //     import socket from "./socket"
 //
 import "phoenix_html"
+import "bootstrap"
 import {Socket} from "phoenix"
 import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
@@ -22,7 +23,13 @@ let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToke
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", info => NProgress.start())
-window.addEventListener("phx:page-loading-stop", info => NProgress.done())
+// window.addEventListener("phx:page-loading-stop", info => NProgress.done())
+// -> according to
+// https://dashbit.co/blog/using-bootstrap-native-with-live-view
+window.addEventListener("phx:page-loading-stop", info => {
+  BSN.initCallback(document.body)
+  NProgress.done()
+})
 
 // connect if there are any LiveViews on the page
 liveSocket.connect()

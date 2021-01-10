@@ -1,0 +1,52 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: en\n"
+"Plural-Forms: nplurals=2\n"
+
+#, elixir-format
+#: lib/fourty_web/templates/client/index.html.eex:27
+msgid "add"
+msgstr "Add New Client"
+
+#, elixir-format
+#: lib/fourty_web/templates/client/index.html.eex:2
+msgid "current clients"
+msgstr "List of Current Clients"
+
+#, elixir-format
+#: lib/fourty_web/templates/client/index.html.eex:8
+msgid "name"
+msgstr "Name"
+
+#, elixir-format
+#: lib/fourty_web/templates/layout/root.html.leex:27
+msgid "clients"
+msgstr "Clients"
+
+#, elixir-format
+#: lib/fourty_web/templates/client/edit.html.eex:2
+msgid "edit client"
+msgstr "Edit Client"
+
+#, elixir-format
+#: lib/fourty_web/templates/client/new.html.eex:2
+msgid "add client"
+msgstr "Add Client"
+
+#, elixir-format
+#: lib/fourty_web/controllers/client_controller.ex:46
+msgid "update success"
+msgstr "Client successfully updated."
+
+#, elixir-format
+#: lib/fourty_web/controllers/client_controller.ex:21
+msgid "create success"
+msgstr "Client successfully added."

@@ -1,0 +1,30 @@
+<div class="container">
+  <h1><%= dgettext("clients","current clients")%></h1>
+  <div class="row row-cols-auto">
+  <div class="table-responsive col-sm-5">
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th class="col-sm-3"><%= dgettext("clients","name") %></th>
+          <th class="col-sm-2"><%= dgettext("global","actions") %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for client <- @clients do %>
+        <tr>
+          <td><%= client.name %></td>
+          <td>
+            <!--%= link("Show", to: Routes.client_path(@conn, :show, 0)) %-->
+            <%= link(dgettext("global","edit"), to: Routes.client_path(@conn, :edit, client)) %>
+            <%= link(dgettext("global","delete"), to: Routes.client_path(@conn, :delete, client), method: :delete, data: [confirm: dgettext("global","sure?")]) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <!--button type="button" class="btn btn-primary btn-sm">Small button</button>
+    <a class="btn btn-primary" href="#" role="button">Link</a-->
+    <%= link(dgettext("clients","add"), to: Routes.client_path(@conn, :new), class: "btn btn-sm btn-primary", role: "button") %>
+  </div>
+</div>
+</div>

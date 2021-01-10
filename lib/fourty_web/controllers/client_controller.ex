@@ -56,7 +56,7 @@ defmodule FourtyWeb.ClientController do
     {:ok, _client} = Clients.delete_client(client)
 
     conn
-    |> put_flash(:info, dgettext("clients","delete success")
+    |> put_flash(:info, dgettext("clients","delete success"))
     |> redirect(to: Routes.client_path(conn, :index))
   end
 end

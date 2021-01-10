@@ -50,3 +50,8 @@ msgstr "Client successfully updated."
 #: lib/fourty_web/controllers/client_controller.ex:21
 msgid "create success"
 msgstr "Client successfully added."
+
+#, elixir-format
+#: lib/fourty_web/controllers/client_controller.ex:59
+msgid "delete success"
+msgstr "Client successfully deleted."

@@ -1,18 +1,22 @@
 defmodule Fourty.Clients.Client do
+  @moduledoc """
+  The Clients schema:
+
+  `name` should be unique and should not contain any unnecessary whitespace.
+
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "clients" do
-    field :name, :string
+    field :name, Fourty.TrimmedString
     timestamps()
   end
 
   @doc false
   def changeset(client, attrs) do
-    # must use string as attrs contains strings!
-    a = Fourty.Helpers.trim_items(attrs, ["name"])
     client
-    |> cast(a, [:name])
+    |> cast(attrs, [:name])
     |> validate_required([:name])
   end
 end

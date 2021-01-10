@@ -49,3 +49,8 @@ msgstr ""
 #: lib/fourty_web/controllers/client_controller.ex:21
 msgid "create success"
 msgstr ""
+
+#, elixir-format
+#: lib/fourty_web/controllers/client_controller.ex:59
+msgid "delete success"
+msgstr ""

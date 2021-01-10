@@ -18,5 +18,6 @@ defmodule Fourty.Clients.Client do
     client
     |> cast(attrs, [:name])
     |> validate_required([:name])
+    |> unique_constraint(:name)
   end
 end

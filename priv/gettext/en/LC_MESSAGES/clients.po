@@ -24,7 +24,7 @@ msgstr "List of Current Clients"
 #, elixir-format
 #: lib/fourty_web/templates/client/index.html.eex:8
 msgid "name"
-msgstr "Name"
+msgstr "Name of Client"
 
 #, elixir-format
 #: lib/fourty_web/templates/layout/root.html.leex:27

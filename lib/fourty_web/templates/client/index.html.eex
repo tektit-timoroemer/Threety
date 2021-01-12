@@ -14,17 +14,14 @@
         <tr>
           <td><%= client.name %></td>
           <td>
-            <!--%= link("Show", to: Routes.client_path(@conn, :show, 0)) %-->
-            <%= link(dgettext("global","edit"), to: Routes.client_path(@conn, :edit, client)) %>
-            <%= link(dgettext("global","delete"), to: Routes.client_path(@conn, :delete, client), method: :delete, data: [confirm: dgettext("global","sure?")]) %>
+            <%= my_action_link("edit", Routes.client_path(@conn, :edit, client)) %>
+            <%= my_action_link("delete", Routes.client_path(@conn, :delete, client)) %>
           </td>
         </tr>
         <% end %>
       </tbody>
     </table>
-    <!--button type="button" class="btn btn-primary btn-sm">Small button</button>
-    <a class="btn btn-primary" href="#" role="button">Link</a-->
-    <%= link(dgettext("clients","add"), to: Routes.client_path(@conn, :new), class: "btn btn-sm btn-primary", role: "button") %>
+    <%= my_action("clients", "add", Routes.client_path(@conn, :new)) %>
   </div>
 </div>
 </div>

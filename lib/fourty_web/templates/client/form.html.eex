@@ -5,12 +5,12 @@
     </div>
   <% end %>
 
-  <%= label(f, :name, class: "form-label") %>
-  <%= text_input(f, :name, class: "form-control") %><br>
+  <%= my_label(f, "clients", :name) %>
+  <%= my_text_input(f, :name) %><br />
   <%= error_tag(f, :name) %>
 
   <div>
-    <%= submit(dgettext("global","save"), class: "btn btn-sm btn-primary", role: "button") %>
-    <%= link(dgettext("global","back"), to: Routes.client_path(@conn, :index), class: "btn btn-sm btn-outline-secondary", role: "button") %></p>
+    <%= my_submit() %>
+    <%= my_back_link(Routes.client_path(@conn, :index)) %>
   </div>
 <% end %>

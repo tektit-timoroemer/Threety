@@ -3,9 +3,9 @@ defmodule FourtyWeb.ClientControllerTest do
   import FourtyWeb.Gettext, only: [dgettext: 2]
   alias Fourty.Clients
 
-  @create_attrs %{date_end: ~D[2010-04-17], date_start: ~D[2010-04-17], name: "some name"}
-  @update_attrs %{date_end: ~D[2011-05-18], date_start: ~D[2011-05-18], name: "some updated name"}
-  @invalid_attrs %{date_end: nil, date_start: nil, name: nil}
+  @create_attrs %{name: "some name"}
+  @update_attrs %{name: "some updated name"}
+  @invalid_attrs %{name: nil}
 
   def fixture(:client) do
     {:ok, client} = Clients.create_client(@create_attrs)
@@ -15,14 +15,14 @@ defmodule FourtyWeb.ClientControllerTest do
   describe "index" do
     test "lists all clients", %{conn: conn} do
       conn = get(conn, Routes.client_path(conn, :index))
-      assert html_response(conn, 200) =~ dgettext("clients","current clients")
+      assert html_response(conn, 200) =~ dgettext("clients","index")
     end
   end
 
   describe "new client" do
     test "renders form", %{conn: conn} do
       conn = get(conn, Routes.client_path(conn, :new))
-      assert html_response(conn, 200) =~ dgettext("clients", "add client")
+      assert html_response(conn, 200) =~ dgettext("clients", "add")
     end
   end
 
@@ -30,16 +30,15 @@ defmodule FourtyWeb.ClientControllerTest do
     test "redirects to index when data is valid", %{conn: conn} do
       conn = post(conn, Routes.client_path(conn, :create), client: @create_attrs)
 
-      #assert %{id: id} = redirected_params(conn)
       assert redirected_to(conn) == Routes.client_path(conn, :index)
 
       conn = get(conn, Routes.client_path(conn, :index))
-      assert html_response(conn, 200) =~ dgettext("clients","current clients")
+      assert html_response(conn, 200) =~ dgettext("clients","index")
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.client_path(conn, :create), client: @invalid_attrs)
-      assert html_response(conn, 200) =~ dgettext("clients","add client")
+      assert html_response(conn, 200) =~ dgettext("clients","add")
     end
   end
 
@@ -48,7 +47,7 @@ defmodule FourtyWeb.ClientControllerTest do
 
     test "renders form for editing chosen client", %{conn: conn, client: client} do
       conn = get(conn, Routes.client_path(conn, :edit, client))
-      assert html_response(conn, 200) =~ dgettext("clients","edit client")
+      assert html_response(conn, 200) =~ dgettext("clients","edit")
     end
   end
 
@@ -65,7 +64,7 @@ defmodule FourtyWeb.ClientControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn, client: client} do
       conn = put(conn, Routes.client_path(conn, :update, client), client: @invalid_attrs)
-      assert html_response(conn, 200) =~ dgettext("clients","edit client")
+      assert html_response(conn, 200) =~ dgettext("clients","edit")
     end
   end
 
@@ -75,10 +74,11 @@ defmodule FourtyWeb.ClientControllerTest do
     test "deletes chosen client", %{conn: conn, client: client} do
       conn = delete(conn, Routes.client_path(conn, :delete, client))
       assert redirected_to(conn) == Routes.client_path(conn, :index)
-      assert_error_sent 404, fn ->
-        get(conn, Routes.client_path(conn, :index))
-      end
+
+      conn = get(conn, Routes.client_path(conn, :index))
+      assert html_response(conn, 200) =~ dgettext("clients","index")
     end
+
   end
 
   defp create_client(_) do

@@ -3,6 +3,12 @@ defmodule Fourty.TrimmedString do
   def type, do: :string
 
   @doc """
+  Provides a type for models which causes whitespace characters at the
+  start and the end of a string to be trimmed as well as multiple
+  whitespace characters replaced by a single whitespace.
+
+  Examples:
+  
   iex> cast("  John Doe   ")
   {:ok, "John Doe"}
 

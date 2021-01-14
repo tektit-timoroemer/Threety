@@ -1,13 +1,9 @@
-<h1>Show Client</h1>
-
-<ul>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @client.name %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: Routes.client_path(@conn, :edit, @client) %></span>
-<span><%= link "Back", to: Routes.client_path(@conn, :index) %></span>
+<h1><%= dgettext("clients","show") %></h1>
+<div class="row row-cols-auto">
+	<div class="col-sm-3">
+	  	<%= my_label("clients", "name") %>
+  		<%= my_text_value(@client.name) %><br />
+  		<%= my_action("clients", "edit", Routes.client_path(@conn, :edit, @client)) %>
+		<%= my_action("clients", "index", Routes.client_path(@conn, :index)) %>
+	</div>
+</div>

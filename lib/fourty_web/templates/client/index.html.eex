@@ -1,6 +1,5 @@
-<div class="container">
-  <h1><%= dgettext("clients","current clients")%></h1>
-  <div class="row row-cols-auto">
+<h1><%= dgettext("clients","index")%></h1>
+<div class="row row-cols-auto">
   <div class="table-responsive col-sm-5">
     <table class="table table-striped table-bordered">
       <thead>
@@ -23,5 +22,4 @@
     </table>
     <%= my_action("clients", "add", Routes.client_path(@conn, :new)) %>
   </div>
-</div>
 </div>

@@ -11,17 +11,12 @@ msgid ""
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/client/index.html.eex:27
-msgid "add"
-msgstr ""
-
-#, elixir-format
-#: lib/fourty_web/templates/client/index.html.eex:2
+#: lib/fourty_web/templates/client/index.html.eex:1
 msgid "current clients"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/client/index.html.eex:8
+#: lib/fourty_web/templates/client/index.html.eex:7
 msgid "name"
 msgstr ""
 
@@ -31,12 +26,12 @@ msgid "clients"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/client/edit.html.eex:2
+#: lib/fourty_web/templates/client/edit.html.eex:1
 msgid "edit client"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/client/new.html.eex:2
+#: lib/fourty_web/templates/client/new.html.eex:1
 msgid "add client"
 msgstr ""
 
@@ -53,4 +48,9 @@ msgstr ""
 #, elixir-format
 #: lib/fourty_web/controllers/client_controller.ex:59
 msgid "delete success"
+msgstr ""
+
+#, elixir-format
+#: lib/fourty_web/templates/client/show.html.eex:1
+msgid "show client"
 msgstr ""

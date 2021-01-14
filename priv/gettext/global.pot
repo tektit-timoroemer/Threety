@@ -11,31 +11,6 @@ msgid ""
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/client/index.html.eex:9
+#: lib/fourty_web/templates/client/index.html.eex:8
 msgid "actions"
-msgstr ""
-
-#, elixir-format
-#: lib/fourty_web/templates/client/index.html.eex:19
-msgid "delete"
-msgstr ""
-
-#, elixir-format
-#: lib/fourty_web/templates/client/index.html.eex:18
-msgid "edit"
-msgstr ""
-
-#, elixir-format
-#: lib/fourty_web/templates/client/index.html.eex:19
-msgid "sure?"
-msgstr ""
-
-#, elixir-format
-#: lib/fourty_web/templates/client/form.html.eex:14
-msgid "back"
-msgstr ""
-
-#, elixir-format
-#: lib/fourty_web/templates/client/form.html.eex:13
-msgid "save"
 msgstr ""

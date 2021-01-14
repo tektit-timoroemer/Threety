@@ -18,10 +18,11 @@ defmodule FourtyWeb.InputHelpers do
   end
 
   @doc """
-  Replacement for label:
+  Replacement for label in forms
   * use gettext for label
   * append '*' to label when field is required
   """
+  @spec my_label(struct(), String.t(), atom()) :: struct()
   def my_label(form, domain, field) do
     l = Gettext.dgettext(FourtyWeb.Gettext, domain, Atom.to_string(field))
     l = if required?(form, field), do: l <> " *"
@@ -29,13 +30,34 @@ defmodule FourtyWeb.InputHelpers do
   end
 
   @doc """
+  Replacement for label in show views so they look like forms
+  """
+  @spec my_label(String.t(), String.t()) :: struct()
+  def my_label(domain, field) do
+    content_tag(
+      :label,
+      Gettext.dgettext(FourtyWeb.Gettext, domain, field),
+      class: "form-label")
+  end
+
+  @doc """
   Replacement for text_input:
   * inject class="format control" + "is-valid" pr "is-invalid"
   """
+  @spec my_text_input(struct(), atom(), keyword(String.t())) :: struct()
   def my_text_input(form, field, options \\ []) do
     o = options ++ [class: "form-control " <> (if with_errors?(form, field), do: "is-invalid", else: "is-valid")]
     o = if required?(form, field), do: o ++ [required: "required"]
     text_input(form, field, o)
+  end
+
+  @doc """
+  Replacement for text_input in show views so they look like forms
+  """
+  @spec my_text_value(String.t(), keyword(String.t())) :: struct()
+  def my_text_value(value, options \\ []) do
+    tag(:input, options ++ [type: "text", value: value, class: "form-control",
+      readonly: "readonly", disabled: "disabled"])
   end
 
   @doc """

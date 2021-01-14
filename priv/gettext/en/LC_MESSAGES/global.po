@@ -12,31 +12,15 @@ msgstr ""
 "Plural-Forms: nplurals=2\n"
 
 #, elixir-format
-#: lib/fourty_web/templates/client/index.html.eex:9
+#: lib/fourty_web/templates/client/index.html.eex:8
 msgid "actions"
 msgstr "Actions"
 
-#, elixir-format
-#: lib/fourty_web/templates/client/index.html.eex:19
-msgid "delete"
-msgstr "Delete"
-
-#, elixir-format
-#: lib/fourty_web/templates/client/index.html.eex:18
-msgid "edit"
-msgstr "Edit"
-
-#, elixir-format
-#: lib/fourty_web/templates/client/index.html.eex:19
-msgid "sure?"
-msgstr "Are you sure to delete this item?"
-
-#, elixir-format
-#: lib/fourty_web/templates/client/form.html.eex:14
-msgid "back"
-msgstr "Back"
-
-#, elixir-format
-#: lib/fourty_web/templates/client/form.html.eex:13
 msgid "save"
 msgstr "Save"
+
+msgid "back"
+msgstr "Cancel"
+
+msgid "sure?"
+msgstr "Please confirm deletion request:"

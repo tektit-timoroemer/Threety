@@ -1,13 +1,7 @@
 /* This file is for main application css. */
 
-/* implement bootstrap */
-/* -> https://experimentingwithcode.com/using-bootstrap-and-sass-in-phoenix/ */
-/* WR 2020-01-07 */
-
-@import "custom.scss";
+@import "custom";
 @import "~bootstrap/scss/bootstrap";
-
-@import "../node_modules/nprogress/nprogress.css";
 
 /* LiveView specific classes for your customizations */
 

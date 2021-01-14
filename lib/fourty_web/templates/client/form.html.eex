@@ -1,7 +1,7 @@
 <%= form_for @changeset, @action, fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
-      <p><%= dgettext("errors","Error(s)! See details below.") %></p>
+      <%= dgettext("errors","Error(s)! See details below.") %>
     </div>
   <% end %>
 
@@ -9,8 +9,6 @@
   <%= my_text_input(f, :name) %><br />
   <%= error_tag(f, :name) %>
 
-  <div>
-    <%= my_submit() %>
-    <%= my_back_link(Routes.client_path(@conn, :index)) %>
-  </div>
+  <%= my_submit() %>
+  <%= my_back_link(Routes.client_path(@conn, :index)) %>
 <% end %>

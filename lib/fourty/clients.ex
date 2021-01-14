@@ -40,8 +40,6 @@ defmodule Fourty.Clients do
   @doc """
   Creates a client.
 
-  'name' leading and/or trailing blanks will be removed.
-
   ## Examples
 
       iex> create_client(%{field: value})
@@ -60,8 +58,6 @@ defmodule Fourty.Clients do
   @doc """
   Updates a client.
 
-  'name' leading and/or trailing blanks will be removed.
-
   ## Examples
 
       iex> update_client(client, %{field: new_value})
@@ -78,7 +74,9 @@ defmodule Fourty.Clients do
   end
 
   @doc """
-  Deletes a client.
+  Deletes the given client.
+
+  Raises `Ecto.StaleEntryError` if the Client does not exist.
 
   ## Examples
 
@@ -87,6 +85,9 @@ defmodule Fourty.Clients do
 
       iex> delete_client(client)
       {:error, %Ecto.Changeset{}}
+
+      iex> delete_client(client, %{id: 0})
+      {:error, %Ecto.StaleEntryError}
 
   """
   def delete_client(%Client{} = client) do

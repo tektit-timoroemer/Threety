@@ -7,7 +7,7 @@ defmodule Fourty.TrimmedString do
   start and the end of a string to be trimmed as well as multiple
   whitespace characters replaced by a single whitespace.
 
-  Examples:
+  ## Examples
   
   iex> cast("  John Doe   ")
   {:ok, "John Doe"}

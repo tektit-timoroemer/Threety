@@ -19,6 +19,24 @@ defmodule FourtyWeb.ClientControllerTest do
     end
   end
 
+  describe "show" do
+    setup [:create_client]
+
+    test "show data for a specific client", %{conn: conn, client: client} do
+      conn = get(conn, Routes.client_path(conn, :show, client))
+      assert html_response(conn, 200) =~ dgettext("clients", "show")
+    end
+
+    test "show non-existing client", %{conn: conn, client: client} do
+      # this will fail due to get_client! failure
+      c = Map.replace(client, :id, 0)
+      assert_raise Ecto.NoResultsError, fn ->
+        get(conn, Routes.client_path(conn, :show, c))
+        end
+    end
+
+  end
+
   describe "new client" do
     test "renders form", %{conn: conn} do
       conn = get(conn, Routes.client_path(conn, :new))
@@ -77,6 +95,14 @@ defmodule FourtyWeb.ClientControllerTest do
 
       conn = get(conn, Routes.client_path(conn, :index))
       assert html_response(conn, 200) =~ dgettext("clients","index")
+    end
+
+    test "delete non-existing client", %{conn: conn, client: client} do
+      # this will fail due to get_client! failure
+      c = Map.replace(client, :id, 0)
+      assert_raise Ecto.NoResultsError, fn ->
+        delete(conn, Routes.client_path(conn, :delete, c))
+        end
     end
 
   end

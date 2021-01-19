@@ -20,15 +20,15 @@ defmodule FourtyWeb.ProjectController do
   end
 
   def create(conn, %{ "client_id" => client_id, "project" => project_params}) do
-    client = Clients.get_client!(client_id)
-    case Clients.create_project(client, project_params) do
+    project = Clients.prepare_new_project(client_id)
+    case Clients.create_project(project, project_params) do
       {:ok, project} ->
         conn
         |> put_flash(:info, "Project created successfully.")
-        |> redirect(to: Routes.client_project_path(conn, :show, client, project))
+        |> redirect(to: Routes.client_project_path(conn, :show, project.client, project))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset, project: client) #project)
+        render(conn, "new.html", changeset: changeset, project: project) #project)
     end
   end
 

@@ -15,7 +15,6 @@ defmodule Fourty.ClientsTest do
         attrs
         |> Enum.into(@valid_attrs)
         |> Clients.create_client()
-
       client
     end
 
@@ -69,54 +68,71 @@ defmodule Fourty.ClientsTest do
     @update_attrs %{name: "some updated name"}
     @invalid_attrs %{name: nil}
 
-    def project_fixture(attrs \\ %{}) do
-      {:ok, project} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Clients.create_project()
+    def same_projects?(p1,p2) do
+      # return true if both projects are identical ignoring any
+      # associations
+      Map.delete(p1, :client) == Map.delete(p2, :client)
+    end
 
+    def project_fixture(client, attrs \\ %{}) do
+      attrs = Enum.into(attrs, @valid_attrs)
+      project = Clients.prepare_new_project(client.id)
+      {:ok, project} = Clients.create_project(project, attrs)
       project
     end
 
     test "list_projects/0 returns all projects" do
-      project = project_fixture()
-      assert Clients.list_projects() == [project]
+      c = client_fixture()
+      p = project_fixture(c)
+      assert p.client == c
+
+      a  = Clients.list_all_projects()
+      assert same_projects?(List.first(List.first(a).visible_projects), p)
     end
 
     test "get_project!/1 returns the project with given id" do
-      project = project_fixture()
+      client = client_fixture()
+      project = project_fixture(client)
       assert Clients.get_project!(project.id) == project
     end
 
     test "create_project/1 with valid data creates a project" do
-      assert {:ok, %Project{} = project} = Clients.create_project(@valid_attrs)
+      client = client_fixture()
+      {:ok, project} = Clients.prepare_new_project(client.id)
+      |> Clients.create_project(@valid_attrs)
       assert project.name == "some name"
     end
 
     test "create_project/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Clients.create_project(@invalid_attrs)
+      client = client_fixture()
+      project = Clients.prepare_new_project(client.id)
+      assert {:error, %Ecto.Changeset{}} = Clients.create_project(project, @invalid_attrs)
     end
 
     test "update_project/2 with valid data updates the project" do
-      project = project_fixture()
+      client = client_fixture()
+      project = project_fixture(client)
       assert {:ok, %Project{} = project} = Clients.update_project(project, @update_attrs)
       assert project.name == "some updated name"
     end
 
     test "update_project/2 with invalid data returns error changeset" do
-      project = project_fixture()
+      client = client_fixture()
+      project = project_fixture(client)
       assert {:error, %Ecto.Changeset{}} = Clients.update_project(project, @invalid_attrs)
       assert project == Clients.get_project!(project.id)
     end
 
     test "delete_project/1 deletes the project" do
-      project = project_fixture()
+      client = client_fixture()
+      project = project_fixture(client)
       assert {:ok, %Project{}} = Clients.delete_project(project)
       assert_raise Ecto.NoResultsError, fn -> Clients.get_project!(project.id) end
     end
 
     test "change_project/1 returns a project changeset" do
-      project = project_fixture()
+      client = client_fixture()
+      project = project_fixture(client)
       assert %Ecto.Changeset{} = Clients.change_project(project)
     end
   end

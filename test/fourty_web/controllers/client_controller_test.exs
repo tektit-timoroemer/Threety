@@ -48,7 +48,8 @@ defmodule FourtyWeb.ClientControllerTest do
     test "redirects to index when data is valid", %{conn: conn} do
       conn = post(conn, Routes.client_path(conn, :create), client: @create_attrs)
 
-      assert redirected_to(conn) == Routes.client_path(conn, :index)
+      assert %{id: id} = redirected_params(conn)
+      assert redirected_to(conn) == Routes.client_path(conn, :show, id)
 
       conn = get(conn, Routes.client_path(conn, :index))
       assert html_response(conn, 200) =~ dgettext("clients","index")

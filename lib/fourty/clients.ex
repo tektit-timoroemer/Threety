@@ -117,20 +117,22 @@ defmodule Fourty.Clients do
 
   ## Examples
 
-      iex> list_projects()
+      iex> list_all_projects()
       [%client{}, ...]
 
   """
   def list_all_projects() do
-    from(Client, order_by: :id)
-    |> Repo.all()
-    |> Repo.preload(:visible_projects, order_by: :id)
+    qp = from p in Project, order_by: p.id
+    qc = from c in Client, order_by: c.id
+    Repo.all(qc)
+    |> Repo.preload([visible_projects: qp])
   end
 
   def list_projects_for_client(id) do
-    from(Client, where: [id: ^id])
-    |> Repo.all()
-    |> Repo.preload(:visible_projects, oder_by: :id)
+    qp = from p in Project, order_by: p.id
+    qc = from c in Client, where: [id: ^id]
+    Repo.all(qc)
+    |> Repo.preload([visible_projects: qp])
   end
 
   @doc """
@@ -164,8 +166,8 @@ defmodule Fourty.Clients do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_project(client, attrs \\ %{}) do
-    Ecto.build_assoc(client, :projects)
+  def create_project(project, attrs \\ %{}) do
+    project
     |> Project.changeset(attrs)
     |> Repo.insert()
   end

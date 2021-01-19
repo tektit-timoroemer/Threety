@@ -11,7 +11,6 @@ defmodule FourtyWeb.ClientController do
 
   def new(conn, _params) do
     changeset = Clients.change_client(%Client{})
-    IO.inspect(changeset)
     render(conn, "new.html", changeset: changeset)
   end
 

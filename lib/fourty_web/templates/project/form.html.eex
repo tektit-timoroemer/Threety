@@ -1,0 +1,29 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p><%= dgettext("errors","error_alert") %>
+    </div>
+  <% end %>
+
+  <%= my_label("clients", "name") %>
+  <%= my_text_value(@project.client.name) %><br />
+
+  <%= my_label(f, "projects", :name) %>
+  <%= my_text_input(f, :name) %><br />
+  <%= error_tag(f, :name) %>
+
+  <%= my_label(f, "projects", :date_start) %>
+  <%= my_date_input(f, :date_start) %><br />
+  <%= error_tag(f, :date_start) %>
+
+  <%= my_label(f, "projects", :date_end) %>
+  <%= my_date_input(f, :date_end) %><br />
+  <%= error_tag(f, :date_end) %>
+
+  <%= my_checkbox_input(f, :visible) %>
+  <%= my_label(f, "projects", :visible) %><br />
+  <%= error_tag(f, :visible) %><br />
+
+  <%= my_submit() %>
+  <%= my_back_link(Routes.client_project_path(@conn, :index, @project.client)) %>
+<% end %>

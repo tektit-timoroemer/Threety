@@ -1,7 +1,7 @@
 <%= form_for @changeset, @action, fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
-      <%= dgettext("errors","Error(s)! See details below.") %>
+      <%= dgettext("errors","error_alert") %>
     </div>
   <% end %>
 

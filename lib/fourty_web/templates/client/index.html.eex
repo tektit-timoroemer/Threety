@@ -1,11 +1,11 @@
 <h1><%= dgettext("clients","index")%></h1>
 <div class="row row-cols-auto">
-  <div class="table-responsive col-sm-5">
+  <div class="table-responsive col-sm-6">
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
-          <th class="col-sm-3"><%= dgettext("clients","name") %></th>
-          <th class="col-sm-2"><%= dgettext("global","actions") %></th>
+          <th class="col-sm-3"><%= dgettext("clients", "name") %></th>
+          <th class="col-sm-3"><%= dgettext("global", "actions") %></th>
         </tr>
       </thead>
       <tbody>
@@ -13,8 +13,10 @@
         <tr>
           <td><%= client.name %></td>
           <td>
-            <%= my_action_link("edit", Routes.client_path(@conn, :edit, client)) %>
-            <%= my_action_link("delete", Routes.client_path(@conn, :delete, client)) %>
+            <%= my_action_link("global", "show", Routes.client_path(@conn, :show, client)) %>
+            <%= my_action_link("global", "edit", Routes.client_path(@conn, :edit, client)) %>
+            <%= my_action_link("global", "delete", Routes.client_path(@conn, :delete, client)) %>
+            <%= my_action_link("clients", "projects", Routes.client_project_path(@conn, :index, client)) %>
           </td>
         </tr>
         <% end %>

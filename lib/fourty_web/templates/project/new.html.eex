@@ -1,0 +1,6 @@
+<h1><%= dgettext("projects","add") %></h1>
+<div class="row row-cols-auto">
+	<div class="col-sm-3">
+		<%= render "form.html", Map.put(assigns, :action, Routes.client_project_path(@conn, :create, @project.client.id)) %>
+	</div>
+</div>

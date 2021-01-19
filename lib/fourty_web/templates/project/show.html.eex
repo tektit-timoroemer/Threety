@@ -1,0 +1,24 @@
+<h1><%= dgettext("projects","show") %></h1>
+<div class="row row-cols-auto">
+	<div class="col-sm-3">
+
+		<%= my_label("clients","name") %>
+		<%= my_text_value(@project.client.name) %><br />
+
+		<%= my_label("projects", "name") %>
+		<%= my_text_value(@project.name) %><br />
+
+		<%= my_label("projects", "date_start") %>
+		<%= my_date_value(@project.date_start) %><br />
+
+		<%= my_label("projects", "date_end") %>
+		<%= my_date_value(@project.date_end) %><br />
+
+		<%= my_checkbox_value(@project.visible) %>
+		<%= my_label("projects", "visible") %><br /><br />
+
+  		<%= my_action("global", "edit", Routes.client_project_path(@conn, :edit, @project.client, @project)) %>
+		<%= my_action("projects", "index", Routes.client_project_path(@conn, :index, @project.client)) %>
+		<%= my_action("projects", "index_all", Routes.project_path(@conn, :index_all)) %>
+	</div>
+</div>

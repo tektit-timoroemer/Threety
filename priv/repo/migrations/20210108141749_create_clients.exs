@@ -3,7 +3,7 @@ defmodule Fourty.Repo.Migrations.CreateClients do
 
   def change do
     create table(:clients) do
-      add :name, :string
+      add :name, :string, null: false
       timestamps()
     end
     create unique_index(:clients, [:name])

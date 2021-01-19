@@ -11,15 +11,16 @@ defmodule FourtyWeb.ClientController do
 
   def new(conn, _params) do
     changeset = Clients.change_client(%Client{})
+    IO.inspect(changeset)
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"client" => client_params}) do
     case Clients.create_client(client_params) do
-      {:ok, _client} ->
+      {:ok, client} ->
         conn
         |> put_flash(:info, dgettext("clients","create success"))
-        |> redirect(to: Routes.client_path(conn, :index))
+        |> redirect(to: Routes.client_path(conn, :show, client))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)

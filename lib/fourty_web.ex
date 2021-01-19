@@ -88,7 +88,7 @@ defmodule FourtyWeb do
       import Phoenix.View
 
       import FourtyWeb.ErrorHelpers
-      import FourtyWeb.InputHelpers
+      import FourtyWeb.ViewHelpers
       import FourtyWeb.Gettext
       alias FourtyWeb.Router.Helpers, as: Routes
     end

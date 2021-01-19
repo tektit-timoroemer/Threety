@@ -93,7 +93,5 @@ msgstr ""
 msgid "must be equal to %{number}"
 msgstr ""
 
-#, elixir-format
-#: lib/fourty_web/templates/client/form.html.eex:4
-msgid "Error(s)! See details below."
-msgstr ""
+msgid "error_alert"
+msgstr "There are problems with your input, please see details below."

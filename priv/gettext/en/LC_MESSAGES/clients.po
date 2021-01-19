@@ -11,10 +11,8 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2\n"
 
-#, elixir-format
-#: lib/fourty_web/templates/client/index.html.eex:1
-msgid "index"
-msgstr "List of Current Clients"
+msgid "projects"
+msgstr "Projects"
 
 #, elixir-format
 #: lib/fourty_web/templates/client/index.html.eex:7
@@ -27,9 +25,19 @@ msgid "clients"
 msgstr "Clients"
 
 #, elixir-format
-#: lib/fourty_web/templates/client/edit.html.eex:1
-msgid "edit"
-msgstr "Edit Client"
+#: lib/fourty_web/controllers/client_controller.ex:47
+msgid "update success"
+msgstr "Client successfully updated."
+
+#, elixir-format
+#: lib/fourty_web/controllers/client_controller.ex:22
+msgid "create success"
+msgstr "Client successfully added."
+
+#, elixir-format
+#: lib/fourty_web/controllers/client_controller.ex:60
+msgid "delete success"
+msgstr "Client successfully deleted."
 
 #, elixir-format
 #: lib/fourty_web/templates/client/new.html.eex:1
@@ -37,22 +45,21 @@ msgid "add"
 msgstr "Add Client"
 
 #, elixir-format
-#: lib/fourty_web/controllers/client_controller.ex:46
-msgid "update success"
-msgstr "Client successfully updated."
+#: lib/fourty_web/templates/layout/root.html.leex:28
+msgid "all_projects"
+msgstr "Projects"
 
 #, elixir-format
-#: lib/fourty_web/controllers/client_controller.ex:21
-msgid "create success"
-msgstr "Client successfully added."
+#: lib/fourty_web/templates/client/edit.html.eex:1
+msgid "edit"
+msgstr "Edit Client"
 
 #, elixir-format
-#: lib/fourty_web/controllers/client_controller.ex:59
-msgid "delete success"
-msgstr "Client successfully deleted."
+#: lib/fourty_web/templates/client/index.html.eex:1
+msgid "index"
+msgstr "List of Current Clients"
 
 #, elixir-format
 #: lib/fourty_web/templates/client/show.html.eex:1
 msgid "show"
 msgstr "Show Client Details"
-

@@ -2,7 +2,10 @@ defmodule Fourty.Clients.Client do
   @moduledoc """
   The Clients schema:
 
-  `name` should be unique and should not contain any unnecessary whitespace.
+  `name` should be unique and 
+  should not contain any unnecessary whitespace.
+
+  There can be 0 to n projects per `client`.
 
   """
   use Ecto.Schema
@@ -10,6 +13,8 @@ defmodule Fourty.Clients.Client do
 
   schema "clients" do
     field :name, Fourty.TrimmedString
+    has_many :projects, Fourty.Clients.Project
+    has_many :visible_projects, Fourty.Clients.Project, where: [visible: true]
     timestamps()
   end
 

@@ -1,4 +1,4 @@
-defmodule FourtyWeb.InputHelpers do
+defmodule FourtyWeb.ViewHelpers do
   @moduledoc """
   Input Helper for views to ensure consistent user interface
   """
@@ -17,6 +17,28 @@ defmodule FourtyWeb.InputHelpers do
     form.source.action && Keyword.has_key?(form.source.errors, field)
   end
 
+  # mark required fields by adding " *" to given label
+  @doc false
+  defp mark_required(label, form, field) do
+    if required?(form, field), do: label <> " *", else: label
+  end
+
+  # fix options list, options are appended with new values, 'required' 
+  # overrides any previous setting
+  @doc false
+  @spec set_options(keyword(String.t()), struct(), atom()) :: keyword(String.t())
+  defp set_options(form, field, class \\ "form-control") do
+    o = [class: class <> (if with_errors?(form, field), do: " is-invalid", else: " is-valid")]
+    if required?(form, field), do: o ++ [required: "required"], else: o 
+  end 
+
+  # readonly_input, given options override defaults
+  @doc false
+  defp readonly_input(type, value, class \\ "form-control") do
+    tag(:input, type: type, value: value, class: class,
+       readonly: "readonly", disabled: "disabled")
+  end
+
   @doc """
   Replacement for label in forms
   * use gettext for label
@@ -25,7 +47,7 @@ defmodule FourtyWeb.InputHelpers do
   @spec my_label(struct(), String.t(), atom()) :: struct()
   def my_label(form, domain, field) do
     l = Gettext.dgettext(FourtyWeb.Gettext, domain, Atom.to_string(field))
-    l = if required?(form, field), do: l <> " *"
+    |> mark_required(form, field)
     label(form, field, l, class: "form-label")
   end
 
@@ -44,20 +66,35 @@ defmodule FourtyWeb.InputHelpers do
   Replacement for text_input:
   * inject class="format control" + "is-valid" pr "is-invalid"
   """
-  @spec my_text_input(struct(), atom(), keyword(String.t())) :: struct()
-  def my_text_input(form, field, options \\ []) do
-    o = options ++ [class: "form-control " <> (if with_errors?(form, field), do: "is-invalid", else: "is-valid")]
-    o = if required?(form, field), do: o ++ [required: "required"]
-    text_input(form, field, o)
+  @spec my_text_input(struct(), atom()) :: struct()
+  def my_text_input(form, field) do
+    text_input(form, field, set_options(form, field))
   end
 
   @doc """
   Replacement for text_input in show views so they look like forms
   """
-  @spec my_text_value(String.t(), keyword(String.t())) :: struct()
-  def my_text_value(value, options \\ []) do
-    tag(:input, options ++ [type: "text", value: value, class: "form-control",
-      readonly: "readonly", disabled: "disabled"])
+  @spec my_text_value(String.t()) :: struct()
+  def my_text_value(value) do
+    readonly_input(:text, value)
+  end
+
+  def my_checkbox_input(form, field) do
+    checkbox(form, field, set_options(form, field, "form-check-input"))
+  end
+
+  def my_checkbox_value(value) do
+    readonly_input(:checkbox, value, "form-check-input")
+  end
+
+  @spec my_date_input(struct(), atom()) :: struct()
+  def my_date_input(form, field) do
+    date_input(form, field, set_options(form, field))
+  end
+
+  @spec my_date_value(String.t()) :: struct()
+  def my_date_value(value) do
+    readonly_input(:date_input, value)
   end
 
   @doc """
@@ -81,8 +118,8 @@ defmodule FourtyWeb.InputHelpers do
     submit(Gettext.dgettext(FourtyWeb.Gettext, "global", "save"), class: "btn btn-sm btn-primary", role: "button")
   end
 
-  def my_action_link(action, path) do
-    l = Gettext.dgettext(FourtyWeb.Gettext, "global", action)
+  def my_action_link(domain, action, path) do
+    l = Gettext.dgettext(FourtyWeb.Gettext, domain, action)
     if action == "delete" do
       link(l, to: path, method: :delete, data: [confirm: Gettext.dgettext(FourtyWeb.Gettext, "global", "sure?")])
     else

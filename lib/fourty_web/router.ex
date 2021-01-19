@@ -18,7 +18,10 @@ defmodule FourtyWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
-    resources "/clients", ClientController
+    get "/projects", ProjectController, :index_all
+    resources "/clients", ClientController do
+      resources "/projects", ProjectController
+    end
   end
 
   # Other scopes may use custom stacks.

@@ -12,5 +12,21 @@ msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/templates/client/index.html.eex:8
+#: lib/fourty_web/templates/project/index.html.eex:11 lib/fourty_web/templates/project/index_all.html.eex:11
 msgid "actions"
+msgstr ""
+
+msgid "save"
+msgstr ""
+
+msgid "back"
+msgstr ""
+
+msgid "edit"
+msgstr ""
+
+msgid "delete"
+msgstr ""
+
+msgid "show"
 msgstr ""

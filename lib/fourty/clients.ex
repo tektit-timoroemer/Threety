@@ -128,6 +128,17 @@ defmodule Fourty.Clients do
     |> Repo.preload([visible_projects: qp])
   end
 
+  @doc """
+  Returns the list of visible projects for the given `client`.
+  This is the structure needed to display data in views
+  (all projects for the client)
+
+  ## Examples
+
+    iex> list_projects_for_client(id)
+    [%client{}, ...]
+
+  """
   def list_projects_for_client(id) do
     qp = from p in Project, order_by: p.id
     qc = from c in Client, where: [id: ^id]
@@ -155,15 +166,22 @@ defmodule Fourty.Clients do
   end
 
   @doc """
-  Creates a project for the given client
+  Creates a project for the given client. Since the associated data are
+  wrapped in a client record, and the project record is needed separately,
+  the project creation needs to be done in two separate steps:
+  (A) prepare_new_project
+  (B) create_project
 
   ## Examples
 
-      iex> create_project(%{field: value})
-      {:ok, %Project{}}
+      iex> prepare_new_project(id)
+      {%Project{...,client: %Client{},...}}
 
-      iex> create_project(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> create_project(%Project{...}, %{field: value})
+      {:ok, %Project{...}}
+
+      iex> create_project(%Project{...}, %{field: bad_value})
+      {:error, %Ecto.Changeset{...}}
 
   """
   def create_project(project, attrs \\ %{}) do

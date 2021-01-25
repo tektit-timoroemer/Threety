@@ -1,0 +1,35 @@
+<h1><%= dgettext("accounts","show") %></h1>
+<div class="row row-cols-auto">
+  <div class="col-sm-3">
+
+    <%= my_label("clients", "name") %>
+    <%= my_text_value("<a client's name>") %><br />
+
+    <%= my_label("projects", "name") %>
+    <%= my_text_value("<a project's name>") %><br />
+
+    <%= my_label("accounts", "name") %>
+    <%= my_text_value(@account.name) %><br />
+
+    <%= my_label("accounts", "date_start") %>
+    <%= my_date_value(@account.date_start) %><br />
+
+    <%= my_label("accounts", "date_end") %>
+    <%= my_date_value(@account.date_end) %><br />
+
+    <%= my_checkbox_value(@account.visible) %>
+    <%= my_label("accounts", "visible") %><br />
+
+    <%= my_label("accounts", "balance_cur") %>
+    <%= my_currency_value(@account.balance_cur) %><br />
+
+    <%= my_label("accounts", "balance_dur") %>
+    <%= my_duration_value(@account.balance_dur) %><br />
+  </div>
+</div>
+<div class="row row-cols-auto">
+  <div class="col-sm-3">
+    <%= my_action("global", "edit", Routes.account_path(@conn, :edit, @account)) %>
+    <%= my_action("global", "index", Routes.account_path(@conn, :index)) %>
+  </div>
+</div>

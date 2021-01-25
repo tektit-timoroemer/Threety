@@ -97,23 +97,29 @@ defmodule FourtyWeb.ViewHelpers do
     readonly_input(:date_input, value)
   end
 
-  @doc """
-  Replacement for a back button
-  """
+  def my_currency_value(value) do
+    readonly_input(:text, value)
+  end
+
+  def my_duration_value(value) do
+    readonly_input(:text, value)
+  end
+
+
+  # Replacement for a back button
+
   def my_back_link(path) do
     link(Gettext.dgettext(FourtyWeb.Gettext, "global", "back"), to: path, class: "btn btn-sm btn-outline-secondary", role: "button")
   end
 
-  @doc """
-  Replacement for action button
-  """
+  # Replacement for action button
+
   def my_action(domain, action, path) do
     link(Gettext.dgettext(FourtyWeb.Gettext, domain, action), to: path, class: "btn btn-sm btn-primary", role: "button") 
   end
 
-  @doc """
-  Replacement for submit button
-  """
+  # Replacement for submit button
+
   def my_submit() do
     submit(Gettext.dgettext(FourtyWeb.Gettext, "global", "save"), class: "btn btn-sm btn-primary", role: "button")
   end
@@ -125,6 +131,27 @@ defmodule FourtyWeb.ViewHelpers do
     else
       link(l, to: path)
     end
+  end
+
+  def min2dur(value) do
+    v = rem(value, 60)
+    Integer.to_string(trunc(value / 100)) <> ":" <>
+      String.pad_leading(Integer.to_string(v),2,"0")
+  end
+
+  @thousands_separator " "
+  @decimal_separator "."
+  @currency_symbol "€"
+
+  def int2cur(value) do
+    ls = Integer.to_string(rem(value, 100))
+    ms = Integer.to_string(trunc(value / 100))
+    lm = String.length(ms)
+    ms = String.graphemes(ms)
+    {ms,_} = Enum.map_reduce(ms, lm, fn c, i ->
+      { if(rem(i, 3) == 0, do: @thousands_separator <> c, else: c), i - 1 } end)
+    Enum.join(ms) <> @decimal_separator <> String.pad_leading(ls, 2, "0") <>
+      " " <> @currency_symbol 
   end
 
 end

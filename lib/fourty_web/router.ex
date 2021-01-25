@@ -22,6 +22,7 @@ defmodule FourtyWeb.Router do
     resources "/clients", ClientController do
       resources "/projects", ProjectController
     end
+    resources "/accounts", AccountController
   end
 
   # Other scopes may use custom stacks.

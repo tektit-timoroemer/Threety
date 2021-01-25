@@ -1,13 +1,12 @@
 <h1><%= dgettext("projects","index") %></h1>
 <div class="row row-cols-auto">
-  <div class="table-responsive col-sm-9">
+  <div class="table-responsive col-sm-8">
     <table class="table table-bordered">
       <thead>
         <tr>
           <th class="col-sm-3"><%= dgettext("projects", "name") %></th>
           <th class="col-sm-1"><%= dgettext("projects", "date_start") %></th>
           <th class="col-sm-1"><%= dgettext("projects", "date_end") %></th>
-          <th class="col-sm-1"><%= dgettext("projects", "visible") %></th>
           <th class="col-sm-3"><%= dgettext("global", "actions") %></th>
         </tr>
       </thead>
@@ -15,7 +14,7 @@
         <%= for client <- @projects do %>
           <%# unless length(client.visible_projects) == 0 do %>
           <tr class="bg-light">
-            <td colspan="4">
+            <td colspan="3">
               <%= dgettext("clients","name") %>&nbsp;:&nbsp;
               <strong>
                 <%= link client.name, to: Routes.client_path(@conn, :show, client.id) %>
@@ -31,7 +30,6 @@
               <td><%= project.name %></td>
               <td><%= project.date_start %></td>
               <td><%= project.date_end %></td>
-              <td><%= project.visible %></td>
               <td>
                 <%= my_action_link("global", "show", Routes.client_project_path(@conn, :show, client, project)) %>
                 <%= my_action_link("global", "edit", Routes.client_project_path(@conn, :edit, client, project)) %>

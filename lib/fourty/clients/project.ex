@@ -19,6 +19,8 @@ defmodule Fourty.Clients.Project do
     field :date_end, :date
     field :visible, :boolean, default: true
     belongs_to :client, Fourty.Clients.Client
+    has_many :accounts, Fourty.Accounting.Account
+    has_many :visible_accounts, Fourty.Accounting.Account, where: [visible: true]
     timestamps()
   end
 
@@ -27,6 +29,7 @@ defmodule Fourty.Clients.Project do
     project
     |> cast(attrs, [:name, :date_start, :date_end, :visible])
     |> validate_required([:name])
+    |> Fourty.Validations.validate_date_sequence(:date_start, :date_end)
     |> unique_constraint(:name, name: :projects_client_id_name_index)
   end
 end

@@ -16,7 +16,10 @@
 
 		<%= my_checkbox_value(@project.visible) %>
 		<%= my_label("projects", "visible") %><br /><br />
-
+	</div>
+</div>
+<div class="row row-cols-auto">
+	<div class="col-sm-4">
   		<%= my_action("global", "edit", Routes.client_project_path(@conn, :edit, @project.client, @project)) %>
 		<%= my_action("projects", "index", Routes.client_project_path(@conn, :index, @project.client)) %>
 		<%= my_action("projects", "index_all", Routes.project_path(@conn, :index_all)) %>

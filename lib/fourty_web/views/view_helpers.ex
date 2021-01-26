@@ -98,11 +98,11 @@ defmodule FourtyWeb.ViewHelpers do
   end
 
   def my_currency_value(value) do
-    readonly_input(:text, value)
+    readonly_input(:text, int2cur(value), "text-end form-control")
   end
 
   def my_duration_value(value) do
-    readonly_input(:text, value)
+    readonly_input(:text, min2dur(value), "text-end form-control")
   end
 
 

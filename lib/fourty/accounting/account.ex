@@ -16,8 +16,8 @@ defmodule Fourty.Accounting.Account do
 
   schema "accounts" do
     field :name, Fourty.TrimmedString
-    field :date_end, :date
-    field :date_start, :date
+    field :date_end, :date, default: nil
+    field :date_start, :date, default: nil
     field :visible, :boolean, default: true
     field :balance_cur, :integer, virtual: true, default: 0
     field :balance_dur, :integer, virtual: true, default: 0

@@ -30,6 +30,6 @@
 <div class="row row-cols-auto">
   <div class="col-sm-3">
     <%= my_action("global", "edit", Routes.account_path(@conn, :edit, @account)) %>
-    <%= my_action("global", "index", Routes.account_path(@conn, :index)) %>
+    <%= my_action("accounts", "index", Routes.account_path(@conn, :index)) %>
   </div>
 </div>

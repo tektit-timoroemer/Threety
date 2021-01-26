@@ -1,27 +1,40 @@
 <%= form_for @changeset, @action, fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+      <p><%= dgettext("errors","error_alert") %></p>
     </div>
   <% end %>
 
-  <%= label f, :name %>
-  <%= text_input f, :name %>
-  <%= error_tag f, :name %>
+  <%= my_label("clients", "name") %>
+  <%# my_text_value(@account.project.client.name) %>
+  <%= my_text_value("<CLIENT>") %><br />
 
-  <%= label f, :date_start %>
-  <%= date_select f, :date_start %>
-  <%= error_tag f, :date_start %>
+  <%= my_label("projects", "name") %>
+  <%# my_text_value(@account.project.name) %>
+  <%= my_text_value("<PROJECT>") %><br />
 
-  <%= label f, :date_end %>
-  <%= date_select f, :date_end %>
-  <%= error_tag f, :date_end %>
+  <%= my_label(f, "accounts", :name) %>
+  <%= my_text_input(f, :name) %><br />
+  <%= error_tag(f, :name) %>
 
-  <%= label f, :balance %>
-  <%= number_input f, :balance %>
-  <%= error_tag f, :balance %>
+  <%= my_label(f, "accounts", :date_start) %>
+  <%= my_date_input(f, :date_start) %><br />
+  <%= error_tag(f, :date_start) %>
 
-  <div>
-    <%= submit "Save" %>
-  </div>
+  <%= my_label(f, "accounts", :date_end) %>
+  <%= my_date_input(f, :date_end) %><br />
+  <%= error_tag(f, :date_end) %>
+
+  <%= my_checkbox_input(f, :visible) %>
+  <%= my_label(f, "accounts", :visible) %><br />
+  <%= error_tag(f, :visible) %>
+
+  <%= my_label("accounts", "balance_cur") %>
+  <%= my_currency_value(@account.balance_cur) %><br />
+
+  <%= my_label("accounts", "balance_dur") %>
+  <%= my_duration_value(@account.balance_dur) %><br />
+
+  <%= my_submit() %>
+  <%= my_back_link(Routes.account_path(@conn, :index)) %>
 <% end %>

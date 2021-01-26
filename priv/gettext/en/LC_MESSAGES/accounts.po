@@ -39,3 +39,4 @@ msgstr "List all Accounts"
 
 msgid "accounts"
 msgstr "Accounts"
+

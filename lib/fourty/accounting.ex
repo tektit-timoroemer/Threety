@@ -9,7 +9,7 @@ defmodule Fourty.Accounting do
   alias Fourty.Accounting.Account
 
   @doc """
-  Returns the list of accounts.
+  Returns the list of accounts in the order of their names
 
   ## Examples
 
@@ -18,7 +18,19 @@ defmodule Fourty.Accounting do
 
   """
   def list_accounts do
-    Repo.all(Account)
+    q = from c in Fourty.Clients.Client,
+      join: p in assoc(c, :visible_projects),
+      join: a in assoc(p, :visible_accounts),
+      order_by: [c.id, p.id, a.name],
+      preload: [visible_projects: {p, visible_accounts: a}]
+    Repo.all(q)
+  end
+
+  def list_all_accounts do
+    qa = from a in Account, order_by: a.name
+    qp = from p in Fourty.Clients.Project, order_by: p.id, preload: [visible_accounts: ^qa] 
+    qc = from c in Fourty.Clients.Client, order_by: c.id, preload: [visible_projects: ^qp]
+    Repo.all(qc)
   end
 
   @doc """

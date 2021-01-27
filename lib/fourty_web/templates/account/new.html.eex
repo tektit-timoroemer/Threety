@@ -1,5 +1,6 @@
-<h1>New Account</h1>
-
-<%= render "form.html", Map.put(assigns, :action, Routes.account_path(@conn, :create)) %>
-
-<span><%= link "Back", to: Routes.account_path(@conn, :index) %></span>
+<h1><%= dgettext("accounts","add") %></h1>
+<div class="row row-cols-auto">
+  <div class="col-sm-3">
+  	<%= render "form.html", Map.put(assigns, :action, Routes.account_path(@conn, :create)) %>
+  </div>
+</div>

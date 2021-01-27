@@ -97,6 +97,13 @@ defmodule FourtyWeb.ViewHelpers do
     readonly_input(:date_input, value)
   end
 
+  # this needs to be text to be converted to a floating point number
+  # during casting
+
+  #def my_currency_input(form, field) do
+  #  
+  #end
+
   def my_currency_value(value) do
     readonly_input(:text, int2cur(value), "text-end form-control")
   end

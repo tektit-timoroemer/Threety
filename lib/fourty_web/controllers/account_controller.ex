@@ -5,13 +5,14 @@ defmodule FourtyWeb.AccountController do
   alias Fourty.Accounting.Account
 
   def index(conn, _params) do
-    accounts = Accounting.list_accounts()
+    accounts = Accounting.list_all_accounts()
     render(conn, "index.html", accounts: accounts)
   end
 
   def new(conn, _params) do
-    changeset = Accounting.change_account(%Account{})
-    render(conn, "new.html", changeset: changeset)
+    account = %Account{balance_cur: 0, balance_dur: 0}
+    changeset = Accounting.change_account(account)
+    render(conn, "new.html", account: account, changeset: changeset)
   end
 
   def create(conn, %{"account" => account_params}) do

@@ -13,41 +13,46 @@
         </tr>
       </thead>
       <tbody>
-        <%# for client <- @projects do %>
+        <%= for client <- @accounts do %>
         <tr class="bg-light">
           <td colspan="5">
             <%= dgettext("clients", "name") %>&nbsp;:&nbsp;
-            <strong>&lt;CLIENT&gt;
-              <%# link client.name, to: Routes.client_path(@conn, :show, client.id) %>
+            <strong>
+              <%= link client.name, to: Routes.client_path(@conn, :show, client.id) %>
             </strong>
           </td>
-          <td>add
-              <%# my_action_link("projects", "add", Routes.client_project_path(@conn, :new, client.id)) %>
+          <td>
+              <%= my_action_link("projects", "add", Routes.client_project_path(@conn, :new, client.id)) %>
           </td>
         </tr>
-        <%# for project <- client.visible_projects do %>
+        <%= for project <- client.visible_projects do %>
           <tr class="bg-light">
-            <td colspan="5">
+            <td colspan="5">&nbsp;&nbsp;&nbsp;
               <%= dgettext("projects", "name") %>&nbsp;:&nbsp;
-              <strong>&lt;PROJECT&gt;
-                <%# link project.name, to: Routes.client_project_path(@conn, :show, client.id, project.id) %>
-              </strong>/
+              <strong>
+                <%= link project.name, to: Routes.client_project_path(@conn, :show, client.id, project.id) %>
+              </strong>
             </td>
-            <td>show
+            <td>
+              <%= my_action_link("accounts", "add", Routes.account_path(@conn, :new)) %>
             </td>
           </tr>
-          <%# for account <- project.visible_accounts do %>
+          <%= for account <- project.visible_accounts do %>
             <tr>
-              <td><%= "<NAME>" %></td>
-              <td><%= "<DATE_START>" %></td>
-              <td><%= "<DATE_END>" %></td>
+              <td><%= account.name %></td>
+              <td><%= account.date_start %></td>
+              <td><%= account.date_end %></td>
               <td class="text-end"><%= int2cur(123456789) %></td>
               <td class="text-end"><%= min2dur(2430) %></td>
-              <td><%= "SHOW" %></td>
+              <td>
+                <%= my_action_link("global", "show", Routes.account_path(@conn, :show, account)) %>
+                <%= my_action_link("global", "edit", Routes.account_path(@conn, :edit, account)) %>
+                <%= my_action_link("global", "delete", Routes.account_path(@conn, :delete, account)) %>
+              </td>
             </tr>
-          <%# end %>
-        <%# end %>
-      <%# end %>
+          <% end %>
+        <% end %>
+      <% end %>
     </table>  
   </div>
 </div>

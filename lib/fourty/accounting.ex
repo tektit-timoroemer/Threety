@@ -7,6 +7,24 @@ defmodule Fourty.Accounting do
   alias Fourty.Repo
 
   alias Fourty.Accounting.Account
+  alias Fourty.Accounting.Deposit
+  alias Fourty.Accounting.Withdrwl
+
+
+  defp load_balance(account) do
+    qd = from d in Deposit,
+      where: d.account_id == ^account.id,
+      select: %{ sum_cur: sum(d.amount_cur),
+                 sum_dur: sum(d.amount_dur)} 
+    qw = from w in Withdrwl,
+      where: w.account_id == ^account.id,
+      select: %{ sum_cur: sum(w.amount_cur),
+                 sum_dur: sum(w.amount_dur)} 
+    [rd] = Repo.all(qd)
+    [rw] = Repo.all(qw)
+    %{account | balance_cur: (rd.sum_cur || 0) - (rw.sum_cur || 0),
+                balance_dur: (rd.sum_dur || 0) - (rw.sum_dur || 0)}
+  end
 
   @doc """
   Returns the list of accounts in the order of their names
@@ -47,7 +65,10 @@ defmodule Fourty.Accounting do
       ** (Ecto.NoResultsError)
 
   """
-  def get_account!(id), do: Repo.get!(Account, id)
+  def get_account!(id) do
+    Repo.get!(Account, id)
+    |> load_balance()
+  end
 
   @doc """
   Creates a account.

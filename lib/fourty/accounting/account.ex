@@ -15,13 +15,15 @@ defmodule Fourty.Accounting.Account do
   import Ecto.Changeset
 
   schema "accounts" do
-    field :name, Fourty.TrimmedString
+    field :name, Fourty.TypeTrimmedString
     field :date_end, :date, default: nil
     field :date_start, :date, default: nil
     field :visible, :boolean, default: true
-    field :balance_cur, :integer, virtual: true, default: 0
-    field :balance_dur, :integer, virtual: true, default: 0
+    field :balance_cur, Fourty.TypeCurrency, virtual: true, default: 0
+    field :balance_dur, Fourty.TypeDuration, virtual: true, default: 0
     belongs_to :project, Fourty.Clients.Project
+    has_many :withdrwls, Fourty.Accounting.Withdrwl
+    has_many :deposits, Fourty.Accounting.Deposit
     timestamps()
   end
 

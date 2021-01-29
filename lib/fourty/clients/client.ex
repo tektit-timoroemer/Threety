@@ -12,7 +12,7 @@ defmodule Fourty.Clients.Client do
   import Ecto.Changeset
 
   schema "clients" do
-    field :name, Fourty.TrimmedString
+    field :name, Fourty.TypeTrimmedString
     has_many :projects, Fourty.Clients.Project
     has_many :visible_projects, Fourty.Clients.Project, where: [visible: true]
     timestamps()

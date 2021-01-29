@@ -1,0 +1,23 @@
+<h1>Show Withdrwl</h1>
+
+<ul>
+
+  <li>
+    <strong>Amount dur:</strong>
+    <%= @withdrwl.amount_dur %>
+  </li>
+
+  <li>
+    <strong>Amount cur:</strong>
+    <%= @withdrwl.amount_cur %>
+  </li>
+
+  <li>
+    <strong>Rate cur per hour:</strong>
+    <%= @withdrwl.rate_cur_per_hour %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.withdrwl_path(@conn, :edit, @withdrwl) %></span>
+<span><%= link "Back", to: Routes.withdrwl_path(@conn, :index) %></span>

@@ -1,4 +1,4 @@
-defmodule Fourty.TrimmedString do
+defmodule Fourty.TypeTrimmedString do
   use Ecto.Type
   def type, do: :string
 

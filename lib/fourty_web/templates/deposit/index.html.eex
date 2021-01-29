@@ -1,0 +1,28 @@
+<h1>Listing Deposits</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Amount dur</th>
+      <th>Amount cur</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for deposit <- @deposits do %>
+    <tr>
+      <td><%= deposit.amount_dur %></td>
+      <td><%= deposit.amount_cur %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.deposit_path(@conn, :show, deposit) %></span>
+        <span><%= link "Edit", to: Routes.deposit_path(@conn, :edit, deposit) %></span>
+        <span><%= link "Delete", to: Routes.deposit_path(@conn, :delete, deposit), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Deposit", to: Routes.deposit_path(@conn, :new) %></span>

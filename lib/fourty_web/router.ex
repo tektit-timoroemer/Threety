@@ -23,6 +23,8 @@ defmodule FourtyWeb.Router do
       resources "/projects", ProjectController
     end
     resources "/accounts", AccountController
+    resources "/dpsts", DepositController
+    resources "/wdrws", WithdrwlController
   end
 
   # Other scopes may use custom stacks.

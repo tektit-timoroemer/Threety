@@ -1,0 +1,18 @@
+<h1>Show Deposit</h1>
+
+<ul>
+
+  <li>
+    <strong>Amount dur:</strong>
+    <%= @deposit.amount_dur %>
+  </li>
+
+  <li>
+    <strong>Amount cur:</strong>
+    <%= @deposit.amount_cur %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.deposit_path(@conn, :edit, @deposit) %></span>
+<span><%= link "Back", to: Routes.deposit_path(@conn, :index) %></span>

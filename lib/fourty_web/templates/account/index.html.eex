@@ -1,6 +1,6 @@
 <h1><%= dgettext("accounts", "index") %></h1>
 <div class="row row-cols-auto">
-  <div class="table-responsive col-sm-12">
+  <div class="table-responsive col-sm-11">
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -8,7 +8,7 @@
           <th class="col-sm-1"><%= dgettext("accounts", "date_start") %></th>
           <th class="col-sm-1"><%= dgettext("accounts", "date_end") %></th>
           <th class="col-sm-2 text-end"><%= dgettext("accounts", "balance_cur") %></th>
-          <th class="col-sm-2 text-end"><%= dgettext("accounts", "balance_dur") %></th>
+          <th class="col-sm-1 text-end"><%= dgettext("accounts", "balance_dur") %></th>
           <th class="col-sm-3"><%= dgettext("global", "actions") %></th>
         </tr>
       </thead>
@@ -42,8 +42,8 @@
               <td><%= account.name %></td>
               <td><%= account.date_start %></td>
               <td><%= account.date_end %></td>
-              <td class="text-end"><%= int2cur(123456789) %></td>
-              <td class="text-end"><%= min2dur(2430) %></td>
+              <td class="text-end"><%= int2cur(account.balance_cur) %></td>
+              <td class="text-end"><%= min2dur(account.balance_dur) %></td>
               <td>
                 <%= my_action_link("global", "show", Routes.account_path(@conn, :show, account)) %>
                 <%= my_action_link("global", "edit", Routes.account_path(@conn, :edit, account)) %>

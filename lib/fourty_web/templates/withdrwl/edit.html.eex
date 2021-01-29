@@ -1,0 +1,5 @@
+<h1>Edit Withdrwl</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.withdrwl_path(@conn, :update, @withdrwl)) %>
+
+<span><%= link "Back", to: Routes.withdrwl_path(@conn, :index) %></span>

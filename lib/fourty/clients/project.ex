@@ -14,7 +14,7 @@ defmodule Fourty.Clients.Project do
   import Ecto.Changeset
 
   schema "projects" do
-    field :name, Fourty.TrimmedString
+    field :name, Fourty.TypeTrimmedString
     field :date_start, :date
     field :date_end, :date
     field :visible, :boolean, default: true

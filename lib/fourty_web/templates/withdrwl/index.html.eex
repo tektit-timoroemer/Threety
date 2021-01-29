@@ -1,0 +1,30 @@
+<h1>Listing Withdrwls</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Amount dur</th>
+      <th>Amount cur</th>
+      <th>Rate cur per hour</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for withdrwl <- @withdrwls do %>
+    <tr>
+      <td><%= withdrwl.amount_dur %></td>
+      <td><%= withdrwl.amount_cur %></td>
+      <td><%= withdrwl.rate_cur_per_hour %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.withdrwl_path(@conn, :show, withdrwl) %></span>
+        <span><%= link "Edit", to: Routes.withdrwl_path(@conn, :edit, withdrwl) %></span>
+        <span><%= link "Delete", to: Routes.withdrwl_path(@conn, :delete, withdrwl), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Withdrwl", to: Routes.withdrwl_path(@conn, :new) %></span>

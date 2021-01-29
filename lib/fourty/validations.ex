@@ -18,4 +18,23 @@ defmodule Fourty.Validations do
 		end
   end
 
+  # Ensures that at least one of the given fields is provided
+
+  @validate_at_least_one_msg "at least one must be given"
+  def validate_at_least_one(changeset, fields) when is_list(fields) do
+  	Enum.map(fields, &(get_field(changeset,&1)))
+  	|> Enum.reject(&is_nil/1)
+  	|> Enum.empty?()
+  	|> if(do: add_errors(changeset, fields), else: changeset)
+ 	end
+
+ 	defp add_errors(changeset, [head | tail]) do
+ 		if Enum.empty?(tail) do
+	 		add_error(changeset, head, @validate_at_least_one_msg)
+	 	else
+ 			add_errors(changeset, tail)
+ 			|> add_error(head, @validate_at_least_one_msg)
+ 		end
+ 	end
+
 end

@@ -7,7 +7,8 @@ defmodule Fourty.Accounting.Withdrwl do
     field :amount_dur, Fourty.TypeCurrency, default: nil
     field :description, :string
     belongs_to :account, Fourty.Accounting.Account
-    timestamps()
+    # belongs_to :tasks, Fourty.Users.Task
+    # timestamps()
   end
 
   @doc false

@@ -7,8 +7,9 @@ defmodule Fourty.Repo.Migrations.CreateDeposits do
       add :amount_dur, :integer
       add :description, :string
       add :account_id, references(:accounts, on_delete: :delete_all)
-      timestamps()
+      # add :order_id, references(:orders, on_delete: :delete_all)
+      # timestamps()
     end
-    create index(:deposits, [:account_id, :inserted_at])
+    # create index(:deposits, [:account_id, :inserted_at])
   end
 end

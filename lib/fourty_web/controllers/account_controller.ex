@@ -5,7 +5,7 @@ defmodule FourtyWeb.AccountController do
   alias Fourty.Accounting.Account
 
   def index(conn, _params) do
-    accounts = Accounting.list_all_accounts()
+    accounts = Accounting.list_accounts()
     render(conn, "index.html", accounts: accounts)
   end
 

@@ -6,8 +6,9 @@ defmodule Fourty.Accounting.Deposit do
     field :amount_cur, Fourty.TypeCurrency, default: nil
     field :amount_dur, Fourty.TypeDuration, default: nil
     field :description, :string
-    belongs_to :account, Fourty.Accounting.Account 
-    timestamps()
+    belongs_to :account, Fourty.Accounting.Account
+    # belongs_to: :orders, Fourty.Clients.Order
+    # timestamps()
   end
 
   @doc false

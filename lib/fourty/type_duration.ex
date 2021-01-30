@@ -65,8 +65,8 @@ defmodule Fourty.TypeDuration do
 		cast(str)
 	end
 
-	def load(str) when is_binary(str) do
-		{:ok, str}
+	def load(int) when is_integer(int) do
+		{:ok, int}
 	end
 
 end

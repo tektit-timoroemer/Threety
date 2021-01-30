@@ -7,13 +7,12 @@ defmodule Fourty.Validations do
 	def validate_date_sequence(changeset, date1, date2) do
 		d1 = get_field(changeset, date1)
 		d2 = get_field(changeset, date2)
-
-		cond do
-			d1 && d2 && d1 > d2 ->
+		case d1 && d2 && Date.compare(d1, d2) do
+			:gt ->
 				changeset
 				|> add_error(date1, @validate_date_sequence_msg)
 				|> add_error(date2, @validate_date_sequence_msg)
-			true ->
+			_ ->
 				changeset
 		end
   end
@@ -27,6 +26,8 @@ defmodule Fourty.Validations do
   	|> Enum.empty?()
   	|> if(do: add_errors(changeset, fields), else: changeset)
  	end
+
+ 	# recursively add error message for all fields in list
 
  	defp add_errors(changeset, [head | tail]) do
  		if Enum.empty?(tail) do

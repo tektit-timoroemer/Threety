@@ -6,6 +6,7 @@ defmodule FourtyWeb.AccountController do
 
   def index(conn, _params) do
     accounts = Accounting.list_accounts()
+    IO.inspect(accounts)
     render(conn, "index.html", accounts: accounts)
   end
 

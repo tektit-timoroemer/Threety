@@ -11,19 +11,37 @@ defmodule Fourty.Accounting do
   alias Fourty.Accounting.Withdrwl
 
 
+  defp balance_per_account_query(accounts \\ []) when is_list(accounts) do 
+    dq = from d in Fourty.Accounting.Deposit,
+      select: %{
+        account_id: d.account_id,
+        amount_cur: d.amount_cur,
+        amount_dur: d.amount_dur},
+      where: d.account_id in ^accounts
+    wq = from w in Fourty.Accounting.Withdrwl,
+      select: %{
+        account_id: w.account_id,
+        amount_cur: w.amount_cur*(-1),
+        amount_dur: w.amount_dur*(-1)},
+      where: w.account_id in ^accounts
+    uq = union_all(wq, ^dq)
+    from u in subquery(uq),
+      group_by: u.account_id,
+        select: %{
+          account_id: u.account_id,
+          balance_cur: sum(u.amount_cur),
+          balance_dur: sum(u.amount_dur)}
+  end
+
   defp load_balance(account) do
-    qd = from d in Deposit,
-      where: d.account_id == ^account.id,
-      select: %{ sum_cur: sum(d.amount_cur),
-                 sum_dur: sum(d.amount_dur)} 
-    qw = from w in Withdrwl,
-      where: w.account_id == ^account.id,
-      select: %{ sum_cur: sum(w.amount_cur),
-                 sum_dur: sum(w.amount_dur)} 
-    [rd] = Repo.all(qd)
-    [rw] = Repo.all(qw)
-    %{account | balance_cur: (rd.sum_cur || 0) - (rw.sum_cur || 0),
-                balance_dur: (rd.sum_dur || 0) - (rw.sum_dur || 0)}
+    r = balance_per_account_query([account.id])
+    |> Repo.all()
+    if r == [] do
+      %{account | balance_cur: 0, balance_dur: 0}
+    else
+      [r] = r
+      %{account | balance_cur: r.balance_cur, balance_dur: r.balance_dur}
+    end
   end
 
   @doc """
@@ -39,9 +57,13 @@ defmodule Fourty.Accounting do
     q = from c in Fourty.Clients.Client,
       join: p in assoc(c, :visible_projects),
       join: a in assoc(p, :visible_accounts),
+#      join: u in subquery(balance_per_account_query()),
+#      on: a.id == u.account_id,
+#      select: %{ a | balance_cur: u.balance_cur, balance_dur: u.balance_dur },
       order_by: [c.id, p.id, a.name],
       preload: [visible_projects: {p, visible_accounts: a}]
     Repo.all(q)
+#    |> load_balance(%{})
   end
 
   def list_all_accounts do
@@ -67,6 +89,7 @@ defmodule Fourty.Accounting do
   """
   def get_account!(id) do
     Repo.get!(Account, id)
+    |> Repo.preload(project: [:client])
     |> load_balance()
   end
 

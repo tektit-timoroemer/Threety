@@ -141,9 +141,11 @@ defmodule FourtyWeb.ViewHelpers do
   end
 
   def min2dur(value) do
-    v = rem(value, 60)
-    Integer.to_string(trunc(value / 100)) <> ":" <>
-      String.pad_leading(Integer.to_string(v),2,"0")
+    sign = if value < 0, do: "-", else: ""
+    v = abs(value)
+    r = rem(v, 60)
+    sign <> Integer.to_string(trunc(v / 100)) <> ":" <>
+      String.pad_leading(Integer.to_string(r),2,"0")
   end
 
   @thousands_separator " "
@@ -151,13 +153,15 @@ defmodule FourtyWeb.ViewHelpers do
   @currency_symbol "€"
 
   def int2cur(value) do
-    ls = Integer.to_string(rem(value, 100))
-    ms = Integer.to_string(trunc(value / 100))
+    sign = if value < 0, do: "-", else: ""
+    v = abs(value)
+    ls = Integer.to_string(rem(v, 100))
+    ms = Integer.to_string(trunc(v / 100))
     lm = String.length(ms)
     ms = String.graphemes(ms)
     {ms,_} = Enum.map_reduce(ms, lm, fn c, i ->
       { if(rem(i, 3) == 0, do: @thousands_separator <> c, else: c), i - 1 } end)
-    Enum.join(ms) <> @decimal_separator <> String.pad_leading(ls, 2, "0") <>
+    sign <> Enum.join(ms) <> @decimal_separator <> String.pad_leading(ls, 2, "0") <>
       " " <> @currency_symbol 
   end
 

@@ -38,6 +38,7 @@
             </td>
           </tr>
           <%= for account <- project.visible_accounts do %>
+            <% account = Map.merge(account, Fourty.Accounting.get_balance(@balances, account.id)) %>
             <tr>
               <td><%= account.name %></td>
               <td><%= account.date_start %></td>

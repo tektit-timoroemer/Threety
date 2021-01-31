@@ -4,14 +4,20 @@ defmodule FourtyWeb.AccountController do
   alias Fourty.Accounting
   alias Fourty.Accounting.Account
 
+  def index_client(conn, %{"client_id" => client_id}) do
+    accounts = Accounting.list_accounts(client_id)
+    balances = Accounting.load_all_balances()
+    render(conn, "index.html", accounts: accounts, balances: balances)    
+  end
+
   def index(conn, _params) do
     accounts = Accounting.list_accounts()
-    IO.inspect(accounts)
-    render(conn, "index.html", accounts: accounts)
+    balances = Accounting.load_all_balances()
+    render(conn, "index.html", accounts: accounts, balances: balances)
   end
 
   def new(conn, _params) do
-    account = %Account{balance_cur: 0, balance_dur: 0}
+    account = %Account{}
     changeset = Accounting.change_account(account)
     render(conn, "new.html", account: account, changeset: changeset)
   end

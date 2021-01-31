@@ -23,6 +23,7 @@ defmodule FourtyWeb.Router do
       resources "/projects", ProjectController
     end
     resources "/accounts", AccountController
+    get "/accounts/client/:client_id", AccountController, :index_client
     resources "/dpsts", DepositController
     resources "/wdrws", WithdrwlController
   end

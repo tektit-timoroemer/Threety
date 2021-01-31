@@ -10,20 +10,23 @@ defmodule Fourty.Accounting do
   alias Fourty.Accounting.Deposit
   alias Fourty.Accounting.Withdrwl
 
+  # NOTE: This portion - computing the balance for a single or all
+  # accounts does not look finished. Maybe a good place for refactoring!
 
   defp balance_per_account_query(accounts \\ []) when is_list(accounts) do 
+    wc = if Enum.empty?(accounts), do: true, else: dynamic([a], a.account_id in ^accounts)
     dq = from d in Fourty.Accounting.Deposit,
       select: %{
         account_id: d.account_id,
         amount_cur: d.amount_cur,
         amount_dur: d.amount_dur},
-      where: d.account_id in ^accounts
+      where: ^wc
     wq = from w in Fourty.Accounting.Withdrwl,
       select: %{
         account_id: w.account_id,
         amount_cur: w.amount_cur*(-1),
         amount_dur: w.amount_dur*(-1)},
-      where: w.account_id in ^accounts
+      where: ^wc
     uq = union_all(wq, ^dq)
     from u in subquery(uq),
       group_by: u.account_id,
@@ -45,6 +48,19 @@ defmodule Fourty.Accounting do
   end
 
   @doc """
+  Returns a keyword list with balances per account:
+  [account_id: x, balance_cur: y, balance_dur: z]
+  Use this in get_balance to retrieve balance values for any account.
+  """
+  def load_all_balances(accounts \\ []) do
+    Repo.all(balance_per_account_query(accounts))
+  end
+
+  def get_balance(balances, account_id) do
+    Enum.find(balances, fn x -> x.account_id == account_id end) || %{ balance_cur: 0, balance_dur: 0}
+  end
+
+  @doc """
   Returns the list of accounts in the order of their names
 
   ## Examples
@@ -53,17 +69,15 @@ defmodule Fourty.Accounting do
       [%Account{}, ...]
 
   """
-  def list_accounts do
+  def list_accounts(client_id \\ nil) do
+    c = if client_id == nil, do: true, else: dynamic([cid], cid.id == ^client_id)
     q = from c in Fourty.Clients.Client,
+      where: ^c,
       join: p in assoc(c, :visible_projects),
       join: a in assoc(p, :visible_accounts),
-#      join: u in subquery(balance_per_account_query()),
-#      on: a.id == u.account_id,
-#      select: %{ a | balance_cur: u.balance_cur, balance_dur: u.balance_dur },
       order_by: [c.id, p.id, a.name],
       preload: [visible_projects: {p, visible_accounts: a}]
     Repo.all(q)
-#    |> load_balance(%{})
   end
 
   def list_all_accounts do

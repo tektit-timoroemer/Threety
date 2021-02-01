@@ -22,6 +22,13 @@ defmodule Fourty.Clients do
     |> Repo.all()
   end
 
+  def get_clients do
+    q = from c in Client,
+      order_by: c.id,
+      select: %{key: c.id, value: c.name}
+    Repo.all(q)
+  end
+
   @doc """
   Gets a single client.
 
@@ -111,9 +118,9 @@ defmodule Fourty.Clients do
   alias Fourty.Clients.Project
 
   @doc """
-  Returns the list of clients with their associated, visible 
-  projects. This is the structure needed to display data in views
-  (projects grouped by clients)
+  Returns a list of clients or a single client with their resp. its
+  associated, visible projects. This is the structure needed to display
+  data in views (projects grouped by clients).
 
   ## Examples
 
@@ -121,27 +128,12 @@ defmodule Fourty.Clients do
       [%client{}, ...]
 
   """
-  def list_all_projects() do
+  def list_projects(client_id \\ nil) do
     qp = from p in Project, order_by: p.id
-    qc = from c in Client, order_by: c.id
-    Repo.all(qc)
-    |> Repo.preload([visible_projects: qp])
-  end
-
-  @doc """
-  Returns the list of visible projects for the given `client`.
-  This is the structure needed to display data in views
-  (all projects for the client)
-
-  ## Examples
-
-    iex> list_projects_for_client(id)
-    [%client{}, ...]
-
-  """
-  def list_projects_for_client(id) do
-    qp = from p in Project, order_by: p.id
-    qc = from c in Client, where: [id: ^id]
+    qc = from c in Client
+    qc = if is_nil(client_id), 
+      do: order_by(qc, [c], c.id),
+      else: where(qc, [c], c.id == ^client_id)
     Repo.all(qc)
     |> Repo.preload([visible_projects: qp])
   end
@@ -166,34 +158,21 @@ defmodule Fourty.Clients do
   end
 
   @doc """
-  Creates a project for the given client. Since the associated data are
-  wrapped in a client record, and the project record is needed separately,
-  the project creation needs to be done in two separate steps:
-  (A) prepare_new_project
-  (B) create_project
+  Creates a project
 
   ## Examples
 
-      iex> prepare_new_project(id)
-      {%Project{...,client: %Client{},...}}
-
-      iex> create_project(%Project{...}, %{field: value})
+      iex> create_project(%{field: value})
       {:ok, %Project{...}}
 
       iex> create_project(%Project{...}, %{field: bad_value})
       {:error, %Ecto.Changeset{...}}
 
   """
-  def create_project(project, attrs \\ %{}) do
-    project
+  def create_project(attrs \\ %{}) do
+    %Project{}
     |> Project.changeset(attrs)
     |> Repo.insert()
-  end
-
-  def prepare_new_project(client_id) do
-    get_client!(client_id)
-    |> Ecto.build_assoc(:projects)
-    |> Repo.preload(:client)
   end
 
   @doc """

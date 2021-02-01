@@ -112,6 +112,11 @@ defmodule FourtyWeb.ViewHelpers do
     readonly_input(:text, min2dur(value), "text-end form-control")
   end
 
+  @spec my_selection_input(struct(), atom(), list()) :: struct()
+  def my_selection_input(form, field, list) do
+    select(form, field, Enum.map(list, &{&1.value, &1.key}), set_options(form, field))
+  end
+
 
   # Replacement for a back button
 
@@ -140,6 +145,8 @@ defmodule FourtyWeb.ViewHelpers do
     end
   end
 
+  # format integer to hh:mm for display in views
+
   def min2dur(value) do
     sign = if value < 0, do: "-", else: ""
     v = abs(value)
@@ -147,6 +154,8 @@ defmodule FourtyWeb.ViewHelpers do
     sign <> Integer.to_string(trunc(v / 100)) <> ":" <>
       String.pad_leading(Integer.to_string(r),2,"0")
   end
+
+  # format integer to currency d ddd ... ddd.dd for display in views
 
   @thousands_separator " "
   @decimal_separator "."

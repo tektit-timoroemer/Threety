@@ -21,7 +21,7 @@
               </strong>
             </td>
             <td>
-              <%= my_action_link("projects", "add", Routes.client_project_path(@conn, :new, client.id)) %>
+              <%= my_action_link("projects", "add", Routes.project_path(@conn, :new, client_id: client.id)) %>
             </td>
           </tr>
           <%# end %>
@@ -31,16 +31,16 @@
               <td><%= project.date_start %></td>
               <td><%= project.date_end %></td>
               <td>
-                <%= my_action_link("global", "show", Routes.client_project_path(@conn, :show, client, project)) %>
-                <%= my_action_link("global", "edit", Routes.client_project_path(@conn, :edit, client, project)) %>
-                <%= my_action_link("global", "delete", Routes.client_project_path(@conn, :delete, client, project)) %>
-                <%= my_action_link("global", "orders", Routes.client_project_path(@conn, :show, client, project)) %>
+                <%= my_action_link("global", "show", Routes.project_path(@conn, :show, project)) %>
+                <%= my_action_link("global", "edit", Routes.project_path(@conn, :edit, project)) %>
+                <%= my_action_link("global", "delete", Routes.project_path(@conn, :delete, project)) %>
+                <%= my_action_link("global", "orders", Routes.project_path(@conn, :show, project)) %>
               </td>
             </tr>
           <% end %>
         <% end %>
       </tbody>
     </table>
-    <%= if length(@projects) <= 1, do: my_action("projects", "index_all", Routes.project_path(@conn, :index_all)) %>
+    <%= if length(@projects) <= 1, do: my_action("projects", "index", Routes.project_path(@conn, :index)) %>
   </div>
 </div>

@@ -90,8 +90,8 @@ defmodule Fourty.Accounting do
   # listing all clients and projects whether they have accounts or not
 
   def list_accounts(client_id \\ nil, project_id \\ nil ) do
-    cc = if client_id == nil, do: true, else: dynamic([c], c.id == ^client_id)
-    cp = if project_id == nil, do: true, else: dynamic([p], p.id == ^project_id)
+    cc = if is_nil(client_id), do: true, else: dynamic([c], c.id == ^client_id)
+    cp = if is_nil(project_id), do: true, else: dynamic([p], p.id == ^project_id)
     qa = from a in Account,
           order_by: a.name
     qp = from p in Fourty.Clients.Project,

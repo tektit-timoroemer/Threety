@@ -16,7 +16,7 @@
             <%= my_action_link("global", "show", Routes.client_path(@conn, :show, client)) %>
             <%= my_action_link("global", "edit", Routes.client_path(@conn, :edit, client)) %>
             <%= my_action_link("global", "delete", Routes.client_path(@conn, :delete, client)) %>
-            <%= my_action_link("clients", "projects", Routes.client_project_path(@conn, :index, client)) %>
+            <%= my_action_link("clients", "projects", Routes.project_path(@conn, :index_client, client.id)) %>
           </td>
         </tr>
         <% end %>

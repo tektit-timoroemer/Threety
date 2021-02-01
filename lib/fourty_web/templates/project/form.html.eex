@@ -6,7 +6,7 @@
   <% end %>
 
   <%= my_label("clients", "name") %>
-  <%= my_text_value(@project.client.name) %><br />
+  <%= my_selection_input(f, :client_id, @clients) %><br />
 
   <%= my_label(f, "projects", :name) %>
   <%= my_text_input(f, :name) %><br />
@@ -25,5 +25,5 @@
   <%= error_tag(f, :visible) %><br />
 
   <%= my_submit() %>
-  <%= my_back_link(Routes.client_project_path(@conn, :index, @project.client)) %>
+  <%= my_back_link(Routes.project_path(@conn, :index)) %>
 <% end %>

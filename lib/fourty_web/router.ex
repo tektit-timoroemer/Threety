@@ -18,12 +18,13 @@ defmodule FourtyWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
-    get "/projects", ProjectController, :index_all
-    resources "/clients", ClientController do
-      resources "/projects", ProjectController
-    end
+    resources "/clients", ClientController
+    resources "/projects", ProjectController
+    get "/projects/client/:client_id", ProjectController, :index_client
     resources "/accounts", AccountController
+    get "/accounts/all", AccountController, :index_all
     get "/accounts/client/:client_id", AccountController, :index_client
+    get "/accounts/project/:project_id", AccountController, :index_project
     resources "/dpsts", DepositController
     resources "/wdrws", WithdrwlController
   end

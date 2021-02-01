@@ -1,6 +1,6 @@
 <h1><%= dgettext("projects","edit") %></h1>
 <div class="row row-cols-auto">
 	<div class="col-sm-3">
-		<%= render "form.html", Map.put(assigns, :action, Routes.client_project_path(@conn, :update, @project.client.id, @project)) %>
+		<%= render "form.html", Map.put(assigns, :action, Routes.project_path(@conn, :update, @project)) %>
 	</div>
 </div>

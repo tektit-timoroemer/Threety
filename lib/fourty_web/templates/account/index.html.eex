@@ -22,7 +22,7 @@
             </strong>
           </td>
           <td>
-              <%= my_action_link("projects", "add", Routes.client_project_path(@conn, :new, client.id)) %>
+              <%= my_action_link("projects", "add", Routes.project_path(@conn, :new, client_id: client.id)) %>
           </td>
         </tr>
         <%= for project <- client.visible_projects do %>
@@ -30,7 +30,7 @@
             <td colspan="5">&nbsp;&nbsp;&nbsp;
               <%= dgettext("projects", "name") %>&nbsp;:&nbsp;
               <strong>
-                <%= link project.name, to: Routes.client_project_path(@conn, :show, client.id, project.id) %>
+                <%= link project.name, to: Routes.project_path(@conn, :show, project.id) %>
               </strong>
             </td>
             <td>

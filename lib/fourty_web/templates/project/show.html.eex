@@ -3,7 +3,7 @@
 	<div class="col-sm-3">
 
 		<%= my_label("clients","name") %>
-		<%= my_text_value(@project.client.name) %><br />
+		<%= my_text_value(@project.client_id) %><br />
 
 		<%= my_label("projects", "name") %>
 		<%= my_text_value(@project.name) %><br />
@@ -20,8 +20,7 @@
 </div>
 <div class="row row-cols-auto">
 	<div class="col-sm-4">
-  		<%= my_action("global", "edit", Routes.client_project_path(@conn, :edit, @project.client, @project)) %>
-		<%= my_action("projects", "index", Routes.client_project_path(@conn, :index, @project.client)) %>
-		<%= my_action("projects", "index_all", Routes.project_path(@conn, :index_all)) %>
+  		<%= my_action("global", "edit", Routes.project_path(@conn, :edit, @project)) %>
+		<%= my_action("projects", "index", Routes.project_path(@conn, :index)) %>
 	</div>
 </div>

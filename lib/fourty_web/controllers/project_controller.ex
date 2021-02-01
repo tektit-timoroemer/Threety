@@ -2,33 +2,35 @@ defmodule FourtyWeb.ProjectController do
   use FourtyWeb, :controller
 
   alias Fourty.Clients
+  alias Fourty.Clients.Project
 
-  def index(conn, %{"client_id" => client_id}) do
-    projects = Clients.list_projects_for_client(client_id)
+  def index(conn, _params) do
+    projects = Clients.list_projects()
     render(conn, "index.html", projects: projects)
   end
 
-  def index_all(conn, _params) do
-    projects = Clients.list_all_projects()
+  def index_client(conn, %{"client_id" => client_id}) do
+    projects = Clients.list_projects(client_id)
     render(conn, "index.html", projects: projects)
   end
 
-  def new(conn, %{"client_id" => client_id}) do
-    project = Clients.prepare_new_project(client_id)
-    changeset = Clients.change_project(project)
-    render(conn, "new.html", changeset: changeset, project: project)
+  def new(conn, params) do
+    clients = Clients.get_clients()
+    project = %Project{}
+    changeset = Clients.change_project(project, params)
+    render(conn, "new.html", changeset: changeset, project: project, clients: clients)
   end
 
-  def create(conn, %{ "client_id" => client_id, "project" => project_params}) do
-    project = Clients.prepare_new_project(client_id)
-    case Clients.create_project(project, project_params) do
+  def create(conn, %{ "project" => project_params}) do
+    case Clients.create_project(project_params) do
       {:ok, project} ->
         conn
         |> put_flash(:info, "Project created successfully.")
-        |> redirect(to: Routes.client_project_path(conn, :show, project.client, project))
+        |> redirect(to: Routes.project_path(conn, :show, project))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset, project: project) #project)
+        clients = Clients.get_clients()
+        render(conn, "new.html", changeset: changeset, clients: clients)
     end
   end
 
@@ -39,8 +41,9 @@ defmodule FourtyWeb.ProjectController do
 
   def edit(conn, %{"id" => id}) do
     project = Clients.get_project!(id)
+    clients = Clients.get_clients()
     changeset = Clients.change_project(project)
-    render(conn, "edit.html", changeset: changeset, project: project)
+    render(conn, "edit.html", changeset: changeset, project: project, clients: clients)
   end
 
   def update(conn, %{"id" => id, "project" => project_params}) do
@@ -49,10 +52,11 @@ defmodule FourtyWeb.ProjectController do
       {:ok, project} ->
         conn
         |> put_flash(:info, "Project updated successfully.")
-        |> redirect(to: Routes.client_project_path(conn, :show, project.client, project))
+        |> redirect(to: Routes.project_path(conn, :show, project))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", changeset: changeset, project: project)
+        clients = Clients.get_clients()
+        render(conn, "edit.html", changeset: changeset, clients: clients)
     end
   end
 
@@ -62,6 +66,6 @@ defmodule FourtyWeb.ProjectController do
 
     conn
     |> put_flash(:info, "Project deleted successfully.")
-    |> redirect(to: Routes.client_project_path(conn, :index, client_id ))
+    |> redirect(to: Routes.project_path(conn, :index, client_id ))
   end
 end

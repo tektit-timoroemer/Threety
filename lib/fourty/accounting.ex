@@ -36,7 +36,7 @@ defmodule Fourty.Accounting do
           balance_dur: sum(u.amount_dur)}
   end
 
-  defp load_balance(account) do
+  def load_balance(account) do
     r = balance_per_account_query([account.id])
     |> Repo.all()
     if r == [] do
@@ -69,21 +69,39 @@ defmodule Fourty.Accounting do
       [%Account{}, ...]
 
   """
-  def list_accounts(client_id \\ nil) do
-    c = if client_id == nil, do: true, else: dynamic([cid], cid.id == ^client_id)
+  # this will generate only a single query!
+  # BUT it will list only those clients and projects with accounts...
+
+  def alt_list_accounts(client_id \\ nil, project_id \\ nil ) do
+    cc = if client_id == nil, do: true, else: dynamic([c], c.id == ^client_id)
+    cp = if project_id == nil, do: true, else: dynamic([c,p], p.id == ^project_id)
     q = from c in Fourty.Clients.Client,
-      where: ^c,
+      where: ^cc,
       join: p in assoc(c, :visible_projects),
+      where: ^cp,
       join: a in assoc(p, :visible_accounts),
       order_by: [c.id, p.id, a.name],
-      preload: [visible_projects: {p, visible_accounts: a}]
+      preload: [visible_projects: {p, visible_accounts: a}],
+      select: a.id
     Repo.all(q)
   end
 
-  def list_all_accounts do
-    qa = from a in Account, order_by: a.name
-    qp = from p in Fourty.Clients.Project, order_by: p.id, preload: [visible_accounts: ^qa] 
-    qc = from c in Fourty.Clients.Client, order_by: c.id, preload: [visible_projects: ^qp]
+  # the following will generate 3 queries
+  # listing all clients and projects whether they have accounts or not
+
+  def list_accounts(client_id \\ nil, project_id \\ nil ) do
+    cc = if client_id == nil, do: true, else: dynamic([c], c.id == ^client_id)
+    cp = if project_id == nil, do: true, else: dynamic([p], p.id == ^project_id)
+    qa = from a in Account,
+          order_by: a.name
+    qp = from p in Fourty.Clients.Project,
+          where: ^cp,
+          order_by: p.id, 
+          preload: [visible_accounts: ^qa] 
+    qc = from c in Fourty.Clients.Client,
+          where: ^cc,
+          order_by: c.id, 
+          preload: [visible_projects: ^qp]
     Repo.all(qc)
   end
 

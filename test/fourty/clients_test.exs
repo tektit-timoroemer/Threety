@@ -68,7 +68,7 @@ defmodule Fourty.ClientsTest do
     @update_attrs %{name: "some updated name"}
     @invalid_attrs %{name: nil}
 
-    def same_projects?(p1,p2) do
+    defp same_projects?(p1,p2) do
       # return true if both projects are identical ignoring any
       # associations
       Map.equal?(Map.drop(p1, [:client]), Map.drop(p2, [:client]))

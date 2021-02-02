@@ -130,12 +130,11 @@ defmodule Fourty.Clients do
   """
   def list_projects(client_id \\ nil) do
     qp = from p in Project, order_by: p.id
-    qc = from c in Client
+    qc = from c in Client, preload: [visible_projects: ^qp]
     qc = if is_nil(client_id), 
       do: order_by(qc, [c], c.id),
       else: where(qc, [c], c.id == ^client_id)
     Repo.all(qc)
-    |> Repo.preload([visible_projects: qp])
   end
 
   @doc """
@@ -158,7 +157,8 @@ defmodule Fourty.Clients do
   end
 
   @doc """
-  Creates a project
+  Creates a project. Note that an existing client(_id) must be specified
+  or the create_project function will fail with a dbms error.
 
   ## Examples
 

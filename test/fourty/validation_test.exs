@@ -7,19 +7,19 @@ defmodule Fourty.ValidationTest do
 		alias Fourty.Accounting.Deposit
 		test "standard case - two fields" do
 			c = %Deposit{}
-			|> Deposit.changeset(%{description: "test", amount_cur: 1, amount_dur: 2})
+			|> Deposit.changeset(%{description: "test", amount_cur: "1", amount_dur: "2"})
 			assert c.valid?
 		end
 
 		test "standard case - first field" do
 			c = %Deposit{}
-			|> Deposit.changeset(%{description: "test", amount_cur: 1})
+			|> Deposit.changeset(%{description: "test", amount_cur: "1"})
 			assert c.valid?
 		end
 
 		test "standard case - second field" do
 			c = %Deposit{}
-			|> Deposit.changeset(%{description: "test", amount_dur: 2})
+			|> Deposit.changeset(%{description: "test", amount_dur: "2"})
 			assert c.valid?
 		end
 

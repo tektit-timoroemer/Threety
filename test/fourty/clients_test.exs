@@ -71,56 +71,65 @@ defmodule Fourty.ClientsTest do
     def same_projects?(p1,p2) do
       # return true if both projects are identical ignoring any
       # associations
-      Map.delete(p1, :client) == Map.delete(p2, :client)
+      Map.equal?(Map.drop(p1, [:client]), Map.drop(p2, [:client]))
     end
 
     def project_fixture(client, attrs \\ %{}) do
-      attrs = Enum.into(attrs, @valid_attrs)
-      project = Clients.prepare_new_project(client.id)
-      {:ok, project} = Clients.create_project(project, attrs)
+      {:ok, project} = 
+      attrs
+      |> Enum.into(@valid_attrs)
+      |> Enum.into(%{client_id: client.id})
+      |> Clients.create_project()
       project
     end
 
     test "list_projects/0 returns all projects" do
       c = client_fixture()
       p = project_fixture(c)
-      assert p.client == c
+      assert p.client_id == c.id
 
-      a  = Clients.list_all_projects()
+      a  = Clients.list_projects()
       assert same_projects?(List.first(List.first(a).visible_projects), p)
     end
 
     test "get_project!/1 returns the project with given id" do
       client = client_fixture()
       project = project_fixture(client)
-      assert Clients.get_project!(project.id) == project
+      assert same_projects?(project, Clients.get_project!(project.id))
     end
 
     test "create_project/1 with valid data creates a project" do
       client = client_fixture()
-      {:ok, project} = Clients.prepare_new_project(client.id)
-      |> Clients.create_project(@valid_attrs)
+      {:ok, project} = Clients.create_project(Map.merge(@valid_attrs, %{client_id: client.id}))
       assert project.name == "some name"
+      assert project.client_id == client.id
     end
 
     test "create_project/1 with invalid data returns error changeset" do
-      client = client_fixture()
-      project = Clients.prepare_new_project(client.id)
-      assert {:error, %Ecto.Changeset{}} = Clients.create_project(project, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Clients.create_project(@invalid_attrs)
+    end
+
+    test "create_project/1 with missing association" do
+      # for some strange reason, this test case does not fail as intended:
+      # postgres has a constraint set but the postgres error is not
+      # reflected to the Ecto.Changeset.
+      # >assert {:error, %Ecto.Changeset{}} = Clients.create_project(@valid_attrs)
+      Clients.create_project(@valid_attrs)
+      assert Enum.empty?(Clients.list_projects())
     end
 
     test "update_project/2 with valid data updates the project" do
       client = client_fixture()
-      project = project_fixture(client)
+      assert {:ok, project} = Clients.create_project(Map.merge(@valid_attrs, %{client_id: client.id}))
       assert {:ok, %Project{} = project} = Clients.update_project(project, @update_attrs)
       assert project.name == "some updated name"
     end
 
     test "update_project/2 with invalid data returns error changeset" do
       client = client_fixture()
-      project = project_fixture(client)
+      assert {:ok, project} = Clients.create_project(Map.merge(@valid_attrs, %{client_id: client.id}))
       assert {:error, %Ecto.Changeset{}} = Clients.update_project(project, @invalid_attrs)
-      assert project == Clients.get_project!(project.id)
+      assert same_projects?(project, Clients.get_project!(project.id))
     end
 
     test "delete_project/1 deletes the project" do

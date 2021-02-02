@@ -6,16 +6,15 @@ defmodule Fourty.AccountingTest do
   describe "accounts" do
     alias Fourty.Accounting.Account
 
-    @valid_attrs %{balance: 42, date_end: ~D[2010-04-17], date_start: ~D[2010-04-17], name: "some name"}
-    @update_attrs %{balance: 43, date_end: ~D[2011-05-18], date_start: ~D[2011-05-18], name: "some updated name"}
-    @invalid_attrs %{balance: nil, date_end: nil, date_start: nil, name: nil}
+    @valid_attrs %{balance_cur: 42, date_end: ~D[2010-04-17], date_start: ~D[2010-04-17], name: "some name"}
+    @update_attrs %{balance_cur: 43, date_end: ~D[2011-05-18], date_start: ~D[2011-05-18], name: "some updated name"}
+    @invalid_attrs %{balance_cur: nil, balance_dur: nil, date_end: nil, date_start: nil, name: nil}
 
     def account_fixture(attrs \\ %{}) do
       {:ok, account} =
         attrs
         |> Enum.into(@valid_attrs)
         |> Accounting.create_account()
-
       account
     end
 

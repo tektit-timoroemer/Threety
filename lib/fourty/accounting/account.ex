@@ -30,9 +30,10 @@ defmodule Fourty.Accounting.Account do
   @doc false
   def changeset(account, attrs) do
     account
-    |> cast(attrs, [:name, :date_start, :date_end, :visible])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :date_start, :date_end, :visible, :project_id])
+    |> validate_required([:name, :project_id])    
     |> Fourty.Validations.validate_date_sequence(:date_start, :date_end)
+    |> assoc_constraint(:project)
     |> unique_constraint(:name, name: :accounts_project_id_name_index)
   end
 end

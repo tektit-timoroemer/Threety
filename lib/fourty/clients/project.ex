@@ -30,6 +30,7 @@ defmodule Fourty.Clients.Project do
     |> cast(attrs, [:name, :date_start, :date_end, :visible, :client_id])
     |> validate_required([:name, :client_id])
     |> Fourty.Validations.validate_date_sequence(:date_start, :date_end)
+    |> assoc_constraint(:client)
     |> unique_constraint(:name, name: :projects_client_id_name_index)
   end
 end

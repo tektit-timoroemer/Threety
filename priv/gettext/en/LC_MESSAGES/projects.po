@@ -38,6 +38,9 @@ msgstr "Show Project Details"
 msgid "edit"
 msgstr "Edit Project Details"
 
+msgid "projects"
+msgstr "Projects"
+
 #, elixir-format
 #: lib/fourty_web/templates/project/index.html.eex:7
 #: lib/fourty_web/templates/project/index_all.html.eex:7

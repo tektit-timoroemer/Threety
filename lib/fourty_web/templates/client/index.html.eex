@@ -16,12 +16,13 @@
             <%= my_action_link("global", "show", Routes.client_path(@conn, :show, client)) %>
             <%= my_action_link("global", "edit", Routes.client_path(@conn, :edit, client)) %>
             <%= my_action_link("global", "delete", Routes.client_path(@conn, :delete, client)) %>
-            <%= my_action_link("clients", "projects", Routes.project_path(@conn, :index_client, client.id)) %>
+            <%= my_action_link("projects", "projects", Routes.project_path(@conn, :index_client, client.id)) %>
           </td>
         </tr>
         <% end %>
       </tbody>
     </table>
     <%= my_action("clients", "add", Routes.client_path(@conn, :new)) %>
+    <%= my_action("projects", "index", Routes.project_path(@conn, :index)) %>
   </div>
 </div>

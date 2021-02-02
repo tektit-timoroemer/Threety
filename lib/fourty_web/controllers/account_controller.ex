@@ -10,6 +10,13 @@ defmodule FourtyWeb.AccountController do
     render(conn, "index.html", accounts: accounts, balances: balances)    
   end
 
+  def index_project(conn, %{"project_id" => project_id}) do
+    project = Fourty.Clients.get_project!(project_id)
+    accounts = Accounting.list_accounts(project.client_id, project.id)
+    balances = Accounting.load_all_balances()
+    render(conn, "index.html", accounts: accounts, balances: balances)
+  end
+
   def index(conn, _params) do
     accounts = Accounting.list_accounts()
     balances = Accounting.load_all_balances()

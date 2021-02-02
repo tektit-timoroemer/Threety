@@ -22,6 +22,7 @@
             </td>
             <td>
               <%= my_action_link("projects", "add", Routes.project_path(@conn, :new, client_id: client.id)) %>
+              <%= my_action_link("accounts", "accounts", Routes.account_path(@conn, :index_client, client)) %>
             </td>
           </tr>
           <%# end %>
@@ -34,7 +35,7 @@
                 <%= my_action_link("global", "show", Routes.project_path(@conn, :show, project)) %>
                 <%= my_action_link("global", "edit", Routes.project_path(@conn, :edit, project)) %>
                 <%= my_action_link("global", "delete", Routes.project_path(@conn, :delete, project)) %>
-                <%= my_action_link("global", "orders", Routes.project_path(@conn, :show, project)) %>
+                <%= my_action_link("accounts", "accounts", Routes.account_path(@conn, :index_project, project)) %>
               </td>
             </tr>
           <% end %>

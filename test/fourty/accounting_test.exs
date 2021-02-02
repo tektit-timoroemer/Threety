@@ -6,31 +6,47 @@ defmodule Fourty.AccountingTest do
   describe "accounts" do
     alias Fourty.Accounting.Account
 
-    @valid_attrs %{balance_cur: 42, date_end: ~D[2010-04-17], date_start: ~D[2010-04-17], name: "some name"}
-    @update_attrs %{balance_cur: 43, date_end: ~D[2011-05-18], date_start: ~D[2011-05-18], name: "some updated name"}
+    @valid_attrs %{date_end: ~D[2010-04-17], date_start: ~D[2010-04-17], name: "some name"}
+    @update_attrs %{date_end: ~D[2011-05-18], date_start: ~D[2011-05-18], name: "some updated name"}
     @invalid_attrs %{balance_cur: nil, balance_dur: nil, date_end: nil, date_start: nil, name: nil}
 
-    def account_fixture(attrs \\ %{}) do
+    defp same_accounts?(a1, a2) do
+      # return true if both accounts are identical ignoring any
+      # associations
+      Map.equal?(Map.drop(a1, [:project]), Map.drop(a2, [:project]))
+    end
+
+    def project_id() do
+      {:ok, client} = Fourty.Clients.create_client(%{name: "test-client"})
+      {:ok, project} = Fourty.Clients.create_project(%{name: "test-project", client_id: client.id})
+      project.id
+    end
+
+    def account_fixture(attrs \\ %{}) do 
       {:ok, account} =
         attrs
-        |> Enum.into(@valid_attrs)
+        |> Enum.into(Map.merge(@valid_attrs, %{project_id: project_id()}))
         |> Accounting.create_account()
       account
     end
 
     test "list_accounts/0 returns all accounts" do
       account = account_fixture()
-      assert Accounting.list_accounts() == [account]
+      result = Accounting.list_accounts()
+      [%Fourty.Clients.Client{visible_projects: [%Fourty.Clients.Project{visible_accounts: [db_account]}]}] = result
+      assert same_accounts?(db_account, account)
     end
 
     test "get_account!/1 returns the account with given id" do
       account = account_fixture()
-      assert Accounting.get_account!(account.id) == account
+      result = Accounting.get_account!(account.id)
+      assert same_accounts?(result, account)
     end
 
-    test "create_account/1 with valid data creates a account" do
-      assert {:ok, %Account{} = account} = Accounting.create_account(@valid_attrs)
-      assert account.balance == 42
+    test "create_account/1 with valid data creates an account" do
+      assert {:ok, %Account{} = account} = Accounting.create_account(Map.merge(@valid_attrs, %{project_id: project_id()}))
+      assert account.balance_cur == 0
+      assert account.balance_dur == 0
       assert account.date_end == ~D[2010-04-17]
       assert account.date_start == ~D[2010-04-17]
       assert account.name == "some name"
@@ -43,7 +59,8 @@ defmodule Fourty.AccountingTest do
     test "update_account/2 with valid data updates the account" do
       account = account_fixture()
       assert {:ok, %Account{} = account} = Accounting.update_account(account, @update_attrs)
-      assert account.balance == 43
+      assert account.balance_cur == 0
+      assert account.balance_dur == 0
       assert account.date_end == ~D[2011-05-18]
       assert account.date_start == ~D[2011-05-18]
       assert account.name == "some updated name"
@@ -52,7 +69,7 @@ defmodule Fourty.AccountingTest do
     test "update_account/2 with invalid data returns error changeset" do
       account = account_fixture()
       assert {:error, %Ecto.Changeset{}} = Accounting.update_account(account, @invalid_attrs)
-      assert account == Accounting.get_account!(account.id)
+      assert same_accounts?(account, Accounting.get_account!(account.id))
     end
 
     test "delete_account/1 deletes the account" do

@@ -1,7 +1,7 @@
 <h1><%= @heading %></h1>
 <div class="row row-cols-auto">
   <div class="table-responsive col-sm-8 p-3 border bg-light">
-    <table class="table">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th class="col-sm-3"><%= dgettext("projects", "name") %></th>
@@ -13,7 +13,7 @@
       <tbody>
         <%= for client <- @projects do %>
           <%# unless length(client.visible_projects) == 0 do %>
-          <tr class="bg-light">
+          <tr>
             <td colspan="3">
               <%= dgettext("clients","name") %>&nbsp;:&nbsp;
               <strong>
@@ -28,7 +28,7 @@
           <%# end %>
           <%= for project <- client.visible_projects do %>
             <tr>
-              <td><%= project.name %></td>
+              <td class="indent-1" ><%= project.name %></td>
               <td><%= project.date_start %></td>
               <td><%= project.date_end %></td>
               <td>
@@ -42,6 +42,8 @@
         <% end %>
       </tbody>
     </table>
-    <%= if length(@projects) <= 1, do: my_action("projects", "index", Routes.project_path(@conn, :index)), else: my_action("accounts", "index", Routes.account_path(@conn, :index)) %>
+    <%= if length(@projects) <= 1,
+          do: my_action("projects", "index", Routes.project_path(@conn, :index)),
+          else: my_action("accounts", "index", Routes.account_path(@conn, :index)) %>
   </div>
 </div>

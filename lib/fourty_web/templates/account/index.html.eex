@@ -1,20 +1,20 @@
 <h1><%= @heading %></h1>
 <div class="row row-cols-auto">
-  <div class="table-responsive col-sm-11 p-3 border bg-light">
-    <table class="table">
+  <div class="table-responsive col-sm-10 p-3 border bg-light">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th class="col-sm-3"><%= dgettext("accounts", "name") %></th>
           <th class="col-sm-1"><%= dgettext("accounts", "date_start") %></th>
           <th class="col-sm-1"><%= dgettext("accounts", "date_end") %></th>
-          <th class="col-sm-2 text-end"><%= dgettext("accounts", "balance_cur") %></th>
+          <th class="col-sm-1 text-end"><%= dgettext("accounts", "balance_cur") %></th>
           <th class="col-sm-1 text-end"><%= dgettext("accounts", "balance_dur") %></th>
           <th class="col-sm-3"><%= dgettext("global", "actions") %></th>
         </tr>
       </thead>
       <tbody>
         <%= for client <- @accounts do %>
-        <tr class="bg-light">
+        <tr>
           <td colspan="5">
             <%= dgettext("clients", "name") %>&nbsp;:&nbsp;
             <strong>
@@ -26,8 +26,8 @@
           </td>
         </tr>
         <%= for project <- client.visible_projects do %>
-          <tr class="bg-light">
-            <td colspan="5">&nbsp;&nbsp;&nbsp;
+          <tr>
+            <td class="indent-1" colspan="5">
               <%= dgettext("projects", "name") %>&nbsp;:&nbsp;
               <strong>
                 <%= link project.name, to: Routes.project_path(@conn, :show, project.id) %>
@@ -40,7 +40,7 @@
           <%= for account <- project.visible_accounts do %>
             <% account = Map.merge(account, Fourty.Accounting.get_balance(@balances, account.id)) %>
             <tr>
-              <td><%= account.name %></td>
+              <td class="indent-2"><%= account.name %></td>
               <td><%= account.date_start %></td>
               <td><%= account.date_end %></td>
               <td class="text-end"><%= int2cur(account.balance_cur) %></td>

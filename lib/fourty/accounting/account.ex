@@ -8,7 +8,7 @@ defmodule Fourty.Accounting.Account do
 
 	There can be 0 to n accounts per `project`.
 
-	date_start should be before date_end. ### to do ###
+	date_start should be before date_end.
 
 	"""
   use Ecto.Schema

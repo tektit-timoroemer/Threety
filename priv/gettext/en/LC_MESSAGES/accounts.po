@@ -35,7 +35,13 @@ msgid "balance_dur"
 msgstr "Balance (h)"
 
 msgid "index"
-msgstr "List all Accounts"
+msgstr "List of All Accounts"
+
+msgid "index_client"
+msgstr "List of Accounts for %{name}"
+
+msgid "index_project"
+msgstr "List of Accounts for %{name}"
 
 msgid "accounts"
 msgstr "Accounts"

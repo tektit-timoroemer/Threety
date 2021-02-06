@@ -1,4 +1,4 @@
-<h1><%= dgettext("accounts", "index") %></h1>
+<h1><%= @heading %></h1>
 <div class="row row-cols-auto">
   <div class="table-responsive col-sm-11">
     <table class="table table-bordered">
@@ -22,7 +22,7 @@
             </strong>
           </td>
           <td>
-              <%= my_action_link("projects", "add", Routes.project_path(@conn, :new, client_id: client.id)) %>
+              <%= my_action_link("projects", "add", Routes.project_path(@conn, :new, client.id)) %>
           </td>
         </tr>
         <%= for project <- client.visible_projects do %>
@@ -34,7 +34,7 @@
               </strong>
             </td>
             <td>
-              <%= my_action_link("accounts", "add", Routes.account_path(@conn, :new)) %>
+              <%= my_action_link("accounts", "add", Routes.account_path(@conn, :new, project.id)) %>
             </td>
           </tr>
           <%= for account <- project.visible_accounts do %>
@@ -54,6 +54,13 @@
           <% end %>
         <% end %>
       <% end %>
-    </table>  
+    </table>
+    <%= cond do;
+        Map.has_key?(@conn.path_params, "client_id") -> 
+          my_action("accounts", "index", Routes.account_path(@conn, :index));
+        Map.has_key?(@conn.path_params, "project_id") ->
+          my_action("accounts", "index_client", Routes.account_path(@conn, :index_client, List.first(@accounts).id), name: List.first(@accounts).name);
+        true -> "";
+        end %>
   </div>
 </div>

@@ -3,7 +3,7 @@
 	<div class="col-sm-3">
 
 		<%= my_label("clients","name") %>
-		<%= my_text_value(@project.client_id) %><br />
+		<%= my_text_value(@project.client.name) %><br />
 
 		<%= my_label("projects", "name") %>
 		<%= my_text_value(@project.name) %><br />

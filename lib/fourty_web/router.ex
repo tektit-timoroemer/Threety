@@ -19,12 +19,13 @@ defmodule FourtyWeb.Router do
 
     live "/", PageLive, :index
     resources "/clients", ClientController
-    resources "/projects", ProjectController
+    resources "/projects", ProjectController, except: [:new]
+    get "/projects/client/:client_id/new", ProjectController, :new
     get "/projects/client/:client_id", ProjectController, :index_client
-    resources "/accounts", AccountController
-    get "/accounts/all", AccountController, :index_all
-    get "/accounts/client/:client_id", AccountController, :index_client
+    resources "/accounts", AccountController, except: [:new]
+    get "/accounts/project/:project_id/new", AccountController, :new
     get "/accounts/project/:project_id", AccountController, :index_project
+    get "/accounts/client/:client_id", AccountController, :index_client
     resources "/dpsts", DepositController
     resources "/wdrws", WithdrwlController
   end

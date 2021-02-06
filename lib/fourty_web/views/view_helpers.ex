@@ -130,6 +130,10 @@ defmodule FourtyWeb.ViewHelpers do
     link(Gettext.dgettext(FourtyWeb.Gettext, domain, action), to: path, class: "btn btn-sm btn-primary", role: "button") 
   end
 
+  def my_action(domain, action, path, param) do
+    link(Gettext.dgettext(FourtyWeb.Gettext, domain, action, param), to: path, class: "btn btn-sm btn-primary", role: "button") 
+  end
+
   # Replacement for submit button
 
   def my_submit() do

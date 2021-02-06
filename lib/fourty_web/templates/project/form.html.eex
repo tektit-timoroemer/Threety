@@ -5,8 +5,9 @@
     </div>
   <% end %>
 
+  <%= hidden_input(f, :client_id) %>
   <%= my_label("clients", "name") %>
-  <%= my_selection_input(f, :client_id, @clients) %><br />
+  <%= my_text_value(@client.name) %><br />
 
   <%= my_label(f, "projects", :name) %>
   <%= my_text_input(f, :name) %><br />

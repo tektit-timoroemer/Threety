@@ -22,6 +22,15 @@ defmodule Fourty.Clients do
     |> Repo.all()
   end
 
+  @doc """
+  Returns a list of clients suitable for dropdown lists
+
+  ## Examples
+
+    iex> get_clients()
+    [%{key: 1, value: "client 1"}, %{key: 2, value: "Client #2"}]
+
+  """
   def get_clients do
     q = from c in Client,
       order_by: c.id,
@@ -135,6 +144,24 @@ defmodule Fourty.Clients do
       do: order_by(qc, [c], c.id),
       else: where(qc, [c], c.id == ^client_id)
     Repo.all(qc)
+  end
+
+  @doc """
+  Returns the list of projects of the given client 
+  suitable for dropdown lists
+
+  ## Examples
+
+    iex> get_projects(client_id)
+    [%{key: 1, value: "project 1"}, %{key: 2, value: "project #2"}]
+
+  """
+  def get_projects(client_id) do
+    q = from p in Project,
+      order_by: p.id,
+      select: %{key: p.id, value: p.name},
+      where: [client_id: ^client_id]
+    Repo.all(q)
   end
 
   @doc """

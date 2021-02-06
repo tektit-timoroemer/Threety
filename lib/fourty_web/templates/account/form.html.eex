@@ -5,13 +5,13 @@
     </div>
   <% end %>
 
+  <%= hidden_input(f, :client_id) %>
   <%= my_label("clients", "name") %>
-  <%# my_text_value(@account.project.client.name) %>
-  <%= my_text_value("<CLIENT>") %><br />
+  <%= my_text_value(@account.project.client.name) %>
 
+  <%= hidden_input(f, :project_id) %>
   <%= my_label("projects", "name") %>
-  <%# my_text_value(@account.project.name) %>
-  <%= my_text_value("<PROJECT>") %><br />
+  <%= my_text_value(@account.project.name) %><br />
 
   <%= my_label(f, "accounts", :name) %>
   <%= my_text_input(f, :name) %><br />

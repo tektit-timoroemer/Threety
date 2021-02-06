@@ -48,3 +48,6 @@ msgstr "Accounts"
 
 msgid "add"
 msgstr "Add Account"
+
+msgid "edit"
+msgstr "Edit Account"

@@ -1,6 +1,6 @@
 <h1><%= dgettext("clients","show") %></h1>
 <div class="row row-cols-auto">
-	<div class="col-sm-3">
+	<div class="col-sm-3 p-3 border bg-light">
 	  	<%= my_label("clients", "name") %>
   		<%= my_text_value(@client.name) %><br />
   		<%= my_action("clients", "edit", Routes.client_path(@conn, :edit, @client)) %>

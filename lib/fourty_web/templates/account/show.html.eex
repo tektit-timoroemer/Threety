@@ -1,6 +1,6 @@
 <h1><%= dgettext("accounts","show") %></h1>
 <div class="row row-cols-auto">
-  <div class="col-sm-3">
+  <div class="col-sm-3 p-3 border bg-light">
 
     <%= my_label("clients", "name") %>
     <%= my_text_value(@account.project.client.name) %><br />
@@ -25,10 +25,7 @@
 
     <%= my_label("accounts", "balance_dur") %>
     <%= my_duration_value(@account.balance_dur) %><br />
-  </div>
-</div>
-<div class="row row-cols-auto">
-  <div class="col-sm-3">
+
     <%= my_action("global", "edit", Routes.account_path(@conn, :edit, @account)) %>
     <%= my_action("accounts", "index", Routes.account_path(@conn, :index)) %>
   </div>

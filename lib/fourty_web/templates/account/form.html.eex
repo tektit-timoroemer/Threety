@@ -7,7 +7,7 @@
 
   <%= hidden_input(f, :client_id) %>
   <%= my_label("clients", "name") %>
-  <%= my_text_value(@account.project.client.name) %>
+  <%= my_text_value(@account.project.client.name) %><br />
 
   <%= hidden_input(f, :project_id) %>
   <%= my_label("projects", "name") %>

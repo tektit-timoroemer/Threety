@@ -36,5 +36,7 @@
   <%= my_duration_value(@account.balance_dur) %><br />
 
   <%= my_submit() %>
-  <%= my_back_link(Routes.account_path(@conn, :index)) %>
+  <%= if id = Ecto.Changeset.get_field(@changeset, :id),
+        do: my_back_link(Routes.account_path(@conn, :show, id )),
+        else: my_back_link(Routes.account_path(@conn, :index)) %>
 <% end %>

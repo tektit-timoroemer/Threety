@@ -26,5 +26,7 @@
   <%= error_tag(f, :visible) %><br />
 
   <%= my_submit() %>
-  <%= my_back_link(Routes.project_path(@conn, :index)) %>
+  <%= if id = Ecto.Changeset.get_field(@changeset, :id),
+        do: my_back_link(Routes.project_path(@conn, :show, id )),
+        else: my_back_link(Routes.project_path(@conn, :index)) %>
 <% end %>

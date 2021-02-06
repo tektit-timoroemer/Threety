@@ -35,8 +35,14 @@ defmodule FourtyWeb.ViewHelpers do
   # readonly_input, given options override defaults
   @doc false
   defp readonly_input(type, value, class \\ "form-control") do
-    tag(:input, type: type, value: value, class: class,
-       readonly: "readonly", disabled: "disabled")
+    case type do
+    :checkbox ->
+      tag(:input, type: :checkbox, checked: value, class: "form-check-input",
+        readonly: true, disabled: true)
+    _ ->
+      tag(:input, type: type, value: value, class: class,
+        readonly: true, disabled: true)
+    end
   end
 
   @doc """
@@ -84,7 +90,7 @@ defmodule FourtyWeb.ViewHelpers do
   end
 
   def my_checkbox_value(value) do
-    readonly_input(:checkbox, value, "form-check-input")
+    readonly_input(:checkbox, value)
   end
 
   @spec my_date_input(struct(), atom()) :: struct()

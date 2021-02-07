@@ -1,0 +1,36 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p><%= dgettext("errors","error_alert") %></p>
+    </div>
+  <% end %>
+
+  <%= hidden_input(f, :client_id) %>
+  <%= my_label("clients", "name") %>
+  <%= my_text_value(@order.project.client.name) %><br />
+
+  <%= hidden_input(f, :project_id) %>
+  <%= my_label("projects", "name") %>
+  <%= my_text_value(@order.project.name) %><br />
+
+  <%= my_label("orders", "description") %>
+  <%= my_longtext_input(f, :description) %><br />
+  <%= error_tag(f, :description) %>
+
+  <%= my_label("orders", "date_eff") %>
+  <%= my_date_input(f, :date_eff) %><br />
+  <%= error_tag(f, :date_eff) %>
+
+  <%= my_label("orders", "amount_cur") %>
+  <%= my_currency_input(f, :amount_cur) %><br />
+  <%= error_tag(f, :amount_cur) %>
+
+  <%= my_label("orders", "amount_dur") %>
+  <%= my_duration_input(f, :amount_dur) %><br />
+  <%= error_tag(f, :amount_dur) %>
+
+  <%= my_submit() %>
+  <%= if id = Ecto.Changeset.get_field(@changeset, :id),
+        do: my_back_link(Routes.order_path(@conn, :show, id )),
+        else: my_back_link(Routes.order_path(@conn, :index)) %>
+<% end %>

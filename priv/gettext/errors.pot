@@ -93,7 +93,7 @@ msgstr ""
 msgid "must be equal to %{number}"
 msgstr ""
 
-#: lib/fourty_web/templates/client/form.html.eex:4
-#: lib/fourty_web/templates/project/form.html.eex:4
+#: lib/fourty_web/templates/account/form.html.eex:4
+#: lib/fourty_web/templates/client/form.html.eex:4 lib/fourty_web/templates/project/form.html.eex:4
 msgid "error_alert"
 msgstr ""

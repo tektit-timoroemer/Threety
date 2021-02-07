@@ -21,18 +21,9 @@ msgid "date_start"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/project/index.html.eex:1
-msgid "index"
-msgstr ""
-
-#, elixir-format
-#: lib/fourty_web/templates/project/index.html.eex:7
+#: lib/fourty_web/templates/account/index.html.eex:31
+#: lib/fourty_web/templates/order/index.html.eex:30 lib/fourty_web/templates/project/index.html.eex:7
 msgid "name"
-msgstr ""
-
-#, elixir-format
-#: lib/fourty_web/templates/project/index.html.eex:10
-msgid "visible"
 msgstr ""
 
 #, elixir-format
@@ -48,4 +39,10 @@ msgstr ""
 #, elixir-format
 #: lib/fourty_web/templates/project/show.html.eex:1
 msgid "show"
+msgstr ""
+
+msgid "index"
+msgstr ""
+
+msgid "index_client"
 msgstr ""

@@ -7,7 +7,7 @@ defmodule Fourty.Clients.Project do
 
   There can be 0 to n projects per `client`.
 
-  date_start should be before date_end. ### to do ###
+  date_start should be before date_end.
 
   """
   use Ecto.Schema
@@ -19,6 +19,7 @@ defmodule Fourty.Clients.Project do
     field :date_end, :date
     field :visible, :boolean, default: true
     belongs_to :client, Fourty.Clients.Client
+    has_many :orders, Fourty.Clients.Order
     has_many :accounts, Fourty.Accounting.Account
     has_many :visible_accounts, Fourty.Accounting.Account, where: [visible: true]
     timestamps()

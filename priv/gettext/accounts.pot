@@ -15,23 +15,52 @@ msgstr ""
 msgid "show"
 msgstr ""
 
+#: lib/fourty_web/templates/account/index.html.eex:7
 msgid "name"
 msgstr ""
 
+#: lib/fourty_web/templates/account/index.html.eex:8
 msgid "date_start"
 msgstr ""
 
+#: lib/fourty_web/templates/account/index.html.eex:9
 msgid "date_end"
 msgstr ""
 
 msgid "visible"
 msgstr ""
 
+#: lib/fourty_web/templates/account/index.html.eex:10
 msgid "balance_cur"
 msgstr ""
 
+#: lib/fourty_web/templates/account/index.html.eex:11
 msgid "balance_dur"
 msgstr ""
 
 msgid "index"
+msgstr ""
+
+#, elixir-format
+#: lib/fourty_web/templates/layout/root.html.leex:29
+msgid "accounts"
+msgstr ""
+
+#, elixir-format
+#: lib/fourty_web/templates/account/new.html.eex:1
+msgid "add"
+msgstr ""
+
+#, elixir-format
+#: lib/fourty_web/templates/account/edit.html.eex:1
+msgid "edit"
+msgstr ""
+
+msgid "index"
+msgstr ""
+
+msgid "index_client"
+msgstr ""
+
+msgid "index_project"
 msgstr ""

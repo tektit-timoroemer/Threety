@@ -27,9 +27,10 @@ defmodule FourtyWeb.ViewHelpers do
   # overrides any previous setting
   @doc false
   @spec set_options(keyword(String.t()), struct(), atom()) :: keyword(String.t())
-  defp set_options(form, field, class \\ "form-control") do
+  defp set_options(form, field, class \\ "form-control", value \\ nil) do
     o = [class: class <> (if with_errors?(form, field), do: " is-invalid", else: " is-valid")]
-    if required?(form, field), do: o ++ [required: "required"], else: o 
+    o = if required?(form, field), do: o ++ [required: true], else: o
+    unless is_nil(value), do: o ++ [value: value], else: o
   end 
 
   # readonly_input, given options override defaults
@@ -85,6 +86,15 @@ defmodule FourtyWeb.ViewHelpers do
     readonly_input(:text, value)
   end
 
+  def my_longtext_input(form, field) do
+    textarea(form, field, set_options(form, field))
+  end
+
+  def my_longtext_value(value) do
+    content_tag(:textarea, value, class: "form-control",
+        readonly: true, disabled: true)
+  end
+
   def my_checkbox_input(form, field) do
     checkbox(form, field, set_options(form, field, "form-check-input"))
   end
@@ -103,15 +113,18 @@ defmodule FourtyWeb.ViewHelpers do
     readonly_input(:date_input, value)
   end
 
-  # this needs to be text to be converted to a floating point number
-  # during casting
-
-  #def my_currency_input(form, field) do
-  #  
-  #end
+  def my_currency_input(form, field) do
+    text_input(form, field, set_options(form, field, "text-end form-control",
+      int2cur(input_value(form, field))))
+  end
 
   def my_currency_value(value) do
     readonly_input(:text, int2cur(value), "text-end form-control")
+  end
+
+  def my_duration_input(form, field) do
+    text_input(form, field, set_options(form, field, "text-end form-control",
+      min2dur(input_value(form, field))))
   end
 
   def my_duration_value(value) do
@@ -157,21 +170,24 @@ defmodule FourtyWeb.ViewHelpers do
 
   # format integer to hh:mm for display in views
 
-  def min2dur(value) do
+  def min2dur(nil), do: ""
+  def min2dur(str) when is_binary(str), do: str
+  def min2dur(value) when is_integer(value) do
     sign = if value < 0, do: "-", else: ""
     v = abs(value)
     r = rem(v, 60)
-    sign <> Integer.to_string(trunc(v / 100)) <> ":" <>
-      String.pad_leading(Integer.to_string(r),2,"0")
+    sign <> Integer.to_string(trunc(v / 60)) <> ":" <>
+      String.pad_leading(Integer.to_string(r), 2, "0")
   end
 
   # format integer to currency d ddd ... ddd.dd for display in views
 
   @thousands_separator " "
   @decimal_separator "."
-  @currency_symbol "€"
-
-  def int2cur(value) do
+ 
+  def int2cur(nil), do: ""
+  def int2cur(str) when is_binary(str), do: str
+  def int2cur(value) when is_integer(value) do
     sign = if value < 0, do: "-", else: ""
     v = abs(value)
     ls = Integer.to_string(rem(v, 100))
@@ -180,8 +196,7 @@ defmodule FourtyWeb.ViewHelpers do
     ms = String.graphemes(ms)
     {ms,_} = Enum.map_reduce(ms, lm, fn c, i ->
       { if(rem(i, 3) == 0, do: @thousands_separator <> c, else: c), i - 1 } end)
-    sign <> Enum.join(ms) <> @decimal_separator <> String.pad_leading(ls, 2, "0") <>
-      " " <> @currency_symbol 
+    sign <> Enum.join(ms) <> @decimal_separator <> String.pad_leading(ls, 2, "0")
   end
 
 end

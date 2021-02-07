@@ -11,23 +11,30 @@ msgid ""
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/account/index.html.eex:12
-#: lib/fourty_web/templates/client/index.html.eex:8 lib/fourty_web/templates/order/index.html.eex:11
-#: lib/fourty_web/templates/project/index.html.eex:10
-msgid "actions"
+#: lib/fourty_web/templates/order/index.html.eex:9
+msgid "amount_cur"
 msgstr ""
 
-msgid "save"
+#, elixir-format
+#: lib/fourty_web/templates/order/index.html.eex:10
+msgid "amount_dur"
 msgstr ""
 
-msgid "back"
+#, elixir-format
+#: lib/fourty_web/templates/order/index.html.eex:8
+msgid "date_eff"
 msgstr ""
 
-msgid "edit"
+#, elixir-format
+#: lib/fourty_web/templates/order/index.html.eex:7
+msgid "description"
 msgstr ""
 
-msgid "delete"
+msgid "orders"
 msgstr ""
 
-msgid "show"
+msgid "index"
+msgstr ""
+
+msgid "add"
 msgstr ""

@@ -1,6 +1,5 @@
 defmodule Fourty.TypeCurrency do
 	use Ecto.Type
-	def type, do: :integer
 
 	@doc """
 	Provides a type for models which allows currency values to be
@@ -38,7 +37,7 @@ defmodule Fourty.TypeCurrency do
   :error
 
   iex> cast(1)
-  :error
+  {:ok, 1}
 
   iex> cast("")
   :error
@@ -59,7 +58,10 @@ defmodule Fourty.TypeCurrency do
 		else
 			:error
 		end
+	end
 
+	def cast(int) when is_integer(int) do
+		{:ok, int}
 	end
 
 	def cast(_) do
@@ -73,5 +75,7 @@ defmodule Fourty.TypeCurrency do
 	def load(int) when is_integer(int) do
 		{:ok, int}
 	end
+
+	def type, do: :integer
 
 end

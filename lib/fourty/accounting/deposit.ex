@@ -7,15 +7,15 @@ defmodule Fourty.Accounting.Deposit do
     field :amount_dur, Fourty.TypeDuration, default: nil
     field :description, :string
     belongs_to :account, Fourty.Accounting.Account
-    # belongs_to: :orders, Fourty.Clients.Order
-    # timestamps()
+    belongs_to :order, Fourty.Clients.Order
+    timestamps()
   end
 
   @doc false
   def changeset(deposit, attrs) do
     deposit
-    |> cast(attrs, [:amount_dur, :amount_cur, :description, :account_id])
-    |> validate_required([:description, :account_id])
+    |> cast(attrs, [:amount_dur, :amount_cur, :description, :account_id, :order_id])
+    |> validate_required([:description, :account_id, :order_id])
     |> Fourty.Validations.validate_at_least_one([:amount_cur, :amount_dur])
   end
 end

@@ -22,6 +22,11 @@ defmodule FourtyWeb.Router do
     resources "/projects", ProjectController, except: [:new]
     get "/projects/client/:client_id/new", ProjectController, :new
     get "/projects/client/:client_id", ProjectController, :index_client
+    resources "/orders", OrderController, except: [:new]
+    get "/orders/project/:project_id/new", OrderController, :new
+    get "/orders/project/:project_id", OrderController, :index_project
+    get "/orders/client/:client_id", OrderController, :index_client
+    get "/orders/account/:account_id", OrderController, :index_account
     resources "/accounts", AccountController, except: [:new]
     get "/accounts/project/:project_id/new", AccountController, :new
     get "/accounts/project/:project_id", AccountController, :index_project

@@ -1,0 +1,57 @@
+<h1><%= @heading %></h1>
+<div class="row row-cols-auto">
+  <div class="table-responsive col-sm-10 p3 border bg-light">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th class="col-sm-2"><%= dgettext("orders", "description") %></th>
+          <th class="col-sm-1"><%= dgettext("orders", "date_eff") %></th>
+          <th class="col-sm-1"><%= dgettext("orders", "amount_cur") %></th>
+          <th class="col-sm-1"><%= dgettext("orders", "amount_dur") %></th>
+          <th class="col-sm-3"><%= dgettext("global","actions") %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for client <- @orders do %>
+        <tr>
+          <td colspan="4">
+            <%= dgettext("clients", "name") %>&nbsp;:&nbsp;
+            <strong>
+              <%= link client.name, to: Routes.client_path(@conn, :show, client.id) %>
+            </strong>
+          </td>
+          <td>
+            &nbsp;
+          </td>
+        </tr>
+        <%= for project <- client.visible_projects do %>
+          <tr>
+            <td class="indent-1" colspan="4">
+              <%= dgettext("projects", "name") %>&nbsp;:&nbsp;
+              <strong>
+                <%= link project.name, to: Routes.project_path(@conn, :show, project.id) %>
+              </strong>
+            </td>
+            <td>
+              <%= my_action_link("orders","add", Routes.order_path(@conn, :new, project.id)) %>
+            </td>
+          </tr>
+          <%= for order <- project.orders do %>
+          <tr>
+            <td class="indent-2"><%= order.description %></td>
+            <td><%= order.date_eff %></td>
+            <td class="text-end"><%= int2cur(order.amount_cur) %></td>
+            <td class="text-end"><%= min2dur(order.amount_dur) %></td>
+            <td>
+              <%= my_action_link("global", "show", Routes.order_path(@conn, :show, order)) %>
+              <%= my_action_link("global", "edit", Routes.order_path(@conn, :edit, order)) %>
+              <%= my_action_link("global", "delete", Routes.order_path(@conn, :delete, order)) %>
+            </td>
+          </tr>
+          <% end %>
+        <% end %>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

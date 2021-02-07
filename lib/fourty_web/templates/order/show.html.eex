@@ -1,0 +1,26 @@
+<h1><%= dgettext("orders","show") %></h1>
+<div class="row row-cols-auto">
+  <div class="col-sm-3 p-3 border bg-light">
+
+    <%= my_label("clients", "name") %>
+    <%= my_text_value(@order.project.client.name) %><br />
+
+    <%= my_label("projects", "name") %>
+    <%= my_text_value(@order.project.name) %><br />
+
+    <%= my_label("orders", "description") %>
+    <%= my_longtext_value(@order.description) %><br />
+
+    <%= my_label("orders", "date_eff") %>
+    <%= my_date_value(@order.date_eff) %><br />
+
+    <%= my_label("orders", "amount_cur") %>
+    <%= my_currency_value(@order.amount_cur) %><br />
+
+    <%= my_label("orders", "amount_dur") %>
+    <%= my_duration_value(@order.amount_dur) %><br />
+
+    <%= my_action("global", "edit", Routes.order_path(@conn, :edit, @order)) %>
+    <%= my_action("orders", "index", Routes.order_path(@conn, :index)) %>
+  </div>
+</div>

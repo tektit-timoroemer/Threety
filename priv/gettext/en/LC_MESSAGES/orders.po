@@ -1,0 +1,47 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: en\n"
+"Plural-Forms: nplurals=2\n"
+
+#, elixir-format
+#: lib/fourty_web/templates/order/index.html.eex:9
+msgid "amount_cur"
+msgstr "Amount (€)"
+
+#, elixir-format
+#: lib/fourty_web/templates/order/index.html.eex:10
+msgid "amount_dur"
+msgstr "Amount (h)"
+
+#, elixir-format
+#: lib/fourty_web/templates/order/index.html.eex:8
+msgid "date_eff"
+msgstr "Date"
+
+#, elixir-format
+#: lib/fourty_web/templates/order/index.html.eex:7
+msgid "description"
+msgstr "Description"
+
+msgid "orders"
+msgstr "Orders"
+
+msgid "index"
+msgstr "List of All Orders"
+
+msgid "add"
+msgstr "Add Order"
+
+msgid "edit"
+msgstr "Edit Order"
+
+msgid "show"
+msgstr "Show Order"

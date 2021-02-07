@@ -49,18 +49,20 @@
                 <%= my_action_link("global", "show", Routes.account_path(@conn, :show, account)) %>
                 <%= my_action_link("global", "edit", Routes.account_path(@conn, :edit, account)) %>
                 <%= my_action_link("global", "delete", Routes.account_path(@conn, :delete, account)) %>
+                <%= my_action_link("orders", "orders", Routes.order_path(@conn, :index_account, account)) %>
               </td>
             </tr>
           <% end %>
         <% end %>
       <% end %>
-    </table>
-    <%= cond do;
-        Map.has_key?(@conn.path_params, "client_id") -> 
-          my_action("accounts", "index", Routes.account_path(@conn, :index));
-        Map.has_key?(@conn.path_params, "project_id") ->
-          my_action("accounts", "index_client", Routes.account_path(@conn, :index_client, List.first(@accounts).id), name: List.first(@accounts).name);
-        true -> "";
+    </tbody>
+  </table>
+  <%= cond do;
+      Map.has_key?(@conn.path_params, "client_id") -> 
+        my_action("accounts", "index", Routes.account_path(@conn, :index));
+      Map.has_key?(@conn.path_params, "project_id") ->
+        my_action("accounts", "index_client", Routes.account_path(@conn, :index_client, List.first(@accounts).id), name: List.first(@accounts).name);
+      true -> "";
         end %>
   </div>
 </div>

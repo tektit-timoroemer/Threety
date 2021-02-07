@@ -1,7 +1,7 @@
 <h1><%= dgettext("clients","index")%></h1>
 <div class="row row-cols-auto">
   <div class="table-responsive col-sm-6 p-3 border bg-light">
-    <table class="table">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th class="col-sm-3"><%= dgettext("clients", "name") %></th>
@@ -17,6 +17,7 @@
             <%= my_action_link("global", "edit", Routes.client_path(@conn, :edit, client)) %>
             <%= my_action_link("global", "delete", Routes.client_path(@conn, :delete, client)) %>
             <%= my_action_link("projects", "projects", Routes.project_path(@conn, :index_client, client.id)) %>
+            <%= my_action_link("orders", "orders", Routes.order_path(@conn, :index_client, client.id)) %>
           </td>
         </tr>
         <% end %>

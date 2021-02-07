@@ -11,8 +11,9 @@ msgid ""
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/client/index.html.eex:7
-#: lib/fourty_web/templates/project/index.html.eex:19
+#: lib/fourty_web/templates/account/index.html.eex:19
+#: lib/fourty_web/templates/client/index.html.eex:7 lib/fourty_web/templates/order/index.html.eex:18
+#: lib/fourty_web/templates/project/index.html.eex:18
 msgid "name"
 msgstr ""
 
@@ -62,9 +63,4 @@ msgid "show"
 msgstr ""
 
 msgid "projects"
-msgstr ""
-
-#, elixir-format
-#: lib/fourty_web/templates/layout/root.html.leex:29
-msgid "accounts"
 msgstr ""

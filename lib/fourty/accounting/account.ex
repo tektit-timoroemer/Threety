@@ -19,8 +19,8 @@ defmodule Fourty.Accounting.Account do
     field :date_end, :date, default: nil
     field :date_start, :date, default: nil
     field :visible, :boolean, default: true
-    field :balance_cur, Fourty.TypeCurrency, virtual: true, default: 0
-    field :balance_dur, Fourty.TypeDuration, virtual: true, default: 0
+    field :balance_cur, Fourty.TypeCurrency, virtual: true, default: nil
+    field :balance_dur, Fourty.TypeDuration, virtual: true, default: nil
     belongs_to :project, Fourty.Clients.Project
     has_many :withdrwls, Fourty.Accounting.Withdrwl
     has_many :deposits, Fourty.Accounting.Deposit

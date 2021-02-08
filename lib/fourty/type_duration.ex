@@ -67,6 +67,10 @@ defmodule Fourty.TypeDuration do
 		cast(str)
 	end
 
+	def load(%Decimal{} = dec) do
+		load(Decimal.to_integer(dec))
+	end
+	
 	def load(int) when is_integer(int) do
 		{:ok, int}
 	end

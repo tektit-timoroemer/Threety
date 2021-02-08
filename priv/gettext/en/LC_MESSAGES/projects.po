@@ -23,7 +23,7 @@ msgstr "Start Date"
 
 #, elixir-format
 #: lib/fourty_web/templates/account/index.html.eex:31
-#: lib/fourty_web/templates/order/index.html.eex:30 lib/fourty_web/templates/project/index.html.eex:7
+#: lib/fourty_web/templates/order/index.html.eex:33 lib/fourty_web/templates/project/index.html.eex:7
 msgid "name"
 msgstr "Name of Project"
 
@@ -42,11 +42,13 @@ msgstr "Edit Project Details"
 msgid "show"
 msgstr "Show Project Details"
 
-msgid "projects"
-msgstr "Projects"
-
 msgid "index"
 msgstr "List of All Projects"
 
 msgid "index_client"
 msgstr "List of the Project for %{name}"
+
+#, elixir-format
+#: lib/fourty_web/templates/layout/root.html.leex:28
+msgid "projects"
+msgstr "Projects"

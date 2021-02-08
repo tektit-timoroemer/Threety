@@ -11,23 +11,32 @@ msgid ""
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/account/index.html.eex:12
-#: lib/fourty_web/templates/client/index.html.eex:8 lib/fourty_web/templates/order/index.html.eex:10
-#: lib/fourty_web/templates/project/index.html.eex:10
-msgid "actions"
+#: lib/fourty_web/templates/deposit/new.html.eex:1
+msgid "add"
 msgstr ""
 
-msgid "save"
+msgid "account"
 msgstr ""
 
-msgid "back"
+msgid "amount_cur"
 msgstr ""
 
-msgid "edit"
+msgid "amount_dur"
 msgstr ""
 
-msgid "delete"
+msgid "description"
 msgstr ""
 
+msgid "description_long"
+msgstr ""
+
+msgid "xfer"
+msgstr ""
+
+msgid "transfer"
+msgstr ""
+
+#, elixir-format
+#: lib/fourty_web/templates/deposit/show.html.eex:1
 msgid "show"
 msgstr ""

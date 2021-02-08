@@ -3,6 +3,8 @@
 <table>
   <thead>
     <tr>
+      <th>Account</th>
+      <th>Order</th>
       <th>Amount dur</th>
       <th>Amount cur</th>
 
@@ -12,6 +14,8 @@
   <tbody>
 <%= for deposit <- @deposits do %>
     <tr>
+      <td><%= deposit.account_id %></td>
+      <td><%= deposit.order_id %></td>
       <td><%= deposit.amount_dur %></td>
       <td><%= deposit.amount_cur %></td>
 
@@ -25,4 +29,4 @@
   </tbody>
 </table>
 
-<span><%= link "New Deposit", to: Routes.deposit_path(@conn, :new) %></span>
+<span>link "New Deposit", to: Routes.deposit_path(@conn, :new)</span>

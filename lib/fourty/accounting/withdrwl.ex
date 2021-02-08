@@ -8,7 +8,7 @@ defmodule Fourty.Accounting.Withdrwl do
     field :description, :string
     belongs_to :account, Fourty.Accounting.Account
     # belongs_to :tasks, Fourty.Users.Task
-    # timestamps()
+    timestamps()
   end
 
   @doc false

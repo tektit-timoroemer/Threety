@@ -9,20 +9,31 @@ defmodule FourtyWeb.DepositController do
     render(conn, "index.html", deposits: deposits)
   end
 
-  def new(conn, _params) do
-    changeset = Accounting.change_deposit(%Deposit{})
-    render(conn, "new.html", changeset: changeset)
+  def new(conn, params) do
+    # >>>>> if order already has link to deposit, set error message
+    # >>>>> and return to show order
+    changeset = Ecto.Changeset.cast(%Deposit{}, params, [:order_id])
+    deposit = Ecto.Changeset.apply_changes(changeset)
+    |> Fourty.Repo.preload(order: [project: [:client]])
+    # >>>>> preset description, amounts from order
+    accounts = Accounting.get_accounts(deposit.order.project.id)
+    render(conn, "new.html", changeset: changeset, deposit: deposit,
+      accounts: accounts)
   end
 
   def create(conn, %{"deposit" => deposit_params}) do
+    IO.inspect(deposit_params)
     case Accounting.create_deposit(deposit_params) do
       {:ok, deposit} ->
         conn
         |> put_flash(:info, "Deposit created successfully.")
         |> redirect(to: Routes.deposit_path(conn, :show, deposit))
-
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        deposit = Ecto.Changeset.apply_changes(changeset)
+        |> Fourty.Repo.preload(order: [project: [:client]])
+        accounts = Accounting.get_accounts(deposit.order.project.id)
+        render(conn, "new.html", changeset: changeset, deposit: deposit,
+          accounts: accounts)
     end
   end
 

@@ -11,12 +11,12 @@ msgid ""
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/order/index.html.eex:9
+#: lib/fourty_web/templates/order/index.html.eex:13
 msgid "amount_cur"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/order/index.html.eex:10
+#: lib/fourty_web/templates/order/index.html.eex:14
 msgid "amount_dur"
 msgstr ""
 
@@ -30,11 +30,32 @@ msgstr ""
 msgid "description"
 msgstr ""
 
+#: lib/fourty_web/templates/layout/root.html.leex:30
 msgid "orders"
 msgstr ""
 
 msgid "index"
 msgstr ""
 
+#: lib/fourty_web/templates/order/new.html.eex:1
 msgid "add"
+msgstr ""
+
+#, elixir-format
+#: lib/fourty_web/templates/order/edit.html.eex:1
+msgid "edit"
+msgstr ""
+
+#, elixir-format
+#: lib/fourty_web/templates/order/show.html.eex:1
+msgid "show"
+msgstr ""
+
+msgid "index_project"
+msgstr ""
+
+msgid "index_client"
+msgstr ""
+
+msgid "index_account"
 msgstr ""

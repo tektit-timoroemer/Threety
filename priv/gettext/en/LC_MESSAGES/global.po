@@ -13,7 +13,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/templates/account/index.html.eex:12
-#: lib/fourty_web/templates/client/index.html.eex:8 lib/fourty_web/templates/order/index.html.eex:11
+#: lib/fourty_web/templates/client/index.html.eex:8 lib/fourty_web/templates/order/index.html.eex:10
 #: lib/fourty_web/templates/project/index.html.eex:10
 msgid "actions"
 msgstr "Actions"

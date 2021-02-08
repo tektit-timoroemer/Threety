@@ -12,7 +12,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/templates/account/index.html.eex:19
-#: lib/fourty_web/templates/client/index.html.eex:7 lib/fourty_web/templates/order/index.html.eex:18
+#: lib/fourty_web/templates/client/index.html.eex:7 lib/fourty_web/templates/order/index.html.eex:21
 #: lib/fourty_web/templates/project/index.html.eex:18
 msgid "name"
 msgstr ""
@@ -40,11 +40,6 @@ msgstr ""
 #, elixir-format
 #: lib/fourty_web/templates/client/new.html.eex:1
 msgid "add"
-msgstr ""
-
-#, elixir-format
-#: lib/fourty_web/templates/layout/root.html.leex:28
-msgid "all_projects"
 msgstr ""
 
 #, elixir-format

@@ -10,8 +10,7 @@ defmodule Fourty.Accounting do
   alias Fourty.Accounting.Deposit
   alias Fourty.Accounting.Withdrwl
 
-  # NOTE: This portion - computing the balance for a single or all
-  # accounts does not look finished. Maybe a good place for refactoring!
+  # create query for retrieval of account aggregates
 
   defp balance_per_account_query(accounts \\ []) when is_list(accounts) do 
     wc = if Enum.empty?(accounts), do: true, else: dynamic([a], a.account_id in ^accounts)
@@ -123,6 +122,23 @@ defmodule Fourty.Accounting do
     Repo.get!(Account, id)
     |> Repo.preload(project: [:client])
     |> load_balance()
+  end
+
+  @doc """
+  Returns the list of accounts of the given project
+  suitable for dropdown lists
+
+  ## Examples
+
+    iex> get_accounts(project_id)
+    [%{key: 1, value: "account 1"}, %{key: 2, value: "account #2"}]
+  """
+  def get_accounts(project_id) do
+    q = from a in Account,
+      select: [key: a.name, value: a.id],
+      where: [project_id: ^project_id],
+      order_by: a.id
+    Repo.all(q)
   end
 
   @doc """

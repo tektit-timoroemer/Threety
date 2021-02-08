@@ -7,6 +7,8 @@ defmodule Fourty.Clients.Order do
     field :amount_cur, Fourty.TypeCurrency
     field :amount_dur, Fourty.TypeDuration
     field :description, :string
+    field :sum_cur, Fourty.TypeCurrency, virtual: true, default: 0
+    field :sum_dur, Fourty.TypeDuration, virtual: true, default: 0
     belongs_to :project, Fourty.Clients.Project
     has_many :deposits, Fourty.Accounting.Deposit
     timestamps()

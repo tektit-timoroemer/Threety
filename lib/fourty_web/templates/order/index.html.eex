@@ -4,11 +4,14 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th class="col-sm-2"><%= dgettext("orders", "description") %></th>
-          <th class="col-sm-1"><%= dgettext("orders", "date_eff") %></th>
-          <th class="col-sm-1"><%= dgettext("orders", "amount_cur") %></th>
-          <th class="col-sm-1"><%= dgettext("orders", "amount_dur") %></th>
-          <th class="col-sm-3"><%= dgettext("global","actions") %></th>
+          <th rowspan="2" class="col-sm-2"><%= dgettext("orders", "description") %></th>
+          <th rowspan="2" class="col-sm-1"><%= dgettext("orders", "date_eff") %></th>
+          <th colspan="2" class="col-sm-2 text-center">Ordered&nbsp;/&nbsp;Booked&nbsp;/&nbsp;Available</th>
+          <th rowspan="2" class="col-sm-3"><%= dgettext("global","actions") %></th>
+        </tr>
+        <tr>
+          <th class="col-sm-1 text-end"><%= dgettext("orders", "amount_cur") %></th>
+          <th class="col-sm-1 text-end"><%= dgettext("orders", "amount_dur") %></th>
         </tr>
       </thead>
       <tbody>
@@ -37,15 +40,23 @@
             </td>
           </tr>
           <%= for order <- project.orders do %>
+          <% order = Map.merge(order, Fourty.Clients.get_order_sums(@order_sums, order.id)) %>
           <tr>
             <td class="indent-2"><%= order.description %></td>
             <td><%= order.date_eff %></td>
-            <td class="text-end"><%= int2cur(order.amount_cur) %></td>
-            <td class="text-end"><%= min2dur(order.amount_dur) %></td>
+            <td class="text-end">
+              <%= int2cur(order.amount_cur) %><br />
+              <%= "-" <> int2cur(order.sum_cur || 0) %><br />
+              <%= int2cur(delta(order.amount_cur, order.sum_cur) || 0) %></td>
+            <td class="text-end">
+              <%= min2dur(order.amount_dur) %><br />
+              <%= "-" <> min2dur(order.sum_dur || 0) %><br />
+              <%= min2dur(delta(order.amount_dur, order.sum_dur) || 0) %></td>
             <td>
               <%= my_action_link("global", "show", Routes.order_path(@conn, :show, order)) %>
               <%= my_action_link("global", "edit", Routes.order_path(@conn, :edit, order)) %>
               <%= my_action_link("global", "delete", Routes.order_path(@conn, :delete, order)) %>
+              <%= my_action_link("deposits", "xfer", Routes.deposit_path(@conn, :new, order)) %>
             </td>
           </tr>
           <% end %>

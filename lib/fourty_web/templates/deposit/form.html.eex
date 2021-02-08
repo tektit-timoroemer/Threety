@@ -1,19 +1,47 @@
 <%= form_for @changeset, @action, fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+      <p><%= dgettext("errors","error_alert") %></p>
     </div>
   <% end %>
 
-  <%= label f, :amount_dur %>
-  <%= number_input f, :amount_dur %>
-  <%= error_tag f, :amount_dur %>
+  <%= my_label("clients", "name") %>
+  <%= my_text_value(@deposit.order.project.client.name) %><br />
 
-  <%= label f, :amount_cur %>
-  <%= number_input f, :amount_cur %>
-  <%= error_tag f, :amount_cur %>
+  <%= my_label("projects", "name") %>
+  <%= my_text_value(@deposit.order.project.name) %><br />
 
-  <div>
-    <%= submit "Save" %>
-  </div>
+  <%= hidden_input(f, :order_id) %>
+  <%= my_label("orders", "description") %>
+  <%= my_longtext_value(@deposit.order.description) %><br />
+
+  <%= my_label("orders", "date_eff") %>
+  <%= my_date_value(@deposit.order.date_eff) %><br />
+
+  <%= my_label("orders", "amount_cur") %>
+  <%= my_currency_value(@deposit.order.amount_cur) %><br />
+
+  <%= my_label("orders", "amount_dur") %>
+  <%= my_duration_value(@deposit.order.amount_dur) %><br />
+
+  <%= my_label("deposits", "account") %>
+  <%= my_select_input(f, :account_id, @accounts) %><br />
+
+  <%= my_label("deposits", "amount_cur") %>
+  <%= my_currency_input(f, :amount_cur) %><br />
+  <%= error_tag(f, :amount_cur) %>
+
+  <%= my_label("deposits", "amount_dur") %>
+  <%= my_duration_input(f, :amount_dur) %><br />
+  <%= error_tag(f, :amount_dur) %>
+
+  <%= my_label("deposits", "description") %>
+  <%= my_longtext_input(f, :description) %><br />
+  <%= error_tag(f, :description) %>
+
+  <%= my_submit() %>
+  <%= if Ecto.Changeset.get_field(@changeset, :id),
+        do: my_back_link(Routes.order_path(@conn, :show, @deposit.order_id )),
+        else: my_back_link(Routes.order_path(@conn, :index)) %>
+
 <% end %>

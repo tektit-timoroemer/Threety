@@ -276,6 +276,46 @@ defmodule Fourty.Clients do
     Repo.all(qc)
   end
 
+  def sums_per_order_query(orders \\ []) when is_list(orders) do
+    wc = if Enum.empty?(orders), do: true, else: dynamic([o], o.order_id in ^orders)
+    from d in Fourty.Accounting.Deposit,
+      select: %{
+        order_id: d.order_id,
+        sum_cur: sum(d.amount_cur),
+        sum_dur: sum(d.amount_dur)},
+      where: ^wc,
+      group_by: d.order_id
+  end
+
+  @doc """
+  Load and return sum of all orders per account:
+  [account_id: x, sum_cur: y, sum_dur: z]
+  Use this in get_order_sums to retrieve values for any account.
+  """
+  def load_order_sums(order) do
+    r = sums_per_order_query([order.id])
+    |> Repo.all()
+    if r == [] do
+      %{order | sum_cur: 0, sum_dur: 0}
+    else
+      [r] = r
+      %{order | sum_cur: r.sum_cur, sum_dur: r.sum_dur}
+    end
+  end
+
+  @doc """
+  Returns a keyword list with sums of amounts per order:
+  [order_id: x, sum_cur: y, sum_dur: z]
+  Use this in get_order_sums to retrieve order sums for any account.
+  """
+  def load_all_order_sums(orders \\ []) do
+    Repo.all(sums_per_order_query(orders))
+  end
+
+  def get_order_sums(order_sums, order_id) do
+    Enum.find(order_sums, fn x -> x.order_id == order_id end) || %{ sum_cur: nil, sum_dur: nil}
+  end
+
   @doc """
   Gets a single order.
 
@@ -293,6 +333,7 @@ defmodule Fourty.Clients do
   def get_order!(id) do
     Repo.get!(Order, id)
     |> Repo.preload(project: [:client])
+    |> load_order_sums()
   end
   
   @doc """

@@ -16,6 +16,7 @@ defmodule Fourty.TypeDurationTest do
 
   	test "load converts from db type to internal type" do
   		assert TypeDuration.load(105) == {:ok, 105}
+      assert TypeDuration.load(Decimal.new(12345)) == {:ok, 12345}
   	end
 
   	test "dump converts from internal type to db type" do

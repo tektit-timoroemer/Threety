@@ -18,5 +18,6 @@
 		<%= my_label("projects", "visible") %><br /><br />
   		<%= my_action("global", "edit", Routes.project_path(@conn, :edit, @project)) %>
 		<%= my_action("projects", "index", Routes.project_path(@conn, :index)) %>
+		<%= my_action("orders", "orders", Routes.order_path(@conn, :index_project, @project.id)) %>
 	</div>
 </div>

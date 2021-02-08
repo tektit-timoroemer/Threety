@@ -16,6 +16,8 @@ defmodule Fourty.Accounting.Deposit do
     deposit
     |> cast(attrs, [:amount_dur, :amount_cur, :description, :account_id, :order_id])
     |> validate_required([:description, :account_id, :order_id])
+    |> assoc_constraint(:account)
+    |> assoc_constraint(:order)
     |> Fourty.Validations.validate_at_least_one([:amount_cur, :amount_dur])
   end
 end

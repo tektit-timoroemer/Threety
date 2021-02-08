@@ -1,18 +1,23 @@
-<h1>Show Deposit</h1>
+<h1><%= dgettext("deposits","show") %></h1>
+<div class="row row-cols-auto">
+  <div class="col-sm-3 p-3 border bg-light">
 
-<ul>
+    <%= my_label("accounts", "name") %>
+    <%# my_text_value(@deposit.account.name) %>
+    <%= my_text_value("account name") %><br />
 
-  <li>
-    <strong>Amount dur:</strong>
-    <%= @deposit.amount_dur %>
-  </li>
+    <%= my_label("orders", "description_long") %>
+    <%# my_text_value(@deposit.order.description) %>
+    <%= my_text_value("order description") %><br />
 
-  <li>
-    <strong>Amount cur:</strong>
-    <%= @deposit.amount_cur %>
-  </li>
+    <%= my_label("deposits", "description_long") %>
+    <%= my_text_value(@deposit.description) %><br />
 
-</ul>
+    <%= my_label("deposits", "amount_cur") %>
+    <%= my_currency_value(@deposit.amount_cur) %><br />
 
-<span><%= link "Edit", to: Routes.deposit_path(@conn, :edit, @deposit) %></span>
-<span><%= link "Back", to: Routes.deposit_path(@conn, :index) %></span>
+    <%= my_label("deposits", "amount_dur") %>
+    <%= my_duration_value(@deposit.amount_dur) %><br />
+
+    <%= my_action("global", "edit", Routes.deposit_path(@conn, :edit, @deposit)) %>
+    <%= my_action("deposits", "index", Routes.deposit_path(@conn, :index)) %>

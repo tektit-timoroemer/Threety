@@ -86,6 +86,10 @@ defmodule FourtyWeb.ViewHelpers do
     readonly_input(:text, value)
   end
 
+  def my_select_input(form, field, selection) do
+    select(form, field, selection, set_options(form, field))
+  end
+
   def my_longtext_input(form, field) do
     textarea(form, field, set_options(form, field))
   end
@@ -168,9 +172,16 @@ defmodule FourtyWeb.ViewHelpers do
     end
   end
 
+  # helpers for calculations
+
+  def delta(value1, value2) do
+    value1 && value2 && (value1 - value2)
+  end
+
   # format integer to hh:mm for display in views
 
   def min2dur(nil), do: ""
+  def min2dur(%Decimal{} = dec), do: min2dur(Decimal.to_integer(dec))
   def min2dur(str) when is_binary(str), do: str
   def min2dur(value) when is_integer(value) do
     sign = if value < 0, do: "-", else: ""
@@ -186,6 +197,7 @@ defmodule FourtyWeb.ViewHelpers do
   @decimal_separator "."
  
   def int2cur(nil), do: ""
+  def int2cur(%Decimal{} = dec), do: int2cur(Decimal.to_integer(dec))
   def int2cur(str) when is_binary(str), do: str
   def int2cur(value) when is_integer(value) do
     sign = if value < 0, do: "-", else: ""

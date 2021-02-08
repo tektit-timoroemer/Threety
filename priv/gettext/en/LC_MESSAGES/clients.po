@@ -13,7 +13,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/templates/account/index.html.eex:19
-#: lib/fourty_web/templates/client/index.html.eex:7 lib/fourty_web/templates/order/index.html.eex:18
+#: lib/fourty_web/templates/client/index.html.eex:7 lib/fourty_web/templates/order/index.html.eex:21
 #: lib/fourty_web/templates/project/index.html.eex:18
 msgid "name"
 msgstr "Name of Client"
@@ -57,3 +57,6 @@ msgstr "List of All Clients"
 #: lib/fourty_web/templates/client/show.html.eex:1
 msgid "show"
 msgstr "Show Client Details"
+
+msgid "projects"
+msgstr ""

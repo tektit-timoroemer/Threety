@@ -46,5 +46,6 @@
     <%= if length(@projects) <= 1,
           do: my_action("projects", "index", Routes.project_path(@conn, :index)),
           else: my_action("accounts", "index", Routes.account_path(@conn, :index)) %>
+    <%= my_action("orders", "index", Routes.order_path(@conn, :index)) %>
   </div>
 </div>

@@ -16,6 +16,7 @@ defmodule Fourty.TypeCurrencyTest do
 
   	test "load converts from db type to internal type" do
   		assert TypeCurrency.load(1500000) == {:ok, 1500000}
+      assert TypeCurrency.load(Decimal.new(12345)) == {:ok, 12345}
   	end
 
   	test "dump converts from internal type to db type" do

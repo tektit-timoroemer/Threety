@@ -25,7 +25,9 @@
   <%= my_duration_value(@deposit.order.amount_dur) %><br />
 
   <%= my_label("deposits", "account") %>
-  <%= my_select_input(f, :account_id, @accounts) %><br />
+  <%= if length(@ccounts) == 1, 
+        do: my_text_value(Keyword.get(List.first(@accounts), :key)),
+        else: my_select_input(f, :account_id, @accounts) %><br />
 
   <%= my_label("deposits", "amount_cur") %>
   <%= my_currency_input(f, :amount_cur) %><br />

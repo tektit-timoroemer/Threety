@@ -118,8 +118,12 @@ defmodule Fourty.Accounting do
       ** (Ecto.NoResultsError)
 
   """
-  def get_account!(id) do
+  def get_account_solo!(id) do
     Repo.get!(Account, id)
+  end
+
+  def get_account!(id) do
+    get_account_solo!(id)
     |> Repo.preload(project: [:client])
     |> load_balance()
   end
@@ -217,8 +221,11 @@ defmodule Fourty.Accounting do
       [%Deposit{}, ...]
 
   """
-  def list_deposits do
-    Repo.all(Deposit)
+  def list_deposits(account_id) do
+    q = from d in Deposit,
+      where: d.account_id == ^account_id,
+      order_by: d.inserted_at
+    Repo.all(q)
   end
 
   @doc """
@@ -235,7 +242,10 @@ defmodule Fourty.Accounting do
       ** (Ecto.NoResultsError)
 
   """
-  def get_deposit!(id), do: Repo.get!(Deposit, id)
+  def get_deposit!(id) do
+    Repo.get!(Deposit, id)
+    |> Repo.preload([:account, :order])
+  end
 
   @doc """
   Creates a deposit.

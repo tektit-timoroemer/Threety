@@ -13,7 +13,8 @@ defmodule FourtyWeb.OrderController do
   end
 
   def index_project(conn, %{"project_id" => project_id}) do
-    orders = Clients.list_orders(nil, project_id)
+    project = Clients.get_project!(project_id)
+    orders = Clients.list_orders(project.client_id, project.id)
     order_sums = Clients.load_all_order_sums()
     heading = Gettext.dgettext(FourtyWeb.Gettext, "orders", "index_project",
       name: List.first(List.first(orders).visible_projects).name)

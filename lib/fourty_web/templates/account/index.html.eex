@@ -50,6 +50,7 @@
                 <%= my_action_link("global", "edit", Routes.account_path(@conn, :edit, account)) %>
                 <%= my_action_link("global", "delete", Routes.account_path(@conn, :delete, account)) %>
                 <%= my_action_link("orders", "orders", Routes.order_path(@conn, :index_account, account)) %>
+                <%= my_action_link("deposits", "deposits", Routes.deposit_path(@conn, :index_account, account)) %>
               </td>
             </tr>
           <% end %>

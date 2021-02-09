@@ -1,5 +1,6 @@
-<h1>Edit Deposit</h1>
-
-<%= render "form.html", Map.put(assigns, :action, Routes.deposit_path(@conn, :update, @deposit)) %>
-
-<span><%= link "Back", to: Routes.deposit_path(@conn, :index) %></span>
+<h1><%= dgettext("deposits", "edit") %></h1>
+<div class="row row-cols-auto">
+	<div class="col-sm-3 p-3 border bg-light">
+		<%= render "form_edit.html", Map.put(assigns, :action, Routes.deposit_path(@conn, :update, @deposit)) %>
+	</div>
+</div>

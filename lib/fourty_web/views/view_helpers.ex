@@ -117,6 +117,12 @@ defmodule FourtyWeb.ViewHelpers do
     readonly_input(:date_input, value)
   end
 
+  # format date/time for display
+
+  def my_date_time(value) do
+    value
+  end
+
   def my_currency_input(form, field) do
     text_input(form, field, set_options(form, field, "text-end form-control",
       int2cur(input_value(form, field))))
@@ -144,10 +150,17 @@ defmodule FourtyWeb.ViewHelpers do
   # Replacement for a back button
 
   def my_back_link(path) do
-    link(Gettext.dgettext(FourtyWeb.Gettext, "global", "back"), to: path, class: "btn btn-sm btn-outline-secondary", role: "button")
+    link(Gettext.dgettext(FourtyWeb.Gettext, "global", "back"), to: path, 
+      class: "btn btn-sm btn-outline-secondary", role: "button")
   end
 
   # Replacement for action button
+
+  def my_action(domain, "delete", path) do
+    link(Gettext.dgettext(FourtyWeb.Gettext, domain, "delete"),
+      to: path, class: "btn btn-sm btn-primary", role: "button",
+      method: :delete, data: [confirm: Gettext.dgettext("global","confirm")])
+  end
 
   def my_action(domain, action, path) do
     link(Gettext.dgettext(FourtyWeb.Gettext, domain, action), to: path, class: "btn btn-sm btn-primary", role: "button") 

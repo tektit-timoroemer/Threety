@@ -42,5 +42,20 @@ msgstr "Book to Account"
 msgid "show"
 msgstr "Show Deposit"
 
+msgid "edit"
+msgstr "Edit Deposit"
+
 msgid "index"
 msgstr "List of All Deposits"
+
+msgid "index_account"
+msgstr "List of Deposits on Account: %{name}"
+
+msgid "index_account_short"
+msgstr "List of Deposits"
+
+msgid "date_time"
+msgstr "Date/Time"
+
+msgid "deposits"
+msgstr "Deposits"

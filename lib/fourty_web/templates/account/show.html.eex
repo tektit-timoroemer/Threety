@@ -28,5 +28,6 @@
 
     <%= my_action("global", "edit", Routes.account_path(@conn, :edit, @account)) %>
     <%= my_action("accounts", "index", Routes.account_path(@conn, :index)) %>
+    <%= my_action("deposits", "index_account_short", Routes.deposit_path(@conn, :index_account, @account)) %>
   </div>
 </div>

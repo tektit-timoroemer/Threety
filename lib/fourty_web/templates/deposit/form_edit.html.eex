@@ -1,0 +1,37 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p><%= dgettext("errors","error_alert") %></p>
+    </div>
+  <% end %>
+
+    <%= my_label("accounts", "Account") %><br />
+    <div class="d-grid gap-2">
+    <%= link(@deposit.account.name, to: Routes.account_path(@conn, :show,
+        @deposit.account.id), class: "text-start btn btn-outline-secondary",
+        role: "button") %><br />
+    </div>
+
+    <%= my_label("orders", "order") %>
+    <div class="d-grid gap-2">
+    <%= link(@deposit.order.description, to: Routes.order_path(@conn,
+        :show, @deposit.order.id), class: "text-start btn btn-outline-secondary",
+        role: "button") %><br />
+    </div>
+
+  <%= my_label("deposits", "amount_cur") %>
+  <%= my_currency_input(f, :amount_cur) %><br />
+  <%= error_tag(f, :amount_cur) %>
+
+  <%= my_label("deposits", "amount_dur") %>
+  <%= my_duration_input(f, :amount_dur) %><br />
+  <%= error_tag(f, :amount_dur) %>
+
+  <%= my_label("deposits", "description") %>
+  <%= my_longtext_input(f, :description) %><br />
+  <%= error_tag(f, :description) %>
+
+  <%= my_submit() %>
+  <%= my_back_link(Routes.deposit_path(@conn, :show, @deposit))%>
+
+<% end %>

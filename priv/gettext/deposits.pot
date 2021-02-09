@@ -40,3 +40,15 @@ msgstr ""
 #: lib/fourty_web/templates/deposit/show.html.eex:1
 msgid "show"
 msgstr ""
+
+msgid "index_account"
+msgstr ""
+
+msgid "index_account_short"
+msgstr ""
+
+msgid "date_time"
+msgstr ""
+
+msgid "edit"
+msgstr ""

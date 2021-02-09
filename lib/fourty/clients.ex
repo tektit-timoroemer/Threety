@@ -273,6 +273,7 @@ defmodule Fourty.Clients do
           where: ^cc,
           order_by: c.id, 
           preload: [visible_projects: ^qp]
+    IO.inspect(qc)
     Repo.all(qc)
   end
 

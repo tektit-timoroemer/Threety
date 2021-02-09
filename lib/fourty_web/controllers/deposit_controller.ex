@@ -4,25 +4,25 @@ defmodule FourtyWeb.DepositController do
   alias Fourty.Accounting
   alias Fourty.Accounting.Deposit
 
-  def index(conn, _params) do
-    deposits = Accounting.list_deposits()
-    render(conn, "index.html", deposits: deposits)
+  def index_account(conn, %{"account_id" => account_id}) do
+    deposits = Accounting.list_deposits(account_id)
+    account = Fourty.Accounting.get_account_solo!(account_id)
+    heading = Gettext.dgettext(FourtyWeb.Gettext, "deposits", "index_account",
+      name: account.name)
+    render(conn, "index.html", deposits: deposits, heading: heading)
   end
 
   def new(conn, params) do
-    # >>>>> if order already has link to deposit, set error message
-    # >>>>> and return to show order
     changeset = Ecto.Changeset.cast(%Deposit{}, params, [:order_id])
     deposit = Ecto.Changeset.apply_changes(changeset)
     |> Fourty.Repo.preload(order: [project: [:client]])
-    # >>>>> preset description, amounts from order
+    changeset = Ecto.Changeset.change(changeset, deposit.order)
     accounts = Accounting.get_accounts(deposit.order.project.id)
     render(conn, "new.html", changeset: changeset, deposit: deposit,
       accounts: accounts)
   end
 
   def create(conn, %{"deposit" => deposit_params}) do
-    IO.inspect(deposit_params)
     case Accounting.create_deposit(deposit_params) do
       {:ok, deposit} ->
         conn

@@ -54,6 +54,12 @@ msgstr "List of Deposits on Account: %{name}"
 msgid "index_account_short"
 msgstr "List of Deposits"
 
+msgid "index_order"
+msgstr "List of Deposits for Order:"
+
+msgid "index_order_short"
+msgstr "Orders"
+
 msgid "date_time"
 msgstr "Date/Time"
 

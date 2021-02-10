@@ -3,7 +3,10 @@
 	<div class="col-sm-3 p-3 border bg-light">
 
 		<%= my_label("clients","name") %>
-		<%= my_text_value(@project.client.name) %><br />
+	    <div class="d-grid gap-2">
+		<%= my_text_link(@project.client.name, Routes.client_path(@conn, :show,
+			@project.client.id)) %><br />
+		</div>
 
 		<%= my_label("projects", "name") %>
 		<%= my_text_value(@project.name) %><br />

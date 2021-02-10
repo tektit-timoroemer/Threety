@@ -14,7 +14,7 @@ defmodule FourtyWeb.OrderController do
 
   def index_project(conn, %{"project_id" => project_id}) do
     project = Clients.get_project!(project_id)
-    orders = Clients.list_orders(project.client_id, project.id)
+    orders = Clients.list_orders(client_id: project.client_id, project_id: project.id)
     order_sums = Clients.load_all_order_sums()
     heading = Gettext.dgettext(FourtyWeb.Gettext, "orders", "index_project",
       name: List.first(List.first(orders).visible_projects).name)
@@ -23,7 +23,7 @@ defmodule FourtyWeb.OrderController do
   end
 
   def index_client(conn, %{"client_id" => client_id}) do
-    orders = Clients.list_orders(client_id)
+    orders = Clients.list_orders(client_id: client_id)
     order_sums = Clients.load_all_order_sums()
     heading = Gettext.dgettext(FourtyWeb.Gettext, "orders", "index_client", 
       name: List.first(orders).name)
@@ -31,12 +31,12 @@ defmodule FourtyWeb.OrderController do
       order_sums: order_sums, heading: heading)
   end
 
-  ### to do ###
-  def index_account(conn, %{"account_id" => _account_id}) do
-    orders = Clients.list_orders()
+  def index_account(conn, %{"account_id" => account_id}) do
+    orders = Clients.list_orders(account_id: account_id)
+    IO.inspect(orders)
     order_sums = Clients.load_all_order_sums()
     heading = Gettext.dgettext(FourtyWeb.Gettext, "orders", "index_account", 
-      name: List.first(orders).name)
+      name: List.first(List.first(List.first(orders).visible_projects).accounts).name)
     render(conn, "index.html", orders: orders,
       order_sums: order_sums, heading: heading)
   end

@@ -25,7 +25,7 @@
   <%= my_duration_value(@deposit.order.amount_dur) %><br />
 
   <%= my_label("deposits", "account") %>
-  <%= if length(@ccounts) == 1, 
+  <%= if length(@accounts) == 1, 
         do: my_text_value(Keyword.get(List.first(@accounts), :key)),
         else: my_select_input(f, :account_id, @accounts) %><br />
 

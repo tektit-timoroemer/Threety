@@ -3,18 +3,12 @@
   <div class="col-sm-3 p-3 border bg-light">
 
     <%= my_label("accounts", "Account") %><br />
-    <div class="d-grid gap-2">
-    <%= link(@deposit.account.name, to: Routes.account_path(@conn, :show,
-        @deposit.account.id), class: "text-start btn btn-outline-secondary",
-        role: "button") %><br />
-    </div>
+    <%= my_text_link(@deposit.account.name, Routes.account_path(@conn, :show,
+        @deposit.account.id)) %><br />
 
     <%= my_label("orders", "order") %>
-    <div class="d-grid gap-2">
-    <%= link(@deposit.order.description, to: Routes.order_path(@conn,
-        :show, @deposit.order.id), class: "text-start btn btn-outline-secondary",
-        role: "button") %><br />
-    </div>
+    <%= my_text_link(@deposit.order.description, Routes.order_path(@conn,
+        :show, @deposit.order.id)) %><br />
 
     <%= my_label("deposits", "description_long") %>
     <%= my_longtext_value(@deposit.description) %><br />
@@ -26,4 +20,3 @@
     <%= my_duration_value(@deposit.amount_dur) %><br />
 
     <%= my_action("global", "edit", Routes.deposit_path(@conn, :edit, @deposit)) %>
-    <%= my_action("deposits", "index_account_short", Routes.deposit_path(@conn, :index_account, @deposit.account_id)) %>

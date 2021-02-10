@@ -1,0 +1,32 @@
+<h1><%= Gettext.dgettext(FourtyWeb.Gettext, "deposits", "index_order") %></h1>
+<h2><%= link(@order.description, to: Routes.order_path(@conn, :show, @order)) %></h2>
+<div class="row row-cols-auto">
+  <div class="table-responsive col-sm-9 p-3 border bg-light">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th class="col-sm-2"><%= dgettext("deposits", "date_time") %></th>
+          <th class="col-sm-1 text-end"><%= dgettext("deposits", "amount_cur") %></th>
+          <th class="col-sm-1 text-end"><%= dgettext("deposits", "amount_dur") %></th>
+          <th class="col-sm-3"><%= dgettext("accounts", "name") %></th>
+          <th class="col-sm-2"><%= dgettext("global", "actions") %></th>
+        </tr>
+      </thead>
+      <tbody>
+      <%= for deposit <- @deposits do %>
+        <tr>
+          <td><%= my_date_time(deposit.inserted_at) %></td>
+          <td class="text-end"><%= int2cur(deposit.amount_cur) %></td>
+          <td class="text-end"><%= min2dur(deposit.amount_dur) %></td>
+          <td><%= deposit.account.name %></td>
+          <td>
+            <%= my_action_link("global", "show", Routes.deposit_path(@conn, :show, deposit)) %>
+            <%= my_action_link("global", "edit", Routes.deposit_path(@conn, :edit, deposit)) %>
+            <%= my_action_link("global", "delete", Routes.deposit_path(@conn, :delete, deposit)) %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

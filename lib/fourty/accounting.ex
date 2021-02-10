@@ -221,10 +221,18 @@ defmodule Fourty.Accounting do
       [%Deposit{}, ...]
 
   """
-  def list_deposits(account_id) do
+  def list_deposits(account_id: account_id) do
     q = from d in Deposit,
       where: d.account_id == ^account_id,
       order_by: d.inserted_at
+    Repo.all(q)
+  end
+
+  def list_deposits(order_id: order_id) do
+    q = from d in Deposit,
+      where: d.order_id == ^order_id,
+      order_by: d.inserted_at,
+      preload: :account
     Repo.all(q)
   end
 

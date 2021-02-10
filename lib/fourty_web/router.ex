@@ -34,6 +34,7 @@ defmodule FourtyWeb.Router do
     resources "/dpsts", DepositController, except: [:new, :index]
     get "/dpsts/order/:order_id/new", DepositController, :new
     get "/dpsts/account/:account_id", DepositController, :index_account
+    get "/dpsts/order/:order_id", DepositController, :index_order
     resources "/wdrws", WithdrwlController
   end
 

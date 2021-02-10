@@ -3,10 +3,12 @@
   <div class="col-sm-3 p-3 border bg-light">
 
     <%= my_label("clients", "name") %>
-    <%= my_text_value(@account.project.client.name) %><br />
+    <%= my_text_link(@account.project.client.name, Routes.client_path(
+        @conn, :show, @account.project.client.id)) %><br />
 
     <%= my_label("projects", "name") %>
-    <%= my_text_value(@account.project.name) %><br />
+    <%= my_text_link(@account.project.name, Routes.project_path(
+        @conn, :show, @account.project.id)) %><br />
 
     <%= my_label("accounts", "name") %>
     <%= my_text_value(@account.name) %><br />

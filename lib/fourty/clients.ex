@@ -260,20 +260,22 @@ defmodule Fourty.Clients do
       [%Order{}, ...]
 
   """
-  def list_orders(client_id \\ nil, project_id \\ nil ) do
-    cc = if is_nil(client_id), do: true, else: dynamic([c], c.id == ^client_id)
-    cp = if is_nil(project_id), do: true, else: dynamic([p], p.id == ^project_id)
+  def list_orders(wheres \\ []) do
+    cc = if(is_nil(v = Keyword.get(wheres, :client_id)), do: true, else: dynamic([c], c.id == ^v))
+    cp = if(is_nil(v = Keyword.get(wheres, :project_id)), do: true, else: dynamic([p], p.id == ^v))
+    ca = if(is_nil(v = Keyword.get(wheres, :account_id)), do: true, else: dynamic([a], a.id == ^v))
+    qa = from a in Fourty.Accounting.Account,
+          where: ^ca
     qo = from o in Order,
           order_by: o.date_eff
     qp = from p in Fourty.Clients.Project,
           where: ^cp,
           order_by: p.id, 
-          preload: [orders: ^qo] 
+          preload: [orders: ^qo, accounts: ^qa] 
     qc = from c in Fourty.Clients.Client,
           where: ^cc,
           order_by: c.id, 
           preload: [visible_projects: ^qp]
-    IO.inspect(qc)
     Repo.all(qc)
   end
 

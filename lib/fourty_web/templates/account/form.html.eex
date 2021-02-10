@@ -7,11 +7,13 @@
 
   <%= hidden_input(f, :client_id) %>
   <%= my_label("clients", "name") %>
-  <%= my_text_value(@account.project.client.name) %><br />
+  <%= my_text_link(@account.project.client.name, Routes.client_path(
+      @conn, :show, @account.project.client.id)) %><br />
 
   <%= hidden_input(f, :project_id) %>
   <%= my_label("projects", "name") %>
-  <%= my_text_value(@account.project.name) %><br />
+  <%= my_text_link(@account.project.name, Routes.project_path(
+      @conn, :show, @account.project.id)) %><br />
 
   <%= my_label(f, "accounts", :name) %>
   <%= my_text_input(f, :name) %><br />

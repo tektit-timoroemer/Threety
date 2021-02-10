@@ -47,6 +47,12 @@ msgstr ""
 msgid "index_account_short"
 msgstr ""
 
+msgid "index_order"
+msgstr ""
+
+msgid "index_order_short"
+msgstr ""
+
 msgid "date_time"
 msgstr ""
 

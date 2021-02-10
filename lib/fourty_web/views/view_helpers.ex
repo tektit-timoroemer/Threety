@@ -86,6 +86,12 @@ defmodule FourtyWeb.ViewHelpers do
     readonly_input(:text, value)
   end
 
+  def my_text_link(value, link) do
+    content_tag(:div,
+      link(value, to: link, class: "text-start btn btn-outline-primary",
+        role: "button"), class: "d-grid gap-2")
+  end
+
   def my_select_input(form, field, selection) do
     select(form, field, selection, set_options(form, field))
   end

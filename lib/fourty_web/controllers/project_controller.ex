@@ -5,13 +5,13 @@ defmodule FourtyWeb.ProjectController do
 
   def index(conn, _params) do
     projects = Clients.list_projects()
-    heading = Gettext.dgettext(FourtyWeb.Gettext, "projects", "index")
+    heading = dgettext("projects", "index")
     render(conn, "index.html", projects: projects, heading: heading)
   end
 
   def index_client(conn, %{"client_id" => client_id}) do
     projects = Clients.list_projects(client_id)
-    heading = Gettext.dgettext(FourtyWeb.Gettext, "projects", "index_client",
+    heading = dgettext("projects", "index_client",
       name: List.first(projects).name)
     render(conn, "index.html", projects: projects, heading: heading)
   end
@@ -27,7 +27,7 @@ defmodule FourtyWeb.ProjectController do
     case Clients.create_project(project_params) do
       {:ok, project} ->
         conn
-        |> put_flash(:info, "Project created successfully.")
+        |> put_flash(:info, dgettext("projects", "create success"))
         |> redirect(to: Routes.project_path(conn, :show, project))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -55,7 +55,7 @@ defmodule FourtyWeb.ProjectController do
     case Clients.update_project(project, project_params) do
       {:ok, project} ->
         conn
-        |> put_flash(:info, "Project updated successfully.")
+        |> put_flash(:info, dgettext("projects", "update success"))
         |> redirect(to: Routes.project_path(conn, :show, project))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -70,7 +70,7 @@ defmodule FourtyWeb.ProjectController do
     {:ok, _project} = Clients.delete_project(project)
 
     conn
-    |> put_flash(:info, "Project deleted successfully.")
+    |> put_flash(:info, dgettext("projects", "delete success"))
     |> redirect(to: Routes.project_path(conn, :index))
   end
 end

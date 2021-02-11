@@ -42,9 +42,11 @@ msgstr "Edit Project Details"
 msgid "show"
 msgstr "Show Project Details"
 
+#: lib/fourty_web/controllers/project_controller.ex:8
 msgid "index"
 msgstr "List of All Projects"
 
+#: lib/fourty_web/controllers/project_controller.ex:14
 msgid "index_client"
 msgstr "List of the Project for %{name}"
 
@@ -52,3 +54,18 @@ msgstr "List of the Project for %{name}"
 #: lib/fourty_web/templates/layout/root.html.leex:28
 msgid "projects"
 msgstr "Projects"
+
+#, elixir-format
+#: lib/fourty_web/controllers/project_controller.ex:30
+msgid "create success"
+msgstr "Project successfully added."
+
+#, elixir-format
+#: lib/fourty_web/controllers/project_controller.ex:58
+msgid "update success"
+msgstr "Project successfully updated."
+
+#, elixir-format
+#: lib/fourty_web/controllers/project_controller.ex:73
+msgid "delete success"
+msgstr "Project successfully removed."

@@ -18,9 +18,13 @@ msgstr ""
 msgid "account"
 msgstr ""
 
+#: lib/fourty_web/templates/deposit/index.html.eex:8
+#: lib/fourty_web/templates/deposit/index_order.html.eex:9
 msgid "amount_cur"
 msgstr ""
 
+#: lib/fourty_web/templates/deposit/index.html.eex:9
+#: lib/fourty_web/templates/deposit/index_order.html.eex:10
 msgid "amount_dur"
 msgstr ""
 
@@ -41,6 +45,7 @@ msgstr ""
 msgid "show"
 msgstr ""
 
+#: lib/fourty_web/controllers/deposit_controller.ex:10
 msgid "index_account"
 msgstr ""
 
@@ -53,8 +58,26 @@ msgstr ""
 msgid "index_order_short"
 msgstr ""
 
+#: lib/fourty_web/templates/deposit/index.html.eex:7
+#: lib/fourty_web/templates/deposit/index_order.html.eex:8
 msgid "date_time"
 msgstr ""
 
+#: lib/fourty_web/templates/deposit/edit.html.eex:1
 msgid "edit"
+msgstr ""
+
+#, elixir-format
+#: lib/fourty_web/controllers/deposit_controller.ex:34
+msgid "create success"
+msgstr ""
+
+#, elixir-format
+#: lib/fourty_web/controllers/deposit_controller.ex:75
+msgid "delete success"
+msgstr ""
+
+#, elixir-format
+#: lib/fourty_web/controllers/deposit_controller.ex:62
+msgid "update success"
 msgstr ""

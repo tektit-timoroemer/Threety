@@ -14,4 +14,4 @@ msgstr ""
 #, elixir-format
 #: lib/fourty_web/live/page_live.html.leex:2
 msgid "Welcome to %{name}!"
-msgstr ""
+msgstr "Willkommen bei Papas Version von Fourty!"

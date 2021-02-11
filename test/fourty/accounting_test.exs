@@ -87,33 +87,61 @@ defmodule Fourty.AccountingTest do
   describe "deposits" do
     alias Fourty.Accounting.Deposit
 
-    @valid_attrs %{amount_cur: 42, amount_dur: 42}
-    @update_attrs %{amount_cur: 43, amount_dur: 43}
-    @invalid_attrs %{amount_cur: nil, amount_dur: nil}
+    @valid_attrs %{amount_cur: 42, amount_dur: 43, description: "test deposits"}
+    @update_attrs %{amount_cur: 44, amount_dur: 45, description: "updated deposit"}
+    @invalid_attrs %{amount_cur: nil, amount_dur: nil, description: nil}
 
-    def deposit_fixture(attrs \\ %{}) do
+    def order_fixture(project_id) do
+      {:ok, order} = Fourty.Clients.create_order(
+        %{project_id: project_id, description: "test order"})
+      order
+    end
+
+    def deposit_fixture(account_id \\ nil, order_id \\ nil, attrs \\ %{}) do
+      account = if is_nil(account_id), 
+        do: account_fixture(), 
+        else: Fourty.Accounting.get_account!(account_id)
+      refute is_nil(account)
+
+      order_id =  order_id || order_fixture(account.project_id).id
       {:ok, deposit} =
         attrs
         |> Enum.into(@valid_attrs)
+        |> Enum.into(%{account_id: account.id, order_id: order_id})
         |> Accounting.create_deposit()
-
       deposit
     end
 
-    test "list_deposits/0 returns all deposits" do
+    def same_deposit?(d1, d2) do
+      Map.equal?(Map.drop(d1, [:account, :order]), Map.drop(d2, [:account, :order]))
+    end
+
+    test "list_deposits/account_id returns all deposits for given account" do
       deposit = deposit_fixture()
-      assert Accounting.list_deposits() == [deposit]
+      assert Accounting.list_deposits(account_id: deposit.account_id) == [deposit]
+    end
+
+    test "list_deposits/order_id returns all deposits for given order" do
+      deposit = deposit_fixture()
+      assert Accounting.list_deposits(order_id: deposit.order_id) == [deposit]
     end
 
     test "get_deposit!/1 returns the deposit with given id" do
       deposit = deposit_fixture()
-      assert Accounting.get_deposit!(deposit.id) == deposit
+      assert same_deposit?(Accounting.get_deposit!(deposit.id), deposit)
     end
 
     test "create_deposit/1 with valid data creates a deposit" do
-      assert {:ok, %Deposit{} = deposit} = Accounting.create_deposit(@valid_attrs)
+      account = account_fixture()
+      order = order_fixture(account.project_id)
+      deposit = %{}
+      |> Enum.into(@valid_attrs)
+      |> Enum.into(%{account_id: account.id, order_id: order.id})
+      |> Accounting.create_deposit()
+      assert {:ok, %Deposit{} = deposit} = deposit
       assert deposit.amount_cur == 42
-      assert deposit.amount_dur == 42
+      assert deposit.amount_dur == 43
+      assert deposit.description == "test deposits"
     end
 
     test "create_deposit/1 with invalid data returns error changeset" do
@@ -123,14 +151,14 @@ defmodule Fourty.AccountingTest do
     test "update_deposit/2 with valid data updates the deposit" do
       deposit = deposit_fixture()
       assert {:ok, %Deposit{} = deposit} = Accounting.update_deposit(deposit, @update_attrs)
-      assert deposit.amount_cur == 43
-      assert deposit.amount_dur == 43
+      assert deposit.amount_cur == 44
+      assert deposit.amount_dur == 45
     end
 
     test "update_deposit/2 with invalid data returns error changeset" do
       deposit = deposit_fixture()
       assert {:error, %Ecto.Changeset{}} = Accounting.update_deposit(deposit, @invalid_attrs)
-      assert deposit == Accounting.get_deposit!(deposit.id)
+      assert same_deposit?(deposit, Accounting.get_deposit!(deposit.id))
     end
 
     test "delete_deposit/1 deletes the deposit" do

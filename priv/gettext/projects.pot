@@ -41,13 +41,30 @@ msgstr ""
 msgid "show"
 msgstr ""
 
+#: lib/fourty_web/controllers/project_controller.ex:8
 msgid "index"
 msgstr ""
 
+#: lib/fourty_web/controllers/project_controller.ex:14
 msgid "index_client"
 msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/templates/layout/root.html.leex:28
 msgid "projects"
+msgstr ""
+
+#, elixir-format
+#: lib/fourty_web/controllers/project_controller.ex:30
+msgid "create success"
+msgstr ""
+
+#, elixir-format
+#: lib/fourty_web/controllers/project_controller.ex:58
+msgid "update success"
+msgstr ""
+
+#, elixir-format
+#: lib/fourty_web/controllers/project_controller.ex:73
+msgid "delete success"
 msgstr ""

@@ -5,27 +5,28 @@ defmodule Fourty.ValidationTest do
 
 	describe "at least one" do
 		alias Fourty.Accounting.Deposit
+		@deposit_init %Deposit{account_id: "1", order_id: "1"}
 		test "standard case - two fields" do
-			c = %Deposit{}
-			|> Deposit.changeset(%{account_id: "1", description: "test", amount_cur: "1", amount_dur: "2"})
+			c = @deposit_init
+			|> Deposit.changeset(%{description: "test", amount_cur: "1", amount_dur: "2"})
 			assert c.valid?
 		end
 
 		test "standard case - first field" do
-			c = %Deposit{}
-			|> Deposit.changeset(%{account_id: "1", description: "test", amount_cur: "1"})
+			c = @deposit_init
+			|> Deposit.changeset(%{description: "test", amount_cur: "1"})
 			assert c.valid?
 		end
 
 		test "standard case - second field" do
-			c = %Deposit{}
-			|> Deposit.changeset(%{account_id: "1", description: "test", amount_dur: "2"})
+			c = @deposit_init
+			|> Deposit.changeset(%{description: "test", amount_dur: "2"})
 			assert c.valid?
 		end
 
 		test "error case - none" do
-			c = %Deposit{}
-			|> Deposit.changeset(%{account_id: "1", description: "test"})
+			c = @deposit_init
+			|> Deposit.changeset(%{description: "test"})
 			refute c.valid?
 			assert Keyword.has_key?(c.errors, :amount_cur)
 			assert Keyword.has_key?(c.errors, :amount_dur)

@@ -14,6 +14,10 @@ defmodule Fourty.TypeCurrencyTest do
   		assert TypeCurrency.cast("15000") == {:ok, 1500000}
   	end
 
+    test "cast should receive integer and return amount" do
+      assert TypeCurrency.cast(1500000) == {:ok, 1500000}
+    end
+
   	test "load converts from db type to internal type" do
   		assert TypeCurrency.load(1500000) == {:ok, 1500000}
       assert TypeCurrency.load(Decimal.new(12345)) == {:ok, 12345}

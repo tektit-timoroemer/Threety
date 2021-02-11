@@ -71,7 +71,7 @@ defmodule FourtyWeb.ViewHelpers do
 
   @doc """
   Replacement for text_input:
-  * inject class="format control" + "is-valid" pr "is-invalid"
+  * inject class="format control" + "is-valid" or "is-invalid"
   """
   @spec my_text_input(struct(), atom()) :: struct()
   def my_text_input(form, field) do
@@ -90,10 +90,6 @@ defmodule FourtyWeb.ViewHelpers do
     content_tag(:div,
       link(value, to: link, class: "text-start btn btn-outline-primary",
         role: "button"), class: "d-grid gap-2")
-  end
-
-  def my_select_input(form, field, selection) do
-    select(form, field, selection, set_options(form, field))
   end
 
   def my_longtext_input(form, field) do
@@ -147,11 +143,9 @@ defmodule FourtyWeb.ViewHelpers do
     readonly_input(:text, min2dur(value), "text-end form-control")
   end
 
-  @spec my_selection_input(struct(), atom(), list()) :: struct()
-  def my_selection_input(form, field, list) do
-    select(form, field, Enum.map(list, &{&1.value, &1.key}), set_options(form, field))
+  def my_select_input(form, field, selection) do
+    select(form, field, selection, set_options(form, field))
   end
-
 
   # Replacement for a back button
 
@@ -165,7 +159,8 @@ defmodule FourtyWeb.ViewHelpers do
   def my_action(domain, "delete", path) do
     link(Gettext.dgettext(FourtyWeb.Gettext, domain, "delete"),
       to: path, class: "btn btn-sm btn-primary", role: "button",
-      method: :delete, data: [confirm: Gettext.dgettext("global","confirm")])
+      method: :delete, 
+      data: [confirm: Gettext.dgettext(FourtyWeb.Gettext, "global","confirm")])
   end
 
   def my_action(domain, action, path) do

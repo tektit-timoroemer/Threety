@@ -27,20 +27,16 @@ msgid "date_eff"
 msgstr "Date"
 
 #, elixir-format
+#: lib/fourty_web/templates/deposit/index.html.eex:10
 #: lib/fourty_web/templates/order/index.html.eex:7
 msgid "description"
 msgstr "Description"
-
-msgid "description_long"
-msgstr "Order Description"
 
 #: lib/fourty_web/templates/layout/root.html.leex:30
 msgid "orders"
 msgstr "Orders"
 
-msgid "order"
-msgstr "Order"
-
+#: lib/fourty_web/controllers/order_controller.ex:10
 msgid "index"
 msgstr "List of All Orders"
 
@@ -58,11 +54,29 @@ msgstr "Edit Order"
 msgid "show"
 msgstr "Show Order"
 
+#: lib/fourty_web/controllers/order_controller.ex:19
 msgid "index_project"
 msgstr "List of Orders for %{name}"
 
+#: lib/fourty_web/controllers/order_controller.ex:28
 msgid "index_client"
 msgstr "List of Orders for %{name}"
 
+#: lib/fourty_web/controllers/order_controller.ex:38
 msgid "index_account"
 msgstr "List of Orders for %{name}"
+
+#, elixir-format
+#: lib/fourty_web/controllers/order_controller.ex:55
+msgid "create success"
+msgstr "Order successfully created."
+
+#, elixir-format
+#: lib/fourty_web/controllers/order_controller.ex:94
+msgid "delete success"
+msgstr "Order successfully removed."
+
+#, elixir-format
+#: lib/fourty_web/controllers/order_controller.ex:81
+msgid "update success"
+msgstr "Order successfully updated."

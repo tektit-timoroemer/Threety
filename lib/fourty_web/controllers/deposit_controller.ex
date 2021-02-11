@@ -7,7 +7,7 @@ defmodule FourtyWeb.DepositController do
   def index_account(conn, %{"account_id" => account_id}) do
     deposits = Accounting.list_deposits(account_id: account_id)
     account = Fourty.Accounting.get_account_solo!(account_id)
-    heading = Gettext.dgettext(FourtyWeb.Gettext, "deposits", "index_account",
+    heading = dgettext("deposits", "index_account",
       name: account.name)
     render(conn, "index.html", deposits: deposits, heading: heading)
   end
@@ -31,7 +31,7 @@ defmodule FourtyWeb.DepositController do
     case Accounting.create_deposit(deposit_params) do
       {:ok, deposit} ->
         conn
-        |> put_flash(:info, "Deposit created successfully.")
+        |> put_flash(:info, dgettext("deposits", "create success"))
         |> redirect(to: Routes.deposit_path(conn, :show, deposit))
       {:error, %Ecto.Changeset{} = changeset} ->
         deposit = Ecto.Changeset.apply_changes(changeset)
@@ -59,7 +59,7 @@ defmodule FourtyWeb.DepositController do
     case Accounting.update_deposit(deposit, deposit_params) do
       {:ok, deposit} ->
         conn
-        |> put_flash(:info, "Deposit updated successfully.")
+        |> put_flash(:info, dgettext("deposits", "update success"))
         |> redirect(to: Routes.deposit_path(conn, :show, deposit))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -72,7 +72,7 @@ defmodule FourtyWeb.DepositController do
     {:ok, _deposit} = Accounting.delete_deposit(deposit)
 
     conn
-    |> put_flash(:info, "Deposit deleted successfully.")
+    |> put_flash(:info, dgettext("deposits", "delete success"))
     |> redirect(to: Routes.deposit_path(conn, :index))
   end
 end

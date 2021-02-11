@@ -7,7 +7,7 @@ defmodule FourtyWeb.OrderController do
   def index(conn, _params) do
     orders = Clients.list_orders()
     order_sums = Clients.load_all_order_sums()
-    heading = Gettext.dgettext(FourtyWeb.Gettext, "orders", "index")
+    heading = dgettext("orders", "index")
     render(conn, "index.html", orders: orders, 
       order_sums: order_sums, heading: heading)
   end
@@ -16,7 +16,7 @@ defmodule FourtyWeb.OrderController do
     project = Clients.get_project!(project_id)
     orders = Clients.list_orders(client_id: project.client_id, project_id: project.id)
     order_sums = Clients.load_all_order_sums()
-    heading = Gettext.dgettext(FourtyWeb.Gettext, "orders", "index_project",
+    heading = dgettext("orders", "index_project",
       name: List.first(List.first(orders).visible_projects).name)
     render(conn, "index.html", orders: orders,
       order_sums: order_sums, heading: heading)
@@ -25,7 +25,7 @@ defmodule FourtyWeb.OrderController do
   def index_client(conn, %{"client_id" => client_id}) do
     orders = Clients.list_orders(client_id: client_id)
     order_sums = Clients.load_all_order_sums()
-    heading = Gettext.dgettext(FourtyWeb.Gettext, "orders", "index_client", 
+    heading = dgettext("orders", "index_client", 
       name: List.first(orders).name)
     render(conn, "index.html", orders: orders,
       order_sums: order_sums, heading: heading)
@@ -35,7 +35,7 @@ defmodule FourtyWeb.OrderController do
     orders = Clients.list_orders(account_id: account_id)
     IO.inspect(orders)
     order_sums = Clients.load_all_order_sums()
-    heading = Gettext.dgettext(FourtyWeb.Gettext, "orders", "index_account", 
+    heading = dgettext("orders", "index_account", 
       name: List.first(List.first(List.first(orders).visible_projects).accounts).name)
     render(conn, "index.html", orders: orders,
       order_sums: order_sums, heading: heading)
@@ -52,7 +52,7 @@ defmodule FourtyWeb.OrderController do
     case Clients.create_order(order_params) do
       {:ok, order} ->
         conn
-        |> put_flash(:info, "Order created successfully.")
+        |> put_flash(:info, dgettext("orders", "create success"))
         |> redirect(to: Routes.order_path(conn, :show, order))
       {:error, %Ecto.Changeset{} = changeset} ->
         order = Ecto.Changeset.apply_changes(changeset)
@@ -78,7 +78,7 @@ defmodule FourtyWeb.OrderController do
     case Clients.update_order(order, order_params) do
       {:ok, order} ->
         conn
-        |> put_flash(:info, "Order updated successfully.")
+        |> put_flash(:info, dgettext("orders", "update success"))
         |> redirect(to: Routes.order_path(conn, :show, order))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -91,7 +91,7 @@ defmodule FourtyWeb.OrderController do
     {:ok, _order} = Clients.delete_order(order)
 
     conn
-    |> put_flash(:info, "Order deleted successfully.")
+    |> put_flash(:info, dgettext("orders", "delete success"))
     |> redirect(to: Routes.order_path(conn, :index))
   end
 end

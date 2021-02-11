@@ -17,6 +17,7 @@ msgid "show"
 msgstr "Show Account Details"
 
 #: lib/fourty_web/templates/account/index.html.eex:7
+#: lib/fourty_web/templates/deposit/index_order.html.eex:11
 msgid "name"
 msgstr "Name of Account"
 
@@ -54,11 +55,29 @@ msgstr "Add Account"
 msgid "edit"
 msgstr "Edit Account"
 
+#: lib/fourty_web/controllers/account_controller.ex:10
 msgid "index"
 msgstr "List of All Accounts"
 
+#: lib/fourty_web/controllers/account_controller.ex:18
 msgid "index_client"
 msgstr "List of Accounts for %{name}"
 
+#: lib/fourty_web/controllers/account_controller.ex:28
 msgid "index_project"
 msgstr "List of Accounts for %{name}"
+
+#, elixir-format
+#: lib/fourty_web/controllers/account_controller.ex:45
+msgid "create success"
+msgstr "Account successfully added."
+
+#, elixir-format
+#: lib/fourty_web/controllers/account_controller.ex:83
+msgid "delete success"
+msgstr "Account successfully removed."
+
+#, elixir-format
+#: lib/fourty_web/controllers/account_controller.ex:70
+msgid "update success"
+msgstr "Account successfully updated."

@@ -19,9 +19,13 @@ msgstr "Deposit to Account"
 msgid "account"
 msgstr "Account"
 
+#: lib/fourty_web/templates/deposit/index.html.eex:8
+#: lib/fourty_web/templates/deposit/index_order.html.eex:9
 msgid "amount_cur"
 msgstr "Amount (€)"
 
+#: lib/fourty_web/templates/deposit/index.html.eex:9
+#: lib/fourty_web/templates/deposit/index_order.html.eex:10
 msgid "amount_dur"
 msgstr "Amount (h)"
 
@@ -42,12 +46,7 @@ msgstr "Book to Account"
 msgid "show"
 msgstr "Show Deposit"
 
-msgid "edit"
-msgstr "Edit Deposit"
-
-msgid "index"
-msgstr "List of All Deposits"
-
+#: lib/fourty_web/controllers/deposit_controller.ex:10
 msgid "index_account"
 msgstr "List of Deposits on Account: %{name}"
 
@@ -60,8 +59,26 @@ msgstr "List of Deposits for Order:"
 msgid "index_order_short"
 msgstr "Orders"
 
+#: lib/fourty_web/templates/deposit/index.html.eex:7
+#: lib/fourty_web/templates/deposit/index_order.html.eex:8
 msgid "date_time"
 msgstr "Date/Time"
 
-msgid "deposits"
-msgstr "Deposits"
+#: lib/fourty_web/templates/deposit/edit.html.eex:1
+msgid "edit"
+msgstr "Edit Deposit"
+
+#, elixir-format
+#: lib/fourty_web/controllers/deposit_controller.ex:34
+msgid "create success"
+msgstr "Deposit successfully updated."
+
+#, elixir-format
+#: lib/fourty_web/controllers/deposit_controller.ex:75
+msgid "delete success"
+msgstr "Deposit successfully removed."
+
+#, elixir-format
+#: lib/fourty_web/controllers/deposit_controller.ex:62
+msgid "update success"
+msgstr "Deposit successfully updated."

@@ -18,7 +18,7 @@ defmodule Fourty.Clients.Order do
   def changeset(order, attrs) do
     order
     |> cast(attrs, [:date_eff, :amount_cur, :amount_dur, :description, :project_id])
-    |> validate_required([:project_id])
+    |> validate_required([:project_id, :description])
     |> assoc_constraint(:project)
   end
 end

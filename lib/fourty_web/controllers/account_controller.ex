@@ -7,7 +7,7 @@ defmodule FourtyWeb.AccountController do
   def index(conn, _params) do
     accounts = Accounting.list_accounts()
     balances = Accounting.load_all_balances()
-    heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts", "index")
+    heading = dgettext("accounts", "index")
     render(conn, "index.html", accounts: accounts,
       balances: balances, heading: heading)
   end
@@ -15,7 +15,7 @@ defmodule FourtyWeb.AccountController do
   def index_client(conn, %{"client_id" => client_id}) do
     accounts = Accounting.list_accounts(client_id)
     balances = Accounting.load_all_balances()
-    heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts", "index_client",
+    heading = dgettext("accounts", "index_client",
       name: List.first(accounts).name)
     render(conn, "index.html", accounts: accounts,
       balances: balances, heading: heading)    
@@ -25,7 +25,7 @@ defmodule FourtyWeb.AccountController do
     project = Fourty.Clients.get_project!(project_id)
     accounts = Accounting.list_accounts(project.client_id, project.id)
     balances = Accounting.load_all_balances()
-    heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts", "index_project",
+    heading = dgettext("accounts", "index_project",
       name: List.first(List.first(accounts).visible_projects).name)
     render(conn, "index.html", accounts: accounts,
       balances: balances, heading: heading)
@@ -42,7 +42,7 @@ defmodule FourtyWeb.AccountController do
     case Accounting.create_account(account_params) do
       {:ok, account} ->
         conn
-        |> put_flash(:info, "Account created successfully.")
+        |> put_flash(:info, dgettext("accounts", "create success"))
         |> redirect(to: Routes.account_path(conn, :show, account))
       {:error, %Ecto.Changeset{} = changeset} ->
         account = Ecto.Changeset.apply_changes(changeset)
@@ -67,7 +67,7 @@ defmodule FourtyWeb.AccountController do
     case Accounting.update_account(account, account_params) do
       {:ok, account} ->
         conn
-        |> put_flash(:info, "Account updated successfully.")
+        |> put_flash(:info, dgettext("accounts", "update success"))
         |> redirect(to: Routes.account_path(conn, :show, account))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -80,7 +80,7 @@ defmodule FourtyWeb.AccountController do
     {:ok, _account} = Accounting.delete_account(account)
 
     conn
-    |> put_flash(:info, "Account deleted successfully.")
+    |> put_flash(:info, dgettext("accounts", "delete success"))
     |> redirect(to: Routes.account_path(conn, :index))
   end
 end

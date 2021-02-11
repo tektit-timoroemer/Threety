@@ -20,7 +20,7 @@ msgstr "There is already a record with that value in the database."
 
 ## From Ecto.Changeset.put_change/3
 msgid "is invalid"
-msgstr ""
+msgstr "The given input cannot be recognized."
 
 ## From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
@@ -97,7 +97,10 @@ msgid "must be equal to %{number}"
 msgstr ""
 
 #: lib/fourty_web/templates/account/form.html.eex:4
-#: lib/fourty_web/templates/client/form.html.eex:4 lib/fourty_web/templates/deposit/form.html.eex:4
-#: lib/fourty_web/templates/order/form.html.eex:4 lib/fourty_web/templates/project/form.html.eex:4
+#: lib/fourty_web/templates/client/form.html.eex:4
+#: lib/fourty_web/templates/deposit/form.html.eex:4
+#: lib/fourty_web/templates/deposit/form_edit.html.eex:4
+#: lib/fourty_web/templates/order/form.html.eex:4
+#: lib/fourty_web/templates/project/form.html.eex:4
 msgid "error_alert"
 msgstr "There are problems with your input, please see details below."

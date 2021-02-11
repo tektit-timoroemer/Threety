@@ -149,34 +149,57 @@ defmodule Fourty.ClientsTest do
   describe "orders" do
     alias Fourty.Clients.Order
 
-    @valid_attrs %{amount: 42, date: ~D[2010-04-17], notes: "some notes"}
-    @update_attrs %{amount: 43, date: ~D[2011-05-18], notes: "some updated notes"}
-    @invalid_attrs %{amount: nil, date: nil, notes: nil}
+    @valid_attrs %{amount_cur: 42, amount_dur: 43, date_eff: ~D[2010-04-17], description: "some notes"}
+    @update_attrs %{amount_cur: 44, amount_dur: 45, date_eff: ~D[2011-05-18], description: "some updated notes"}
+    @invalid_attrs %{amount_cur: nil, amount_dur: nil, date_eff: nil, description: nil}
 
-    def order_fixture(attrs \\ %{}) do
+    def order_fixture(project, attrs \\ %{}) do
       {:ok, order} =
         attrs
         |> Enum.into(@valid_attrs)
+        |> Enum.into(%{project_id: project.id})
         |> Clients.create_order()
-
       order
     end
 
+    def same_order?(o1,o2) do
+      # return true if both orders are identical ignoring any
+      # associations
+      Map.equal?(Map.drop(o1, [:project]), Map.drop(o2, [:project]))
+    end
+
     test "list_orders/0 returns all orders" do
-      order = order_fixture()
-      assert Clients.list_orders() == [order]
+      client = client_fixture()
+      project = project_fixture(client)
+      order = order_fixture(project)
+      assert order.project_id == project.id
+
+      [%Fourty.Clients.Client{
+        visible_projects: [%Fourty.Clients.Project{
+          orders: [first_order|_]}|_] }|_] = 
+        Clients.list_orders()
+      assert same_order?(order, first_order)
     end
 
     test "get_order!/1 returns the order with given id" do
-      order = order_fixture()
-      assert Clients.get_order!(order.id) == order
+      client = client_fixture()
+      project = project_fixture(client)
+      order = order_fixture(project)
+      assert same_order?(Clients.get_order!(order.id), order)
     end
 
     test "create_order/1 with valid data creates a order" do
-      assert {:ok, %Order{} = order} = Clients.create_order(@valid_attrs)
-      assert order.amount == 42
-      assert order.date == ~D[2010-04-17]
-      assert order.notes == "some notes"
+      client = client_fixture()
+      project = project_fixture(client)
+      order = %{}
+      |> Enum.into(@valid_attrs)
+      |> Enum.into(%{project_id: project.id})
+      |> Clients.create_order()
+      assert {:ok, %Order{} = order} = order
+      assert order.amount_cur == 42
+      assert order.amount_dur == 43
+      assert order.date_eff == ~D[2010-04-17]
+      assert order.description == "some notes"
     end
 
     test "create_order/1 with invalid data returns error changeset" do
@@ -184,27 +207,36 @@ defmodule Fourty.ClientsTest do
     end
 
     test "update_order/2 with valid data updates the order" do
-      order = order_fixture()
+      client = client_fixture()
+      project = project_fixture(client)
+      order = order_fixture(project)
       assert {:ok, %Order{} = order} = Clients.update_order(order, @update_attrs)
-      assert order.amount == 43
-      assert order.date == ~D[2011-05-18]
-      assert order.notes == "some updated notes"
+      assert order.amount_cur == 44
+      assert order.amount_dur == 45
+      assert order.date_eff == ~D[2011-05-18]
+      assert order.description == "some updated notes"
     end
 
     test "update_order/2 with invalid data returns error changeset" do
-      order = order_fixture()
+      client = client_fixture()
+      project = project_fixture(client)
+      order = order_fixture(project)
       assert {:error, %Ecto.Changeset{}} = Clients.update_order(order, @invalid_attrs)
-      assert order == Clients.get_order!(order.id)
+      assert same_order?(Clients.get_order!(order.id), order)
     end
 
     test "delete_order/1 deletes the order" do
-      order = order_fixture()
+      client = client_fixture()
+      project = project_fixture(client)
+      order = order_fixture(project)
       assert {:ok, %Order{}} = Clients.delete_order(order)
       assert_raise Ecto.NoResultsError, fn -> Clients.get_order!(order.id) end
     end
 
     test "change_order/1 returns a order changeset" do
-      order = order_fixture()
+      client = client_fixture()
+      project = project_fixture(client)
+      order = order_fixture(project)
       assert %Ecto.Changeset{} = Clients.change_order(order)
     end
   end

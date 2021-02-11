@@ -3,43 +3,65 @@ defmodule FourtyWeb.AccountControllerTest do
 
   alias Fourty.Accounting
 
-  @create_attrs %{balance: 42, date_end: ~D[2010-04-17], date_start: ~D[2010-04-17], name: "some name"}
-  @update_attrs %{balance: 43, date_end: ~D[2011-05-18], date_start: ~D[2011-05-18], name: "some updated name"}
-  @invalid_attrs %{balance: nil, date_end: nil, date_start: nil, name: nil}
+  @create_attrs %{visible: true,
+    date_end: ~D[2010-04-17], date_start: ~D[2010-04-17], name: "some name"}
+  @update_attrs %{
+    date_end: ~D[2011-05-18], date_start: ~D[2011-05-18], name: "some updated name"}
+  @invalid_attrs %{date_end: nil, date_start: nil, name: nil, visible: nil}
+
+  def fixture(:client) do
+    {:ok, client} = Fourty.Clients.create_client(%{name: "test client"})
+    client
+  end
+
+  def fixture(:project) do
+    {:ok, project} = Fourty.Clients.create_project(%{name: "test project", client_id: fixture(:client).id})   
+    project
+  end
 
   def fixture(:account) do
-    {:ok, account} = Accounting.create_account(@create_attrs)
+    attrs = Map.merge(@create_attrs, %{project_id: fixture(:project).id})
+    {:ok, account} = Accounting.create_account(attrs)
     account
   end
 
   describe "index" do
     test "lists all accounts", %{conn: conn} do
       conn = get(conn, Routes.account_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Accounts"
+      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts","index")
+      assert html_response(conn, 200) =~ heading
     end
   end
 
   describe "new account" do
     test "renders form", %{conn: conn} do
-      conn = get(conn, Routes.account_path(conn, :new))
-      assert html_response(conn, 200) =~ "New Account"
+      project = fixture(:project)
+      conn = get(conn, Routes.account_path(conn, :new, project))
+      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts","add")
+      assert html_response(conn, 200) =~ heading
     end
   end
 
   describe "create account" do
     test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.account_path(conn, :create), account: @create_attrs)
+      project = fixture(:project)
+      attrs = Map.merge(@create_attrs, %{client_id: project.client_id, project_id: project.id})
+      conn = post(conn, Routes.account_path(conn, :create), account: attrs)
 
       assert %{id: id} = redirected_params(conn)
       assert redirected_to(conn) == Routes.account_path(conn, :show, id)
 
       conn = get(conn, Routes.account_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Account"
+      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts","show")
+      assert html_response(conn, 200) =~ heading
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.account_path(conn, :create), account: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New Account"
+      project = fixture(:project)
+      attrs = Map.merge(@invalid_attrs, %{client_id: project.client_id, project_id: project.id})
+      conn = post(conn, Routes.account_path(conn, :create), account: attrs)
+      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts","add")
+      assert html_response(conn, 200) =~ heading
     end
   end
 
@@ -48,7 +70,8 @@ defmodule FourtyWeb.AccountControllerTest do
 
     test "renders form for editing chosen account", %{conn: conn, account: account} do
       conn = get(conn, Routes.account_path(conn, :edit, account))
-      assert html_response(conn, 200) =~ "Edit Account"
+      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts","edit")
+      assert html_response(conn, 200) =~ heading
     end
   end
 
@@ -65,7 +88,8 @@ defmodule FourtyWeb.AccountControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn, account: account} do
       conn = put(conn, Routes.account_path(conn, :update, account), account: @invalid_attrs)
-      assert html_response(conn, 200) =~ "Edit Account"
+      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts","edit")
+      assert html_response(conn, 200) =~ heading
     end
   end
 

@@ -36,7 +36,7 @@
               </strong>
             </td>
             <td>
-              <%= my_action_link("orders","add", Routes.order_path(@conn, :new, project.id)) %>
+              <%= my_action_link("orders","new", Routes.order_path(@conn, :new, project.id)) %>
             </td>
           </tr>
           <%= for order <- project.orders do %>

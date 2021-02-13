@@ -23,7 +23,7 @@
         <% end %>
       </tbody>
     </table>
-    <%= my_action("clients", "add", Routes.client_path(@conn, :new)) %>
+    <%= my_action("clients", "new", Routes.client_path(@conn, :new)) %>
     <%= my_action("projects", "index", Routes.project_path(@conn, :index)) %>
   </div>
 </div>

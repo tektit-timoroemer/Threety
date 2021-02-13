@@ -1,4 +1,4 @@
-<h1><%= dgettext("projects","add") %></h1>
+<h1><%= dgettext("projects","new") %></h1>
 <div class="row row-cols-auto">
 	<div class="col-sm-3 p-3 border bg-light">
 		<%= render "form.html", Map.put(assigns, :action, Routes.project_path(@conn, :create)) %>

@@ -22,7 +22,7 @@
             </strong>
           </td>
           <td>
-              <%= my_action_link("projects", "add", Routes.project_path(@conn, :new, client.id)) %>
+              <%= my_action_link("projects", "new", Routes.project_path(@conn, :new, client.id)) %>
           </td>
         </tr>
         <%= for project <- client.visible_projects do %>
@@ -34,7 +34,7 @@
               </strong>
             </td>
             <td>
-              <%= my_action_link("accounts", "add", Routes.account_path(@conn, :new, project.id)) %>
+              <%= my_action_link("accounts", "new", Routes.account_path(@conn, :new, project.id)) %>
             </td>
           </tr>
           <%= for account <- project.visible_accounts do %>

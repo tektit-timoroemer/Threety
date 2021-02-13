@@ -1,11 +1,11 @@
 defmodule FourtyWeb.WithdrwlControllerTest do
   use FourtyWeb.ConnCase
-
+  import FourtyWeb.Gettext, only: [dgettext: 2, dgettext: 3]
   alias Fourty.Accounting
 
-  @create_attrs %{amount_cur: 42, amount_dur: 42, rate_cur_per_hour: "some rate_cur_per_hour"}
-  @update_attrs %{amount_cur: 43, amount_dur: 43, rate_cur_per_hour: "some updated rate_cur_per_hour"}
-  @invalid_attrs %{amount_cur: nil, amount_dur: nil, rate_cur_per_hour: nil}
+  @create_attrs %{amount_cur: 42, amount_dur: 43, description: "a withdrawal"}
+  @update_attrs %{amount_cur: 44, amount_dur: 45, description: "another withdrawal"}
+  @invalid_attrs %{amount_cur: nil, amount_dur: nil, description: nil}
 
   def fixture(:withdrwl) do
     {:ok, withdrwl} = Accounting.create_withdrwl(@create_attrs)

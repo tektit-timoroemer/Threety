@@ -71,6 +71,6 @@ defmodule FourtyWeb.DepositController do
 
     conn
     |> put_flash(:info, dgettext("deposits", "delete success"))
-    |> redirect(to: Routes.deposit_path(conn, :index))
+    |> redirect(to: Routes.deposit_path(conn, :index_account, deposit.account_id))
   end
 end

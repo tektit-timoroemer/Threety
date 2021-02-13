@@ -47,7 +47,7 @@ msgstr "Accounts"
 
 #, elixir-format
 #: lib/fourty_web/templates/account/new.html.eex:1
-msgid "add"
+msgid "new"
 msgstr "Add Account"
 
 #, elixir-format

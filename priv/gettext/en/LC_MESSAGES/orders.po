@@ -41,7 +41,7 @@ msgid "index"
 msgstr "List of All Orders"
 
 #: lib/fourty_web/templates/order/new.html.eex:1
-msgid "add"
+msgid "new"
 msgstr "Add Order"
 
 #, elixir-format

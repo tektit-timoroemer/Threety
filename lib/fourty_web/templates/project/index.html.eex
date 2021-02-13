@@ -21,7 +21,7 @@
               </strong>
             </td>
             <td>
-              <%= my_action_link("projects", "add", Routes.project_path(@conn, :new, client.id)) %>
+              <%= my_action_link("projects", "new", Routes.project_path(@conn, :new, client.id)) %>
               <%= my_action_link("accounts", "accounts", Routes.account_path(@conn, :index_client, client.id)) %>
             </td>
           </tr>

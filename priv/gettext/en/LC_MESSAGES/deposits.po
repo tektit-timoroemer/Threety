@@ -13,7 +13,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/templates/deposit/new.html.eex:1
-msgid "add"
+msgid "new"
 msgstr "Deposit to Account"
 
 msgid "account"

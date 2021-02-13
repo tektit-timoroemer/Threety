@@ -28,7 +28,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/templates/project/new.html.eex:1
-msgid "add"
+msgid "new"
 msgstr ""
 
 #, elixir-format

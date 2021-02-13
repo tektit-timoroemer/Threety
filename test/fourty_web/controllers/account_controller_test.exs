@@ -37,7 +37,7 @@ defmodule FourtyWeb.AccountControllerTest do
     test "renders form", %{conn: conn} do
       project = fixture(:project)
       conn = get(conn, Routes.account_path(conn, :new, project))
-      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts","add")
+      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts","new")
       assert html_response(conn, 200) =~ heading
     end
   end
@@ -52,7 +52,7 @@ defmodule FourtyWeb.AccountControllerTest do
       assert redirected_to(conn) == Routes.account_path(conn, :show, id)
 
       conn = get(conn, Routes.account_path(conn, :show, id))
-      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts","show")
+      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts", "show")
       assert html_response(conn, 200) =~ heading
     end
 
@@ -60,7 +60,7 @@ defmodule FourtyWeb.AccountControllerTest do
       project = fixture(:project)
       attrs = Map.merge(@invalid_attrs, %{client_id: project.client_id, project_id: project.id})
       conn = post(conn, Routes.account_path(conn, :create), account: attrs)
-      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts","add")
+      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts", "new")
       assert html_response(conn, 200) =~ heading
     end
   end

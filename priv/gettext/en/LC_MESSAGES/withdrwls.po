@@ -1,0 +1,70 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: en\n"
+"Plural-Forms: nplurals=2\n"
+
+#, elixir-format
+#: lib/fourty_web/templates/withdrwl/index.html.eex:8
+msgid "amount_cur"
+msgstr "Amount (€)"
+
+#, elixir-format
+#: lib/fourty_web/templates/withdrwl/index.html.eex:9
+msgid "amount_dur"
+msgstr "Amount (h)"
+
+#, elixir-format
+#: lib/fourty_web/templates/withdrwl/index.html.eex:7
+msgid "date_time"
+msgstr "Date / Time"
+
+#, elixir-format
+#: lib/fourty_web/templates/withdrwl/index.html.eex:10
+msgid "description"
+msgstr "Description"
+
+#, elixir-format
+#: lib/fourty_web/controllers/withdrwl_controller.ex:10
+msgid "index_account"
+msgstr "List of All Withdrawals for %{name}"
+
+#, elixir-format
+#: lib/fourty_web/templates/withdrwl/new.html.eex:1
+msgid "add"
+msgstr "Add Withdrawal"
+
+#, elixir-format
+#: lib/fourty_web/controllers/withdrwl_controller.ex:24
+msgid "create success"
+msgstr "Withdrawal successfully added."
+
+#, elixir-format
+#: lib/fourty_web/controllers/withdrwl_controller.ex:62
+msgid "delete success"
+msgstr "Withdrawal successfully removed."
+
+#, elixir-format
+#: lib/fourty_web/templates/withdrwl/edit.html.eex:1
+msgid "edit"
+msgstr "Edit Withdrawal"
+
+#, elixir-format
+#: lib/fourty_web/templates/withdrwl/show.html.eex:1
+msgid "show"
+msgstr "Show Withdrawal"
+
+#, elixir-format
+#: lib/fourty_web/controllers/withdrwl_controller.ex:49
+msgid "update success"
+msgstr "Withdrawal successfully updated."
+
+msgid "withdrawals"
+msgstr "Withdrawals"

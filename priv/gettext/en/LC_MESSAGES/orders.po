@@ -62,21 +62,21 @@ msgstr "List of Orders for %{name}"
 msgid "index_client"
 msgstr "List of Orders for %{name}"
 
-#: lib/fourty_web/controllers/order_controller.ex:38
+#: lib/fourty_web/controllers/order_controller.ex:37
 msgid "index_account"
 msgstr "List of Orders for %{name}"
 
 #, elixir-format
-#: lib/fourty_web/controllers/order_controller.ex:55
+#: lib/fourty_web/controllers/order_controller.ex:54
 msgid "create success"
 msgstr "Order successfully created."
 
 #, elixir-format
-#: lib/fourty_web/controllers/order_controller.ex:94
+#: lib/fourty_web/controllers/order_controller.ex:93
 msgid "delete success"
 msgstr "Order successfully removed."
 
 #, elixir-format
-#: lib/fourty_web/controllers/order_controller.ex:81
+#: lib/fourty_web/controllers/order_controller.ex:80
 msgid "update success"
 msgstr "Order successfully updated."

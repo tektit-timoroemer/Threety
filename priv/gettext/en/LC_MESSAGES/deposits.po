@@ -82,3 +82,6 @@ msgstr "Deposit successfully removed."
 #: lib/fourty_web/controllers/deposit_controller.ex:62
 msgid "update success"
 msgstr "Deposit successfully updated."
+
+msgid "deposits"
+msgstr "Deposits"

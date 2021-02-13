@@ -55,13 +55,11 @@ defmodule FourtyWeb.DepositController do
 
   def update(conn, %{"id" => id, "deposit" => deposit_params}) do
     deposit = Accounting.get_deposit!(id)
-
     case Accounting.update_deposit(deposit, deposit_params) do
       {:ok, deposit} ->
         conn
         |> put_flash(:info, dgettext("deposits", "update success"))
         |> redirect(to: Routes.deposit_path(conn, :show, deposit))
-
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", deposit: deposit, changeset: changeset)
     end

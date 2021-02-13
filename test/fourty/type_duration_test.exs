@@ -12,6 +12,9 @@ defmodule Fourty.TypeDurationTest do
 
   	test "cast should receive string and return amount" do
   		assert TypeDuration.cast("1:45") == {:ok, 105}
+      assert TypeDuration.cast("0:20") == {:ok, 20}
+      assert TypeDuration.cast(":20") == {:ok, 20}
+      assert TypeDuration.cast("20") == {:ok, 1200}
   	end
 
     test "cast should receive integer and return amount" do

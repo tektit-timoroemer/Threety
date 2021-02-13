@@ -35,7 +35,10 @@ defmodule FourtyWeb.Router do
     get "/dpsts/order/:order_id/new", DepositController, :new
     get "/dpsts/account/:account_id", DepositController, :index_account
     get "/dpsts/order/:order_id", DepositController, :index_order
-    resources "/wdrws", WithdrwlController
+    resources "/wdrws", WithdrwlController, except: [:new, :index]
+  # get "/wdrws/task/:task_id/new", WithdrwlController, :new
+    get "/wdrws/account/:account_id", WithdrwlController, :index_account
+  # get "/wdrws/task/task_id", WithdrwlController, :index_task
   end
 
   # Other scopes may use custom stacks.

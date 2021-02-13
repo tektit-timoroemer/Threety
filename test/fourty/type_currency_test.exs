@@ -12,6 +12,9 @@ defmodule Fourty.TypeCurrencyTest do
 
   	test "cast should receive string and return amount" do
   		assert TypeCurrency.cast("15000") == {:ok, 1500000}
+      assert TypeCurrency.cast("0.20") == {:ok, 20}
+      assert TypeCurrency.cast(".20") == {:ok, 20}
+      assert TypeCurrency.cast("20") == {:ok, 2000}
   	end
 
     test "cast should receive integer and return amount" do

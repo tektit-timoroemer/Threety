@@ -56,6 +56,3 @@ msgstr ""
 #: lib/fourty_web/templates/client/show.html.eex:1
 msgid "show"
 msgstr ""
-
-msgid "projects"
-msgstr ""

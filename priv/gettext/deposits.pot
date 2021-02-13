@@ -81,3 +81,6 @@ msgstr ""
 #: lib/fourty_web/controllers/deposit_controller.ex:62
 msgid "update success"
 msgstr ""
+
+msgid "deposits"
+msgstr ""

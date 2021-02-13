@@ -176,9 +176,9 @@ defmodule Fourty.AccountingTest do
   describe "withdrwls" do
     alias Fourty.Accounting.Withdrwl
 
-    @valid_attrs %{amount_cur: 42, amount_dur: 42, rate_cur_per_hour: "some rate_cur_per_hour"}
-    @update_attrs %{amount_cur: 43, amount_dur: 43, rate_cur_per_hour: "some updated rate_cur_per_hour"}
-    @invalid_attrs %{amount_cur: nil, amount_dur: nil, rate_cur_per_hour: nil}
+    @valid_attrs %{amount_cur: 42, amount_dur: 43, description: "test withdrawals"}
+    @update_attrs %{amount_cur: 44, amount_dur: 45, description: "updated withdrawals"}
+    @invalid_attrs %{amount_cur: nil, amount_dur: nil, description: nil}
 
     def withdrwl_fixture(attrs \\ %{}) do
       {:ok, withdrwl} =

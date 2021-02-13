@@ -1,6 +1,6 @@
 <h1><%= @heading %></h1>
 <div class="row row-cols-auto">
-  <div class="table-responsive col-sm-10 p-3 border bg-light">
+  <div class="table-responsive col-sm-11 p-3 border bg-light">
     <table class="table table-hover">
       <thead>
         <tr>
@@ -9,7 +9,7 @@
           <th class="col-sm-1"><%= dgettext("accounts", "date_end") %></th>
           <th class="col-sm-1 text-end"><%= dgettext("accounts", "balance_cur") %></th>
           <th class="col-sm-1 text-end"><%= dgettext("accounts", "balance_dur") %></th>
-          <th class="col-sm-3"><%= dgettext("global", "actions") %></th>
+          <th class="col-sm-4"><%= dgettext("global", "actions") %></th>
         </tr>
       </thead>
       <tbody>
@@ -51,6 +51,7 @@
                 <%= my_action_link("global", "delete", Routes.account_path(@conn, :delete, account)) %>
                 <%= my_action_link("orders", "orders", Routes.order_path(@conn, :index_account, account)) %>
                 <%= my_action_link("deposits", "deposits", Routes.deposit_path(@conn, :index_account, account)) %>
+                <%= my_action_link("withdrwls", "withdrawals", Routes.withdrwl_path(@conn, :index_account, account)) %>
               </td>
             </tr>
           <% end %>

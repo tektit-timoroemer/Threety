@@ -221,19 +221,19 @@ defmodule Fourty.Accounting do
       [%Deposit{}, ...]
 
   """
-  def list_deposits(account_id: account_id) do
-    q = from d in Deposit,
-      where: d.account_id == ^account_id,
-      order_by: d.inserted_at
+  defp do_list_deposits(query) do
+    q = from d in query, order_by: d.inserted_at
     Repo.all(q)
   end
 
+  def list_deposits(account_id: account_id) do
+    q = from d in Deposit, where: d.account_id == ^account_id
+    do_list_deposits(q)
+  end
+
   def list_deposits(order_id: order_id) do
-    q = from d in Deposit,
-      where: d.order_id == ^order_id,
-      order_by: d.inserted_at,
-      preload: :account
-    Repo.all(q)
+    q = from d in Deposit, where: d.order_id == ^order_id
+    do_list_deposits(q)
   end
 
   @doc """
@@ -331,8 +331,19 @@ defmodule Fourty.Accounting do
       [%Withdrwl{}, ...]
 
   """
-  def list_withdrwls do
-    Repo.all(Withdrwl)
+  defp do_list_withdrwls(query) do
+    q = from d in query, order_by: d.inserted_at
+    Repo.all(q)
+  end
+
+  def list_withdrwls(account_id: account_id) do
+    q = from d in Withdrwl, where: d.account_id == ^account_id
+    do_list_withdrwls(q)
+  end
+
+  def list_withdrwls(task_id: task_id) do
+    q = from d in Withdrwl, where: d.task_id == ^task_id
+    do_list_withdrwls(q)
   end
 
   @doc """

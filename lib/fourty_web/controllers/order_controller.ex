@@ -33,7 +33,6 @@ defmodule FourtyWeb.OrderController do
 
   def index_account(conn, %{"account_id" => account_id}) do
     orders = Clients.list_orders(account_id: account_id)
-    IO.inspect(orders)
     order_sums = Clients.load_all_order_sums()
     heading = dgettext("orders", "index_account", 
       name: List.first(List.first(List.first(orders).visible_projects).accounts).name)

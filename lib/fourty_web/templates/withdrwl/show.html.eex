@@ -1,23 +1,14 @@
-<h1>Show Withdrwl</h1>
+<h1><%= dgettext("withdrwls","show") %></h1>
+<div class="row row-cols-auto">
+  <div class="col-sm-3 p-3 border bg-light">
 
-<ul>
+    <%= my_label("withdrwls", "amount_cur") %>
+    <%= my_currency_value(@withdrwl.amount_cur) %><br />
 
-  <li>
-    <strong>Amount dur:</strong>
-    <%= @withdrwl.amount_dur %>
-  </li>
+    <%= my_label("withdrwls", "amount_dur") %>
+    <%= my_duration_value(@withdrwl.amount_dur) %><br />
 
-  <li>
-    <strong>Amount cur:</strong>
-    <%= @withdrwl.amount_cur %>
-  </li>
+    <%= my_label("withdrwls", "description_long") %>
+    <%= my_longtext_value(@withdrwl.description) %><br />
 
-  <li>
-    <strong>Rate cur per hour:</strong>
-    <%= @withdrwl.rate_cur_per_hour %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: Routes.withdrwl_path(@conn, :edit, @withdrwl) %></span>
-<span><%= link "Back", to: Routes.withdrwl_path(@conn, :index) %></span>
+    <%= my_action("global", "edit", Routes.withdrwl_path(@conn, :edit, @withdrwl)) %>

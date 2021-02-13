@@ -180,9 +180,12 @@ defmodule FourtyWeb.ViewHelpers do
   def my_action_link(domain, action, path) do
     l = Gettext.dgettext(FourtyWeb.Gettext, domain, action)
     if action == "delete" do
-      link(l, to: path, method: :delete, data: [confirm: Gettext.dgettext(FourtyWeb.Gettext, "global", "sure?")])
+      link(l, to: path, 
+        method: :delete, 
+        data: [confirm: Gettext.dgettext(FourtyWeb.Gettext, "global", "confirm")],
+        class: "link-primary")
     else
-      link(l, to: path)
+      link(l, to: path, class: "link-primary")
     end
   end
 

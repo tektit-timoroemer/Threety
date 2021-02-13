@@ -32,3 +32,6 @@ msgstr ""
 
 msgid "show"
 msgstr ""
+
+msgid "confirm"
+msgstr ""

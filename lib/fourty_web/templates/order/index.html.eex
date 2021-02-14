@@ -4,14 +4,17 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th rowspan="2" class="col-sm-2"><%= dgettext("orders", "description") %></th>
-          <th rowspan="2" class="col-sm-1"><%= dgettext("orders", "date_eff") %></th>
+          <th class="col-sm-2">&nbsp;</th>
+          <th class="col-sm-1">&nbsp;</th>
           <th colspan="2" class="col-sm-2 text-center">Ordered&nbsp;/&nbsp;Booked&nbsp;/&nbsp;Available</th>
-          <th rowspan="2" class="col-sm-3"><%= dgettext("global","actions") %></th>
+          <th class="col-sm-3">&nbsp;</th>
         </tr>
         <tr>
+          <th class="col-sm-2"><%= dgettext("orders", "description") %></th>
+          <th class="col-sm-1"><%= dgettext("orders", "date_eff") %></th>
           <th class="col-sm-1 text-end"><%= dgettext("orders", "amount_cur") %></th>
           <th class="col-sm-1 text-end"><%= dgettext("orders", "amount_dur") %></th>
+          <th class="col-sm-3"><%= dgettext("global","actions") %></th>
         </tr>
       </thead>
       <tbody>
@@ -21,7 +24,7 @@
             <%= dgettext("clients", "name") %>&nbsp;:&nbsp;
             <strong>
               <%= link client.name, to: Routes.client_path(@conn, :show, client.id) %>
-            </strong>
+            </strong>s
           </td>
           <td>
             &nbsp;

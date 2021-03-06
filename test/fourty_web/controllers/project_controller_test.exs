@@ -21,24 +21,28 @@ defmodule FourtyWeb.ProjectControllerTest do
 
   describe "index" do
     test "lists all projects", %{conn: conn} do
-      conn = get(conn, Routes.project_path(conn,:index))
-      assert html_response(conn, 200) =~ dgettext("projects","index")
+      conn = get(conn, Routes.project_path(conn, :index))
+      assert html_response(conn, 200) =~ dgettext("projects", "index")
     end
   end
 
   describe "index_client" do
     setup [:create_client]
+
     test "list projects for given client", %{conn: conn, client: client} do
       conn = get(conn, Routes.project_path(conn, :index_client, client.id))
-      assert html_response(conn, 200) =~ dgettext("projects","index_client", name: "some client name")
+
+      assert html_response(conn, 200) =~
+               dgettext("projects", "index_client", name: "some client name")
     end
   end
 
   describe "new project" do
     setup [:create_client]
+
     test "renders form", %{conn: conn, client: client} do
       conn = get(conn, Routes.project_path(conn, :new, client.id))
-      assert html_response(conn, 200) =~ dgettext("projects","add")
+      assert html_response(conn, 200) =~ dgettext("projects", "add")
     end
   end
 
@@ -46,18 +50,25 @@ defmodule FourtyWeb.ProjectControllerTest do
     setup [:create_client]
 
     test "redirects to show when data is valid", %{conn: conn, client: client} do
-      conn = post(conn, Routes.project_path(conn, :create), project: Map.merge(@create_attrs, %{client_id: client.id}))
+      conn =
+        post(conn, Routes.project_path(conn, :create),
+          project: Map.merge(@create_attrs, %{client_id: client.id})
+        )
 
       assert %{id: id} = redirected_params(conn)
       assert redirected_to(conn) == Routes.project_path(conn, :show, id)
 
       conn = get(conn, Routes.project_path(conn, :show, id))
-      assert html_response(conn, 200) =~ dgettext("projects","show")
+      assert html_response(conn, 200) =~ dgettext("projects", "show")
     end
 
     test "renders errors when data is invalid", %{conn: conn, client: client} do
-      conn = post(conn, Routes.project_path(conn, :create), project: Map.merge(@invalid_attrs, %{client_id: client.id}))
-      assert html_response(conn, 200) =~ dgettext("projects","add")
+      conn =
+        post(conn, Routes.project_path(conn, :create),
+          project: Map.merge(@invalid_attrs, %{client_id: client.id})
+        )
+
+      assert html_response(conn, 200) =~ dgettext("projects", "add")
     end
   end
 
@@ -66,7 +77,7 @@ defmodule FourtyWeb.ProjectControllerTest do
 
     test "renders form for editing chosen project", %{conn: conn, project: project} do
       conn = get(conn, Routes.project_path(conn, :edit, project))
-      assert html_response(conn, 200) =~ dgettext("projects","edit")
+      assert html_response(conn, 200) =~ dgettext("projects", "edit")
     end
   end
 
@@ -83,7 +94,7 @@ defmodule FourtyWeb.ProjectControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn, project: project} do
       conn = put(conn, Routes.project_path(conn, :update, project), project: @invalid_attrs)
-      assert html_response(conn, 200) =~ dgettext("projects","edit")
+      assert html_response(conn, 200) =~ dgettext("projects", "edit")
     end
   end
 
@@ -95,7 +106,7 @@ defmodule FourtyWeb.ProjectControllerTest do
       assert redirected_to(conn) == Routes.project_path(conn, :index)
 
       conn = get(conn, Routes.project_path(conn, :index))
-      assert html_response(conn, 200) =~ dgettext("projects","index")
+      assert html_response(conn, 200) =~ dgettext("projects", "index")
     end
   end
 

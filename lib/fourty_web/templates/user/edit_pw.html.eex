@@ -1,0 +1,28 @@
+<h1><%= dgettext("sessions", "change_pw") %></h1>
+<div class="row row-cols-auto">
+  <div class="col-sm-3 p-3 border bg-light">
+    <%= form_for @changeset, @path, [as: :user, method: "put"], fn f -> %>
+      <%= if @changeset.action do %>
+        <div class="alert alert-danger">
+          <p><%= dgettext("errors","error_alert") %></p>
+        </div>
+      <% end %>
+
+		  <%= my_label(f, "users", :password_old) %>
+		  <%= my_password_input(f, :password_old) %><br/>
+		  <%= error_tag(f, :password_old) %>
+
+ 	    <%= my_label(f, "users", "password_new") %>
+      <%= my_password_input(f, :password) %><br/>
+      <%= error_tag(f, :password) %>
+
+      <%= my_label(f, "users", "password_new_confirmation") %>
+      <%= my_password_input(f, :password_confirmation) %><br/>
+      <%= error_tag(f, :password_confirmation) %>
+
+      <%= my_submit() %>
+      <%= my_back_link(Routes.session_path(@conn, :index)) %>
+
+ 	  <% end %>
+  </div>
+</div>

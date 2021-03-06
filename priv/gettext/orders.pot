@@ -11,28 +11,31 @@ msgid ""
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/order/index.html.eex:13
+#: lib/fourty_web/templates/order/index.html.eex:15
 msgid "amount_cur"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/order/index.html.eex:14
+#: lib/fourty_web/templates/order/index.html.eex:16
 msgid "amount_dur"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/order/index.html.eex:8
+#: lib/fourty_web/templates/order/index.html.eex:14
 msgid "date_eff"
 msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/templates/deposit/index.html.eex:10
-#: lib/fourty_web/templates/order/index.html.eex:7
+#: lib/fourty_web/templates/order/index.html.eex:13
 msgid "description"
 msgstr ""
 
 #: lib/fourty_web/templates/layout/root.html.leex:30
 msgid "orders"
+msgstr ""
+
+msgid "order"
 msgstr ""
 
 #: lib/fourty_web/controllers/order_controller.ex:10
@@ -53,29 +56,29 @@ msgstr ""
 msgid "show"
 msgstr ""
 
-#: lib/fourty_web/controllers/order_controller.ex:19
+#: lib/fourty_web/controllers/order_controller.ex:20
 msgid "index_project"
 msgstr ""
 
-#: lib/fourty_web/controllers/order_controller.ex:28
+#: lib/fourty_web/controllers/order_controller.ex:30
 msgid "index_client"
 msgstr ""
 
-#: lib/fourty_web/controllers/order_controller.ex:37
+#: lib/fourty_web/controllers/order_controller.ex:39
 msgid "index_account"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/order_controller.ex:54
+#: lib/fourty_web/controllers/order_controller.ex:60
 msgid "create success"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/order_controller.ex:93
+#: lib/fourty_web/controllers/order_controller.ex:102
 msgid "delete success"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/order_controller.ex:80
+#: lib/fourty_web/controllers/order_controller.ex:89
 msgid "update success"
 msgstr ""

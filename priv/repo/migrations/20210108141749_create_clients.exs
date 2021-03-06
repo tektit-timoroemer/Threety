@@ -6,7 +6,7 @@ defmodule Fourty.Repo.Migrations.CreateClients do
       add :name, :string, null: false
       timestamps()
     end
-    create unique_index(:clients, [:name])
 
+    create unique_index(:clients, [:name])
   end
 end

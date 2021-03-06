@@ -1,0 +1,36 @@
+<h1><%= dgettext("users","index")%></h1>
+<div class="row row-cols-auto">
+  <div class="table-responsive col-sm-9 p-3 border bg-light">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th class="col-sm-2"><%= dgettext("users", "username") %></th>
+          <th class="col-sm-2"><%= dgettext("users", "email") %></th>
+          <th class="col-sm-1 text-end"><%= dgettext("users", "rate") %></th>
+          <th class="col-sm-1"><%= dgettext("users", "role") %></th>
+          <!-- th class="col-sm-1 text-end"><%# dgettext("users", "attempts_no") %></th-->
+          <!--th class="col-sm-1"><%# dgettext("users", "last_attempt") %></th-->
+          <th class="col-sm-3"><%= dgettext("global", "actions") %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for user <- @users do %>
+          <tr>
+            <td><%= user.username %></td>
+            <td><%= user.email %></td>
+            <td class="text-end"><%= int2cur(user.rate) %></td>
+            <td><%= Users.label_for_role(user.role) %></td>
+            <!--td class="text-end"><%# user.attempts_no %></td-->
+            <!--td><%# my_date_time(user.last_attempt) %></td-->
+            <td>
+              <%= my_action_link("global", "show", Routes.user_path(@conn, :show, user)) %>
+              <%= my_action_link("global", "edit", Routes.user_path(@conn, :edit, user)) %>
+              <%= my_action_link("global", "delete", Routes.user_path(@conn, :delete, user)) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= my_action("users", "new", Routes.user_path(@conn, :new)) %>
+  </div>
+</div>

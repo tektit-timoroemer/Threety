@@ -14,28 +14,41 @@
     <header>
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Fourty</a>
+          <a class="navbar-brand" href="/">Fourty</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent" phx-update="ignore">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <%= user = Plug.Conn.get_session(@conn, :current_user); user && user.username || dgettext("sessions", "user") %></a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+                  <%= if Plug.Conn.get_session(@conn, :current_user) do %>
+                    <li><%= link(dgettext("sessions", "change_pw"), to: Routes.user_path(@conn, :edit_pw), class: "dropdown-item") %></li>
+                    <li><%= link(dgettext("sessions", "logout"), to: Routes.session_path(@conn, :logout), method: :delete, class: "dropdown-item") %></li>
+                  <% else %>
+                    <li><%= link(dgettext("sessions", "login"), to: Routes.session_path(@conn, :index), class: "dropdown-item") %></li>
+                  <% end %>
+                </ul>
+              </li>
+              <%= user = Plug.Conn.get_session(@conn, :current_user); if user && Fourty.Users.has_role?(user, :admin) do %>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
                   <li><%= link(dgettext("clients","clients"), to: Routes.client_path(@conn, :index), class: "dropdown-item") %></li>
                   <li><%= link(dgettext("projects","projects"), to: Routes.project_path(@conn, :index), class: "dropdown-item") %></li>
                   <li><%= link(dgettext("accounts","accounts"), to: Routes.account_path(@conn, :index), class: "dropdown-item") %></li>
                   <li><%= link(dgettext("orders","orders"), to: Routes.order_path(@conn, :index), class: "dropdown-item") %></li>
-                  <!--li><#= link(dgettext("users","users"), to: Routes.user_path(@conn, :index), class: "dropdown-item") %></li>
-                  <li><#= link(dgettext("users","rates"), to: Routes.rate_path(@conn, :index), class: "dropdown-item") %></li-->
+                  <li><%= link(dgettext("users","users"), to: Routes.user_path(@conn, :index), class: "dropdown-item") %></li>
+                  <!--li><#= link(dgettext("users","rates"), to: Routes.rate_path(@conn, :index), class: "dropdown-item") %></li-->
                   <li><hr class="dropdown-divider"></li>
                   <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
                     <li><%= link("LiveDashboard", to: Routes.live_dashboard_path(@conn, :home), class: "dropdown-item", target: "_blank", rel: "noopener") %></li>
                   <% end %>
                 </ul>
               </li>
+              <% end %>
             </ul>
           </div>
         </div>

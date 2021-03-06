@@ -92,10 +92,13 @@ ALTER SEQUENCE public.clients_id_seq OWNED BY public.clients.id;
 
 CREATE TABLE public.deposits (
     id bigint NOT NULL,
-    amount_cur integer,
-    amount_dur integer,
+    amount_cur bigint,
+    amount_dur bigint,
     description character varying(255),
-    account_id bigint
+    account_id bigint NOT NULL,
+    order_id bigint NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
 );
 
 
@@ -119,6 +122,41 @@ ALTER SEQUENCE public.deposits_id_seq OWNED BY public.deposits.id;
 
 
 --
+-- Name: orders; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.orders (
+    id bigint NOT NULL,
+    date_eff date,
+    amount_cur bigint,
+    amount_dur bigint,
+    description character varying(255),
+    project_id bigint NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.orders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.orders_id_seq OWNED BY public.orders.id;
+
+
+--
 -- Name: projects; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -127,8 +165,8 @@ CREATE TABLE public.projects (
     name character varying(255) NOT NULL,
     date_start date,
     date_end date,
-    visible boolean,
-    client_id bigint,
+    visible boolean DEFAULT true,
+    client_id bigint NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL
 );
@@ -164,38 +202,6 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: withdrwls; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.withdrwls (
-    id bigint NOT NULL,
-    amount_cur integer,
-    amount_dur integer,
-    description character varying(255),
-    account_id bigint
-);
-
-
---
--- Name: withdrwls_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.withdrwls_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: withdrwls_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.withdrwls_id_seq OWNED BY public.withdrwls.id;
-
-
---
 -- Name: accounts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -217,17 +223,17 @@ ALTER TABLE ONLY public.deposits ALTER COLUMN id SET DEFAULT nextval('public.dep
 
 
 --
+-- Name: orders id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.orders ALTER COLUMN id SET DEFAULT nextval('public.orders_id_seq'::regclass);
+
+
+--
 -- Name: projects id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.projects ALTER COLUMN id SET DEFAULT nextval('public.projects_id_seq'::regclass);
-
-
---
--- Name: withdrwls id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.withdrwls ALTER COLUMN id SET DEFAULT nextval('public.withdrwls_id_seq'::regclass);
 
 
 --
@@ -255,6 +261,14 @@ ALTER TABLE ONLY public.deposits
 
 
 --
+-- Name: orders orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: projects projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -271,14 +285,6 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
--- Name: withdrwls withdrwls_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.withdrwls
-    ADD CONSTRAINT withdrwls_pkey PRIMARY KEY (id);
-
-
---
 -- Name: accounts_project_id_name_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -290,6 +296,13 @@ CREATE UNIQUE INDEX accounts_project_id_name_index ON public.accounts USING btre
 --
 
 CREATE UNIQUE INDEX clients_name_index ON public.clients USING btree (name);
+
+
+--
+-- Name: deposits_account_id_inserted_at_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX deposits_account_id_inserted_at_index ON public.deposits USING btree (account_id, inserted_at);
 
 
 --
@@ -312,7 +325,23 @@ ALTER TABLE ONLY public.accounts
 --
 
 ALTER TABLE ONLY public.deposits
-    ADD CONSTRAINT deposits_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+    ADD CONSTRAINT deposits_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+
+
+--
+-- Name: deposits deposits_order_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.deposits
+    ADD CONSTRAINT deposits_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id);
+
+
+--
+-- Name: orders orders_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
 
 
 --
@@ -324,19 +353,12 @@ ALTER TABLE ONLY public.projects
 
 
 --
--- Name: withdrwls withdrwls_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.withdrwls
-    ADD CONSTRAINT withdrwls_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
-
-
---
 -- PostgreSQL database dump complete
 --
 
 INSERT INTO public."schema_migrations" (version) VALUES (20210108141749);
 INSERT INTO public."schema_migrations" (version) VALUES (20210114114631);
 INSERT INTO public."schema_migrations" (version) VALUES (20210125101239);
+INSERT INTO public."schema_migrations" (version) VALUES (20210126231442);
 INSERT INTO public."schema_migrations" (version) VALUES (20210127153018);
 INSERT INTO public."schema_migrations" (version) VALUES (20210127153511);

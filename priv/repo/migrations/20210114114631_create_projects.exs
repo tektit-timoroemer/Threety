@@ -10,7 +10,7 @@ defmodule Fourty.Repo.Migrations.CreateProjects do
       add :client_id, references(:clients, on_delete: :delete_all), null: false
       timestamps()
     end
-    create unique_index(:projects, [:client_id, :name])
 
+    create unique_index(:projects, [:client_id, :name])
   end
 end

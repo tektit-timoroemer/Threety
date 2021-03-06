@@ -1,0 +1,6 @@
+<h1><%= dgettext("sessions", "welcome") %></h1>
+<%= if @current_user do %>
+	<%= dgettext("sessions", "welcome %{user}", user: @current_user.username)%></p>
+<% else %>
+	<%= my_action("sessions", "login_identity", Routes.session_path(@conn, :request, :identity)) %>
+<% end %>

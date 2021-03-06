@@ -6,9 +6,23 @@ defmodule Fourty.AccountingTest do
   describe "accounts" do
     alias Fourty.Accounting.Account
 
-    @valid_attrs %{date_end: ~D[2010-04-17], date_start: ~D[2010-04-17], name: "some name"}
-    @update_attrs %{date_end: ~D[2011-05-18], date_start: ~D[2011-05-18], name: "some updated name"}
-    @invalid_attrs %{balance_cur: nil, balance_dur: nil, date_end: nil, date_start: nil, name: nil}
+    @valid_attrs %{
+      date_end: ~D[2010-04-17],
+      date_start: ~D[2010-04-17],
+      name: "some name"
+      }
+    @update_attrs %{
+      date_end: ~D[2011-05-18],
+      date_start: ~D[2011-05-18],
+      name: "some updated name"
+    }
+    @invalid_attrs %{
+      balance_cur: nil,
+      balance_dur: nil,
+      date_end: nil,
+      date_start: nil,
+      name: nil
+    }
 
     defp same_accounts?(a1, a2) do
       # return true if both accounts are identical ignoring any
@@ -18,22 +32,32 @@ defmodule Fourty.AccountingTest do
 
     def project_id() do
       {:ok, client} = Fourty.Clients.create_client(%{name: "test-client"})
-      {:ok, project} = Fourty.Clients.create_project(%{name: "test-project", client_id: client.id})
+
+      {:ok, project} =
+        Fourty.Clients.create_project(%{name: "test-project", client_id: client.id})
+
       project.id
     end
 
-    def account_fixture(attrs \\ %{}) do 
+    def account_fixture(attrs \\ %{}) do
       {:ok, account} =
         attrs
         |> Enum.into(Map.merge(@valid_attrs, %{project_id: project_id()}))
         |> Accounting.create_account()
+
       account
     end
 
     test "list_accounts/0 returns all accounts" do
       account = account_fixture()
       result = Accounting.list_accounts()
-      [%Fourty.Clients.Client{visible_projects: [%Fourty.Clients.Project{visible_accounts: [db_account]}]}] = result
+
+      [
+        %Fourty.Clients.Client{
+          visible_projects: [%Fourty.Clients.Project{visible_accounts: [db_account]}]
+        }
+      ] = result
+
       assert same_accounts?(db_account, account)
     end
 
@@ -44,7 +68,9 @@ defmodule Fourty.AccountingTest do
     end
 
     test "create_account/1 with valid data creates an account" do
-      assert {:ok, %Account{} = account} = Accounting.create_account(Map.merge(@valid_attrs, %{project_id: project_id()}))
+      assert {:ok, %Account{} = account} =
+               Accounting.create_account(Map.merge(@valid_attrs, %{project_id: project_id()}))
+
       assert account.balance_cur == 0
       assert account.balance_dur == 0
       assert account.date_end == ~D[2010-04-17]
@@ -92,23 +118,28 @@ defmodule Fourty.AccountingTest do
     @invalid_attrs %{amount_cur: nil, amount_dur: nil, description: nil}
 
     def order_fixture(project_id) do
-      {:ok, order} = Fourty.Clients.create_order(
-        %{project_id: project_id, description: "test order"})
+      {:ok, order} =
+        Fourty.Clients.create_order(%{project_id: project_id, description: "test order"})
+
       order
     end
 
     def deposit_fixture(account_id \\ nil, order_id \\ nil, attrs \\ %{}) do
-      account = if is_nil(account_id), 
-        do: account_fixture(), 
-        else: Fourty.Accounting.get_account!(account_id)
+      account =
+        if is_nil(account_id),
+          do: account_fixture(),
+          else: Fourty.Accounting.get_account!(account_id)
+
       refute is_nil(account)
 
-      order_id =  order_id || order_fixture(account.project_id).id
+      order_id = order_id || order_fixture(account.project_id).id
+
       {:ok, deposit} =
         attrs
         |> Enum.into(@valid_attrs)
         |> Enum.into(%{account_id: account.id, order_id: order_id})
         |> Accounting.create_deposit()
+
       deposit
     end
 
@@ -134,10 +165,13 @@ defmodule Fourty.AccountingTest do
     test "create_deposit/1 with valid data creates a deposit" do
       account = account_fixture()
       order = order_fixture(account.project_id)
-      deposit = %{}
-      |> Enum.into(@valid_attrs)
-      |> Enum.into(%{account_id: account.id, order_id: order.id})
-      |> Accounting.create_deposit()
+
+      deposit =
+        %{}
+        |> Enum.into(@valid_attrs)
+        |> Enum.into(%{account_id: account.id, order_id: order.id})
+        |> Accounting.create_deposit()
+
       assert {:ok, %Deposit{} = deposit} = deposit
       assert deposit.amount_cur == 42
       assert deposit.amount_dur == 43

@@ -41,12 +41,12 @@ msgid "new"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/withdrwl_controller.ex:24
+#: lib/fourty_web/controllers/withdrwl_controller.ex:23
 msgid "create success"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/withdrwl_controller.ex:62
+#: lib/fourty_web/controllers/withdrwl_controller.ex:61
 msgid "delete success"
 msgstr ""
 
@@ -61,7 +61,7 @@ msgid "show"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/withdrwl_controller.ex:49
+#: lib/fourty_web/controllers/withdrwl_controller.ex:48
 msgid "update success"
 msgstr ""
 

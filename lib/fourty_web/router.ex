@@ -10,14 +10,39 @@ defmodule FourtyWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :auth_opt do
+    plug Fourty.Users.Pipeline
+  end
+
+  pipeline :auth_req do
+    plug Guardian.Plug.EnsureAuthenticated
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   scope "/", FourtyWeb do
-    pipe_through :browser
+    pipe_through [:browser]
+    get "/", SessionController, :index
+  end
 
-    live "/", PageLive, :index
+  scope "/auth", FourtyWeb do
+    pipe_through [:browser, :auth_opt]
+
+    get "/:provider", SessionController, :request
+    get "/:provider/callback", SessionController, :callback
+    post "/:provider/callback", SessionController, :callback
+    delete "/logout", SessionController, :logout
+  end
+
+  scope "/", FourtyWeb do
+    pipe_through [:browser, :auth_opt, :auth_req]
+
+    get "/user/edit", UserController, :edit_pw
+    patch "/user/update", UserController, :update_pw
+    put "/user/update", UserController, :update_pw
+    resources "/users", UserController
     resources "/clients", ClientController
     resources "/projects", ProjectController, except: [:new]
     get "/projects/client/:client_id/new", ProjectController, :new
@@ -36,9 +61,12 @@ defmodule FourtyWeb.Router do
     get "/dpsts/account/:account_id", DepositController, :index_account
     get "/dpsts/order/:order_id", DepositController, :index_order
     resources "/wdrws", WithdrwlController, except: [:new, :index]
-  # get "/wdrws/task/:task_id/new", WithdrwlController, :new
+    get "/wdrws/wrktm/:wrktm_id/new", WithdrwlController, :new
     get "/wdrws/account/:account_id", WithdrwlController, :index_account
-  # get "/wdrws/task/task_id", WithdrwlController, :index_task
+    get "/wdrws/wrktm/wrktm_id", WithdrwlController, :index_work_item
+    resources "/wrktms", WorkItemController, except: [:new, :index]
+    get "/wrktms/account/:account_id", WorkItemController, :index_account
+    get "/wrktms/user/:user_id", WorkItemController, :index_user
   end
 
   # Other scopes may use custom stacks.
@@ -53,7 +81,7 @@ defmodule FourtyWeb.Router do
   # If your application does not have an admins-only section yet,
   # you can use Plug.BasicAuth to set up some basic authentication
   # as long as you are also using SSL (which you should anyway).
-  
+
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
 

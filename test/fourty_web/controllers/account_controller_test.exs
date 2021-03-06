@@ -2,11 +2,19 @@ defmodule FourtyWeb.AccountControllerTest do
   use FourtyWeb.ConnCase
 
   alias Fourty.Accounting
+  import FourtyWeb.Gettext, only: [dgettext: 2, dgettext: 3]
 
-  @create_attrs %{visible: true,
-    date_end: ~D[2010-04-17], date_start: ~D[2010-04-17], name: "some name"}
+  @create_attrs %{
+    visible: true,
+    date_end: ~D[2010-04-17],
+    date_start: ~D[2010-04-17],
+    name: "some name"
+  }
   @update_attrs %{
-    date_end: ~D[2011-05-18], date_start: ~D[2011-05-18], name: "some updated name"}
+    date_end: ~D[2011-05-18],
+    date_start: ~D[2011-05-18],
+    name: "some updated name"
+  }
   @invalid_attrs %{date_end: nil, date_start: nil, name: nil, visible: nil}
 
   def fixture(:client) do
@@ -15,7 +23,8 @@ defmodule FourtyWeb.AccountControllerTest do
   end
 
   def fixture(:project) do
-    {:ok, project} = Fourty.Clients.create_project(%{name: "test project", client_id: fixture(:client).id})   
+    {:ok, project} =
+      Fourty.Clients.create_project(%{name: "test project", client_id: fixture(:client).id})
     project
   end
 
@@ -28,8 +37,7 @@ defmodule FourtyWeb.AccountControllerTest do
   describe "index" do
     test "lists all accounts", %{conn: conn} do
       conn = get(conn, Routes.account_path(conn, :index))
-      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts","index")
-      assert html_response(conn, 200) =~ heading
+      assert html_response(conn, 200) =~ dgettext("accounts", "index")
     end
   end
 
@@ -37,7 +45,7 @@ defmodule FourtyWeb.AccountControllerTest do
     test "renders form", %{conn: conn} do
       project = fixture(:project)
       conn = get(conn, Routes.account_path(conn, :new, project))
-      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts","new")
+      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts", "new")
       assert html_response(conn, 200) =~ heading
     end
   end
@@ -70,7 +78,7 @@ defmodule FourtyWeb.AccountControllerTest do
 
     test "renders form for editing chosen account", %{conn: conn, account: account} do
       conn = get(conn, Routes.account_path(conn, :edit, account))
-      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts","edit")
+      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts", "edit")
       assert html_response(conn, 200) =~ heading
     end
   end
@@ -88,7 +96,7 @@ defmodule FourtyWeb.AccountControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn, account: account} do
       conn = put(conn, Routes.account_path(conn, :update, account), account: @invalid_attrs)
-      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts","edit")
+      heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts", "edit")
       assert html_response(conn, 200) =~ heading
     end
   end
@@ -99,6 +107,7 @@ defmodule FourtyWeb.AccountControllerTest do
     test "deletes chosen account", %{conn: conn, account: account} do
       conn = delete(conn, Routes.account_path(conn, :delete, account))
       assert redirected_to(conn) == Routes.account_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.account_path(conn, :show, account))
       end

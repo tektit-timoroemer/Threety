@@ -5,7 +5,6 @@ defmodule Fourty.Clients do
 
   import Ecto.Query, warn: false
   alias Fourty.Repo
-
   alias Fourty.Clients.Client
 
   @doc """
@@ -32,9 +31,11 @@ defmodule Fourty.Clients do
 
   """
   def get_clients do
-    q = from c in Client,
-      order_by: c.id,
-      select: %{key: c.id, value: c.name}
+    q =
+      from c in Client,
+        order_by: c.id,
+        select: %{key: c.id, value: c.name}
+
     Repo.all(q)
   end
 
@@ -140,9 +141,12 @@ defmodule Fourty.Clients do
   def list_projects(client_id \\ nil) do
     qp = from p in Project, order_by: p.id
     qc = from c in Client, preload: [visible_projects: ^qp]
-    qc = if is_nil(client_id), 
-      do: order_by(qc, [c], c.id),
-      else: where(qc, [c], c.id == ^client_id)
+
+    qc =
+      if is_nil(client_id),
+        do: order_by(qc, [c], c.id),
+        else: where(qc, [c], c.id == ^client_id)
+
     Repo.all(qc)
   end
 
@@ -157,10 +161,12 @@ defmodule Fourty.Clients do
 
   """
   def get_projects(client_id) do
-    q = from p in Project,
-      order_by: p.id,
-      select: %{key: p.id, value: p.name},
-      where: [client_id: ^client_id]
+    q =
+      from p in Project,
+        order_by: p.id,
+        select: %{key: p.id, value: p.name},
+        where: [client_id: ^client_id]
+
     Repo.all(q)
   end
 
@@ -262,30 +268,45 @@ defmodule Fourty.Clients do
   """
   def list_orders(wheres \\ []) do
     cc = if(is_nil(v = Keyword.get(wheres, :client_id)), do: true, else: dynamic([c], c.id == ^v))
-    cp = if(is_nil(v = Keyword.get(wheres, :project_id)), do: true, else: dynamic([p], p.id == ^v))
-    ca = if(is_nil(v = Keyword.get(wheres, :account_id)), do: true, else: dynamic([a], a.id == ^v))
-    qa = from a in Fourty.Accounting.Account,
-          where: ^ca
-    qo = from o in Order,
-          order_by: o.date_eff
-    qp = from p in Fourty.Clients.Project,
-          where: ^cp,
-          order_by: p.id, 
-          preload: [orders: ^qo, accounts: ^qa] 
-    qc = from c in Fourty.Clients.Client,
-          where: ^cc,
-          order_by: c.id, 
-          preload: [visible_projects: ^qp]
+
+    cp =
+      if(is_nil(v = Keyword.get(wheres, :project_id)), do: true, else: dynamic([p], p.id == ^v))
+
+    ca =
+      if(is_nil(v = Keyword.get(wheres, :account_id)), do: true, else: dynamic([a], a.id == ^v))
+
+    qa =
+      from a in Fourty.Accounting.Account,
+        where: ^ca
+
+    qo =
+      from o in Order,
+        order_by: o.date_eff
+
+    qp =
+      from p in Fourty.Clients.Project,
+        where: ^cp,
+        order_by: p.id,
+        preload: [orders: ^qo, accounts: ^qa]
+
+    qc =
+      from c in Fourty.Clients.Client,
+        where: ^cc,
+        order_by: c.id,
+        preload: [visible_projects: ^qp]
+
     Repo.all(qc)
   end
 
   def sums_per_order_query(orders \\ []) when is_list(orders) do
     wc = if Enum.empty?(orders), do: true, else: dynamic([o], o.order_id in ^orders)
+
     from d in Fourty.Accounting.Deposit,
       select: %{
         order_id: d.order_id,
         sum_cur: sum(d.amount_cur),
-        sum_dur: sum(d.amount_dur)},
+        sum_dur: sum(d.amount_dur)
+      },
       where: ^wc,
       group_by: d.order_id
   end
@@ -296,8 +317,10 @@ defmodule Fourty.Clients do
   Use this in get_order_sums to retrieve values for any account.
   """
   def load_order_sums(order) do
-    r = sums_per_order_query([order.id])
-    |> Repo.all()
+    r =
+      sums_per_order_query([order.id])
+      |> Repo.all()
+
     if r == [] do
       %{order | sum_cur: 0, sum_dur: 0}
     else
@@ -316,7 +339,7 @@ defmodule Fourty.Clients do
   end
 
   def get_order_sums(order_sums, order_id) do
-    Enum.find(order_sums, fn x -> x.order_id == order_id end) || %{ sum_cur: nil, sum_dur: nil}
+    Enum.find(order_sums, fn x -> x.order_id == order_id end) || %{sum_cur: nil, sum_dur: nil}
   end
 
   @doc """
@@ -338,7 +361,7 @@ defmodule Fourty.Clients do
     |> Repo.preload(project: [:client])
     |> load_order_sums()
   end
-  
+
   @doc """
   Creates a order.
 

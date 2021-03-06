@@ -11,8 +11,7 @@ defmodule FourtyWeb.ProjectController do
 
   def index_client(conn, %{"client_id" => client_id}) do
     projects = Clients.list_projects(client_id)
-    heading = dgettext("projects", "index_client",
-      name: List.first(projects).name)
+    heading = dgettext("projects", "index_client", name: List.first(projects).name)
     render(conn, "index.html", projects: projects, heading: heading)
   end
 
@@ -38,20 +37,25 @@ defmodule FourtyWeb.ProjectController do
   end
 
   def show(conn, %{"id" => id}) do
-    project = Clients.get_project!(id)
-    |> Fourty.Repo.preload(:client)
+    project =
+      Clients.get_project!(id)
+      |> Fourty.Repo.preload(:client)
+
     render(conn, "show.html", project: project)
   end
 
   def edit(conn, %{"id" => id}) do
-    project = Clients.get_project!(id)
-    |> Fourty.Repo.preload(:client)
+    project =
+      Clients.get_project!(id)
+      |> Fourty.Repo.preload(:client)
+
     changeset = Clients.change_project(project)
     render(conn, "edit.html", changeset: changeset, client: project.client)
   end
 
   def update(conn, %{"id" => id, "project" => project_params}) do
     project = Clients.get_project!(id)
+
     case Clients.update_project(project, project_params) do
       {:ok, project} ->
         conn

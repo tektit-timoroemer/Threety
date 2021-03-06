@@ -1,0 +1,53 @@
+<h1>Show Work item</h1>
+
+<ul>
+
+  <li>
+    <strong>Date as of:</strong>
+    <%= @work_item.date_as_of %>
+  </li>
+
+  <li>
+    <strong>Duration:</strong>
+    <%= @work_item.duration %>
+  </li>
+
+  <li>
+    <strong>Time from:</strong>
+    <%= @work_item.time_from %>
+  </li>
+
+  <li>
+    <strong>Time to:</strong>
+    <%= @work_item.time_to %>
+  </li>
+
+  <li>
+    <strong>Comments:</strong>
+    <%= @work_item.comments %>
+  </li>
+
+  <li>
+    <strong>Account:</strong>
+    <%= @work_item.account_id %>
+  </li>
+
+  <li>
+    <strong>User:</strong>
+    <%= @work_item.user_id %>
+  </li>
+
+  <li>
+    <strong>Withdrwl:</strong>
+    <%= @work_item.withdrwl_id %>
+  </li>
+
+  <li>
+    <strong>Order:</strong>
+    <%= @work_item.order %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.work_item_path(@conn, :edit, @work_item) %></span>
+<span><%= link "Back", to: Routes.work_item_path(@conn, :index) %></span>

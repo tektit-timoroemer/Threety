@@ -1,0 +1,22 @@
+<h1><%= dgettext("users", "show") %></h1>
+<div class="row row-cols-auto">
+  <div class="col-sm-3 p-3 border bg-light">
+
+    <%= my_label("users", "username") %>
+    <%= my_text_value(@user.username) %><br />
+
+    <%= my_label("users", "email") %>
+    <%= my_text_value(@user.email) %><br />
+
+    <%= my_label("users", "rate") %>
+    <%= my_currency_value(@user.rate) %><br />
+
+    <%= my_label("users", "role") %>
+    <%= my_text_value(Users.label_for_role(@user.role)) %><br />
+
+    <%= my_action("global", "edit", Routes.user_path(@conn, :edit, @user)) %>
+    <%= my_action("users", "index", Routes.user_path(@conn, :index)) %>
+
+  </div>
+</div>
+

@@ -1,0 +1,61 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: en\n"
+"Plural-Forms: nplurals=2\n"
+
+#, elixir-format
+#: lib/fourty_web/templates/session/index.html.eex:1
+msgid "welcome"
+msgstr "Welcome to Papa's Version of Fourty!"
+
+msgid "welcome %{user}"
+msgstr "Welcome back, %{user}!"
+
+msgid "password"
+msgstr "Password"
+
+msgid "save"
+msgstr "Login"
+
+#, elixir-format
+#: lib/fourty_web/controllers/session_controller.ex:34
+msgid "authentication_failed"
+msgstr "Authentication failed. Please check your credentials."
+
+#, elixir-format
+#: lib/fourty_web/controllers/session_controller.ex:42
+msgid "authentication_success"
+msgstr "Authentication completed. You are now logged in."
+
+msgid "authentication_error"
+msgstr "Authentication failed, reason: %{type}"
+
+#, elixir-format
+#: lib/fourty_web/controllers/session_controller.ex:27
+msgid "logged_out"
+msgstr "You are now logged out."
+
+#, elixir-format
+#: lib/fourty_web/templates/session/login.html.eex:1
+msgid "login_identity"
+msgstr "Login with Username and Password"
+
+msgid "login"
+msgstr "Login"
+
+msgid "logout"
+msgstr "Logout"
+
+msgid "change_pw"
+msgstr "Change Password"
+
+msgid "user"
+msgstr "User"

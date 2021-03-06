@@ -21,17 +21,23 @@ defmodule FourtyWeb.DepositControllerTest do
   end
 
   def fixture(:project) do
-    {:ok, project} = Fourty.Clients.create_project(%{name: "test project", client_id: fixture(:client).id})   
+    {:ok, project} =
+      Fourty.Clients.create_project(%{name: "test project", client_id: fixture(:client).id})
+
     project
   end
 
   def fixture(:account) do
-    {:ok, account} = Accounting.create_account(%{name: "test account", project_id: fixture(:project).id})
+    {:ok, account} =
+      Accounting.create_account(%{name: "test account", project_id: fixture(:project).id})
+
     account
   end
 
-  def fixture(:order, project_id ) do
-    {:ok, order} = Fourty.Clients.create_order(%{description: "test order", project_id: project_id})
+  def fixture(:order, project_id) do
+    {:ok, order} =
+      Fourty.Clients.create_order(%{description: "test order", project_id: project_id})
+
     order
   end
 
@@ -39,8 +45,7 @@ defmodule FourtyWeb.DepositControllerTest do
     test "lists all deposits for given account", %{conn: conn} do
       account = fixture(:account)
       conn = get(conn, Routes.deposit_path(conn, :index_account, account.id))
-      assert html_response(conn, 200) =~ dgettext("deposits", "index_account",
-        name: account.name)
+      assert html_response(conn, 200) =~ dgettext("deposits", "index_account", name: account.name)
     end
   end
 
@@ -48,8 +53,9 @@ defmodule FourtyWeb.DepositControllerTest do
     test "lists all deposits for given order", %{conn: conn} do
       order = fixture(:order, fixture(:project).id)
       conn = get(conn, Routes.deposit_path(conn, :index_order, order.id))
-      assert html_response(conn, 200) =~ dgettext("deposits", "index_order",
-        name: order.description)
+
+      assert html_response(conn, 200) =~
+               dgettext("deposits", "index_order", name: order.description)
     end
   end
 
@@ -85,6 +91,7 @@ defmodule FourtyWeb.DepositControllerTest do
 
   describe "edit deposit" do
     setup [:create_deposit]
+
     test "renders form for editing chosen deposit", %{conn: conn, deposit: deposit} do
       conn = get(conn, Routes.deposit_path(conn, :edit, deposit))
       assert html_response(conn, 200) =~ dgettext("deposits", "edit")
@@ -114,6 +121,7 @@ defmodule FourtyWeb.DepositControllerTest do
     test "deletes chosen deposit", %{conn: conn, deposit: deposit} do
       conn = delete(conn, Routes.deposit_path(conn, :delete, deposit))
       assert redirected_to(conn) == Routes.deposit_path(conn, :index_account, deposit.account_id)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.deposit_path(conn, :show, deposit))
       end

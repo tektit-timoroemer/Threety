@@ -8,42 +8,48 @@ defmodule FourtyWeb.OrderController do
     orders = Clients.list_orders()
     order_sums = Clients.load_all_order_sums()
     heading = dgettext("orders", "index")
-    render(conn, "index.html", orders: orders, 
-      order_sums: order_sums, heading: heading)
+    render(conn, "index.html", orders: orders, order_sums: order_sums, heading: heading)
   end
 
   def index_project(conn, %{"project_id" => project_id}) do
     project = Clients.get_project!(project_id)
     orders = Clients.list_orders(client_id: project.client_id, project_id: project.id)
     order_sums = Clients.load_all_order_sums()
-    heading = dgettext("orders", "index_project",
-      name: List.first(List.first(orders).visible_projects).name)
-    render(conn, "index.html", orders: orders,
-      order_sums: order_sums, heading: heading)
+
+    heading =
+      dgettext("orders", "index_project",
+        name: List.first(List.first(orders).visible_projects).name
+      )
+
+    render(conn, "index.html", orders: orders, order_sums: order_sums, heading: heading)
   end
 
   def index_client(conn, %{"client_id" => client_id}) do
     orders = Clients.list_orders(client_id: client_id)
     order_sums = Clients.load_all_order_sums()
-    heading = dgettext("orders", "index_client", 
-      name: List.first(orders).name)
-    render(conn, "index.html", orders: orders,
-      order_sums: order_sums, heading: heading)
+    heading = dgettext("orders", "index_client", name: List.first(orders).name)
+    render(conn, "index.html", orders: orders, order_sums: order_sums, heading: heading)
   end
 
   def index_account(conn, %{"account_id" => account_id}) do
     orders = Clients.list_orders(account_id: account_id)
     order_sums = Clients.load_all_order_sums()
-    heading = dgettext("orders", "index_account", 
-      name: List.first(List.first(List.first(orders).visible_projects).accounts).name)
-    render(conn, "index.html", orders: orders,
-      order_sums: order_sums, heading: heading)
+
+    heading =
+      dgettext("orders", "index_account",
+        name: List.first(List.first(List.first(orders).visible_projects).accounts).name
+      )
+
+    render(conn, "index.html", orders: orders, order_sums: order_sums, heading: heading)
   end
 
   def new(conn, params) do
     changeset = Ecto.Changeset.cast(%Order{}, params, [:project_id])
-    order = Ecto.Changeset.apply_changes(changeset)
-    |> Fourty.Repo.preload(project: [:client])
+
+    order =
+      Ecto.Changeset.apply_changes(changeset)
+      |> Fourty.Repo.preload(project: [:client])
+
     render(conn, "new.html", order: order, changeset: changeset)
   end
 
@@ -53,9 +59,12 @@ defmodule FourtyWeb.OrderController do
         conn
         |> put_flash(:info, dgettext("orders", "create success"))
         |> redirect(to: Routes.order_path(conn, :show, order))
+
       {:error, %Ecto.Changeset{} = changeset} ->
-        order = Ecto.Changeset.apply_changes(changeset)
-        |> Fourty.Repo.preload(project: [:client])
+        order =
+          Ecto.Changeset.apply_changes(changeset)
+          |> Fourty.Repo.preload(project: [:client])
+
         render(conn, "new.html", order: order, changeset: changeset)
     end
   end

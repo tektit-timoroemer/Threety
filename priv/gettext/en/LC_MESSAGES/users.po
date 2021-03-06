@@ -1,0 +1,85 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: en\n"
+"Plural-Forms: nplurals=2\n"
+
+#, elixir-format
+#: lib/fourty_web/templates/layout/root.html.leex:31
+msgid "users"
+msgstr "Users"
+
+#: lib/fourty_web/templates/user/index.html.eex:7
+msgid "username"
+msgstr "Username"
+
+#: lib/fourty_web/templates/user/index.html.eex:8
+msgid "email"
+msgstr "E-Mail Address"
+
+#: lib/fourty_web/templates/user/index.html.eex:9
+msgid "rate"
+msgstr "Rate per Hour"
+
+#: lib/fourty_web/templates/user/index.html.eex:10
+msgid "role"
+msgstr "Role"
+
+#: lib/fourty_web/templates/user/index.html.eex:11
+msgid "attempts_no"
+msgstr "No of Attempts"
+
+#: lib/fourty_web/templates/user/index.html.eex:12
+msgid "last_attempt"
+msgstr "Last Attempt"
+
+msgid "new"
+msgstr "Add User"
+
+msgid "edit"
+msgstr "Edit User Data"
+
+msgid "show"
+msgstr "Show User Data"
+
+#: lib/fourty_web/templates/user/index.html.eex:1
+msgid "index"
+msgstr "List of All Users"
+
+msgid "role_user"
+msgstr "User"
+
+msgid "role_admin"
+msgstr "Admin"
+
+msgid "password"
+msgstr "Password"
+
+msgid "password_new_confirmation"
+msgstr "New Password (repeat)"
+
+msgid "password_new"
+msgstr "New Password"
+
+msgid "password_old"
+msgstr "Current Password"
+
+msgid "update_success"
+msgstr "User updated successfully."
+
+msgid "pw_update_success"
+msgstr "Password successfully changed."
+
+msgid "delete_success"
+msgstr "User successfully deleted."
+
+msgid "create_success"
+msgstr "User successfully created."
+

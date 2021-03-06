@@ -18,5 +18,10 @@ config :fourty, FourtyWeb.Endpoint,
   http: [port: 4002],
   server: false
 
+# configuration of guardian according to: Getting Started with Guardian
+config :fourty, Fourty.Users.Guardian,
+  issuer: "fourty",
+  secret_key: "secret_key"
+
 # Print only warnings and errors during test
 config :logger, level: :warn

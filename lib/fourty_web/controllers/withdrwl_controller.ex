@@ -7,8 +7,7 @@ defmodule FourtyWeb.WithdrwlController do
   def index_account(conn, %{"account_id" => account_id}) do
     withdrwls = Accounting.list_withdrwls(account_id: account_id)
     account = Fourty.Accounting.get_account_solo!(account_id)
-    heading = dgettext("withdrwls", "index_account",
-      name: account.name)
+    heading = dgettext("withdrwls", "index_account", name: account.name)
     render(conn, "index.html", withdrwls: withdrwls, heading: heading)
   end
 
@@ -42,11 +41,13 @@ defmodule FourtyWeb.WithdrwlController do
 
   def update(conn, %{"id" => id, "withdrwl" => withdrwl_params}) do
     withdrwl = Accounting.get_withdrwl!(id)
+
     case Accounting.update_withdrwl(withdrwl, withdrwl_params) do
       {:ok, withdrwl} ->
         conn
         |> put_flash(:info, dgettext("withdrwls", "update success"))
         |> redirect(to: Routes.withdrwl_path(conn, :show, withdrwl))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", withdrwl: withdrwl, changeset: changeset)
     end

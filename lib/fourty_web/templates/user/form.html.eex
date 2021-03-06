@@ -1,0 +1,37 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p><%= dgettext("errors","error_alert") %></p>
+    </div>
+  <% end %>
+
+  <%= my_label(f, "users", :username) %>
+  <%= my_text_input(f, :username) %><br/>
+  <%= error_tag(f, :username) %>
+
+  <%= my_label(f, "users", :email) %>
+  <%= my_text_input(f, :email) %><br/>
+  <%= error_tag(f, :email) %> 
+
+  <%= my_label(f, "users", :rate) %>
+  <%= my_currency_input(f, :rate) %><br/>
+  <%= error_tag(f, :rate) %>
+
+  <%= my_label(f, "users", :role) %>
+  <%= my_select_input(f, :role, Fourty.Users.list_roles_for_select()) %><br/>
+  <%= error_tag(f, :role) %>
+
+  <%= my_label(f, "users", :password_new) %>
+  <%= my_password_input(f, :password) %><br/>
+  <%= error_tag(f, :password) %>
+
+  <%= my_label(f, "users", :password_new_confirmation) %>
+  <%= my_password_input(f, :password_confirmation) %><br/>
+  <%= error_tag(f, :password_confirmation) %>
+
+  <%= my_submit() %>
+  <%= if Ecto.Changeset.get_field(@changeset, :id),
+        do: my_back_link(Routes.user_path(@conn, :show, @user )),
+        else: my_back_link(Routes.user_path(@conn, :index)) %>
+
+<% end %>

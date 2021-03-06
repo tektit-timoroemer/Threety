@@ -1,0 +1,23 @@
+<h1><%= dgettext("sessions","login_identity")%></h1>
+<div class="row row-cols-auto">
+	<div class="col-sm-3 p-3 border bg-light">
+  <%= form_for @changeset, @path, [as: :account], fn f -> %>
+    <%= if @changeset.action do %>
+      <div class="alert alert-danger">
+  	    <p><%= dgettext("errors", "error_alert") %></p>
+      </div>
+    <% end %>
+
+  	<%= my_label("users", "username") %>
+  	<%= my_text_input(f, :username) %><br />
+    <%= error_tag(f, :username) %>
+
+  	<%= my_label("users", "password") %>
+  	<%= my_password_input(f, :password_plain) %><br />
+    <%= error_tag(f, :password_plain) %>
+
+  	<%= my_submit("sessions") %>
+
+	<% end %>
+	</div>
+</div>

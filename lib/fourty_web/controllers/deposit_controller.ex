@@ -7,8 +7,7 @@ defmodule FourtyWeb.DepositController do
   def index_account(conn, %{"account_id" => account_id}) do
     deposits = Accounting.list_deposits(account_id: account_id)
     account = Fourty.Accounting.get_account_solo!(account_id)
-    heading = dgettext("deposits", "index_account",
-      name: account.name)
+    heading = dgettext("deposits", "index_account", name: account.name)
     render(conn, "index.html", deposits: deposits, heading: heading)
   end
 
@@ -20,11 +19,13 @@ defmodule FourtyWeb.DepositController do
 
   def new(conn, params) do
     changeset = Ecto.Changeset.cast(%Deposit{}, params, [:order_id])
-    deposit = Ecto.Changeset.apply_changes(changeset)
-    |> Fourty.Repo.preload(order: [project: [:client]])
+
+    deposit =
+      Ecto.Changeset.apply_changes(changeset)
+      |> Fourty.Repo.preload(order: [project: [:client]])
+
     accounts = Accounting.get_accounts(deposit.order.project.id)
-    render(conn, "new.html", changeset: changeset, deposit: deposit,
-      accounts: accounts)
+    render(conn, "new.html", changeset: changeset, deposit: deposit, accounts: accounts)
   end
 
   def create(conn, %{"deposit" => deposit_params}) do
@@ -33,12 +34,13 @@ defmodule FourtyWeb.DepositController do
         conn
         |> put_flash(:info, dgettext("deposits", "create success"))
         |> redirect(to: Routes.deposit_path(conn, :show, deposit))
+
       {:error, %Ecto.Changeset{} = changeset} ->
-        deposit = Ecto.Changeset.apply_changes(changeset)
-        |> Fourty.Repo.preload(order: [project: [:client]])
+        deposit =
+          Ecto.Changeset.apply_changes(changeset)
+          |> Fourty.Repo.preload(order: [project: [:client]])
         accounts = Accounting.get_accounts(deposit.order.project.id)
-        render(conn, "new.html", changeset: changeset, deposit: deposit,
-          accounts: accounts)
+        render(conn, "new.html", changeset: changeset, deposit: deposit, accounts: accounts)
     end
   end
 
@@ -55,11 +57,13 @@ defmodule FourtyWeb.DepositController do
 
   def update(conn, %{"id" => id, "deposit" => deposit_params}) do
     deposit = Accounting.get_deposit!(id)
+
     case Accounting.update_deposit(deposit, deposit_params) do
       {:ok, deposit} ->
         conn
         |> put_flash(:info, dgettext("deposits", "update success"))
         |> redirect(to: Routes.deposit_path(conn, :show, deposit))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", deposit: deposit, changeset: changeset)
     end

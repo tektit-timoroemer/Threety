@@ -99,3 +99,21 @@ msgstr ""
 #: lib/fourty_web/templates/project/form.html.eex:4 lib/fourty_web/templates/withdrwl/form.html.eex:4
 msgid "error_alert"
 msgstr ""
+
+msgid "first date must not be after second date"
+msgstr ""
+
+msgid "at least one must be given"
+msgstr ""
+
+msgid "either duration or start and end must be given"
+msgstr ""
+
+msgid "time must be between 0:00 and 23:59"
+msgstr ""
+
+msgid "authentication"
+msgstr ""
+
+msgid "wrong_old_pw"
+msgstr ""

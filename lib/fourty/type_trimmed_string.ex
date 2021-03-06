@@ -8,7 +8,7 @@ defmodule Fourty.TypeTrimmedString do
   whitespace characters replaced by a single whitespace.
 
   ## Examples
-  
+
   iex> cast("  John Doe   ")
   {:ok, "John Doe"}
 

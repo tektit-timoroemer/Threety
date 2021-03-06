@@ -22,7 +22,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/templates/account/index.html.eex:31
-#: lib/fourty_web/templates/order/index.html.eex:33 lib/fourty_web/templates/project/index.html.eex:7
+#: lib/fourty_web/templates/order/index.html.eex:36 lib/fourty_web/templates/project/index.html.eex:7
 msgid "name"
 msgstr ""
 
@@ -55,16 +55,16 @@ msgid "projects"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/project_controller.ex:30
+#: lib/fourty_web/controllers/project_controller.ex:29
 msgid "create success"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/project_controller.ex:58
+#: lib/fourty_web/controllers/project_controller.ex:62
 msgid "update success"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/project_controller.ex:73
+#: lib/fourty_web/controllers/project_controller.ex:77
 msgid "delete success"
 msgstr ""

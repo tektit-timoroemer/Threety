@@ -75,6 +75,7 @@ defmodule FourtyWeb.WithdrwlControllerTest do
     test "deletes chosen withdrwl", %{conn: conn, withdrwl: withdrwl} do
       conn = delete(conn, Routes.withdrwl_path(conn, :delete, withdrwl))
       assert redirected_to(conn) == Routes.withdrwl_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.withdrwl_path(conn, :show, withdrwl))
       end

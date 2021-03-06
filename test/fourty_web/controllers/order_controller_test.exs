@@ -75,6 +75,7 @@ defmodule FourtyWeb.OrderControllerTest do
     test "deletes chosen order", %{conn: conn, order: order} do
       conn = delete(conn, Routes.order_path(conn, :delete, order))
       assert redirected_to(conn) == Routes.order_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.order_path(conn, :show, order))
       end

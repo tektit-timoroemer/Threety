@@ -58,11 +58,11 @@ msgstr ""
 msgid "index"
 msgstr ""
 
-#: lib/fourty_web/controllers/account_controller.ex:18
+#: lib/fourty_web/controllers/account_controller.ex:17
 msgid "index_client"
 msgstr ""
 
-#: lib/fourty_web/controllers/account_controller.ex:28
+#: lib/fourty_web/controllers/account_controller.ex:27
 msgid "index_project"
 msgstr ""
 
@@ -72,11 +72,11 @@ msgid "create success"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/account_controller.ex:83
+#: lib/fourty_web/controllers/account_controller.ex:87
 msgid "delete success"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/account_controller.ex:70
+#: lib/fourty_web/controllers/account_controller.ex:74
 msgid "update success"
 msgstr ""

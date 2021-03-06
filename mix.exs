@@ -5,7 +5,7 @@ defmodule Fourty.MixProject do
     [
       app: :fourty,
       version: "0.1.0",
-      elixir: "~> 1.7",
+      elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -47,7 +47,12 @@ defmodule Fourty.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:cowboy, "~> 2.8.0"}
+      {:cowboy, "~> 2.8.0"},
+      {:ueberauth, "~> 0.6"},
+      {:ueberauth_identity, "~> 0.2"},
+      {:argon2_elixir, "~> 2.4"},
+      {:guardian, "~> 2.1"},
+      {:guardian_phoenix, "~> 2.0"}
     ]
   end
 

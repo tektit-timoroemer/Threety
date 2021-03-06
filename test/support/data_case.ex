@@ -52,4 +52,5 @@ defmodule Fourty.DataCase do
       end)
     end)
   end
+
 end

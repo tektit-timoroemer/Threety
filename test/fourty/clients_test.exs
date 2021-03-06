@@ -15,6 +15,7 @@ defmodule Fourty.ClientsTest do
         attrs
         |> Enum.into(@valid_attrs)
         |> Clients.create_client()
+
       client
     end
 
@@ -68,18 +69,19 @@ defmodule Fourty.ClientsTest do
     @update_attrs %{name: "some updated name"}
     @invalid_attrs %{name: nil}
 
-    defp same_projects?(p1,p2) do
+    defp same_projects?(p1, p2) do
       # return true if both projects are identical ignoring any
       # associations
       Map.equal?(Map.drop(p1, [:client]), Map.drop(p2, [:client]))
     end
 
     def project_fixture(client, attrs \\ %{}) do
-      {:ok, project} = 
-      attrs
-      |> Enum.into(@valid_attrs)
-      |> Enum.into(%{client_id: client.id})
-      |> Clients.create_project()
+      {:ok, project} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Enum.into(%{client_id: client.id})
+        |> Clients.create_project()
+
       project
     end
 
@@ -88,7 +90,7 @@ defmodule Fourty.ClientsTest do
       p = project_fixture(c)
       assert p.client_id == c.id
 
-      a  = Clients.list_projects()
+      a = Clients.list_projects()
       assert same_projects?(List.first(List.first(a).visible_projects), p)
     end
 
@@ -120,14 +122,20 @@ defmodule Fourty.ClientsTest do
 
     test "update_project/2 with valid data updates the project" do
       client = client_fixture()
-      assert {:ok, project} = Clients.create_project(Map.merge(@valid_attrs, %{client_id: client.id}))
+
+      assert {:ok, project} =
+               Clients.create_project(Map.merge(@valid_attrs, %{client_id: client.id}))
+
       assert {:ok, %Project{} = project} = Clients.update_project(project, @update_attrs)
       assert project.name == "some updated name"
     end
 
     test "update_project/2 with invalid data returns error changeset" do
       client = client_fixture()
-      assert {:ok, project} = Clients.create_project(Map.merge(@valid_attrs, %{client_id: client.id}))
+
+      assert {:ok, project} =
+               Clients.create_project(Map.merge(@valid_attrs, %{client_id: client.id}))
+
       assert {:error, %Ecto.Changeset{}} = Clients.update_project(project, @invalid_attrs)
       assert same_projects?(project, Clients.get_project!(project.id))
     end
@@ -149,8 +157,18 @@ defmodule Fourty.ClientsTest do
   describe "orders" do
     alias Fourty.Clients.Order
 
-    @valid_attrs %{amount_cur: 42, amount_dur: 43, date_eff: ~D[2010-04-17], description: "some notes"}
-    @update_attrs %{amount_cur: 44, amount_dur: 45, date_eff: ~D[2011-05-18], description: "some updated notes"}
+    @valid_attrs %{
+      amount_cur: 42,
+      amount_dur: 43,
+      date_eff: ~D[2010-04-17],
+      description: "some notes"
+    }
+    @update_attrs %{
+      amount_cur: 44,
+      amount_dur: 45,
+      date_eff: ~D[2011-05-18],
+      description: "some updated notes"
+    }
     @invalid_attrs %{amount_cur: nil, amount_dur: nil, date_eff: nil, description: nil}
 
     def order_fixture(project, attrs \\ %{}) do
@@ -159,10 +177,11 @@ defmodule Fourty.ClientsTest do
         |> Enum.into(@valid_attrs)
         |> Enum.into(%{project_id: project.id})
         |> Clients.create_order()
+
       order
     end
 
-    def same_order?(o1,o2) do
+    def same_order?(o1, o2) do
       # return true if both orders are identical ignoring any
       # associations
       Map.equal?(Map.drop(o1, [:project]), Map.drop(o2, [:project]))
@@ -174,10 +193,18 @@ defmodule Fourty.ClientsTest do
       order = order_fixture(project)
       assert order.project_id == project.id
 
-      [%Fourty.Clients.Client{
-        visible_projects: [%Fourty.Clients.Project{
-          orders: [first_order|_]}|_] }|_] = 
-        Clients.list_orders()
+      [
+        %Fourty.Clients.Client{
+          visible_projects: [
+            %Fourty.Clients.Project{
+              orders: [first_order | _]
+            }
+            | _
+          ]
+        }
+        | _
+      ] = Clients.list_orders()
+
       assert same_order?(order, first_order)
     end
 
@@ -191,10 +218,13 @@ defmodule Fourty.ClientsTest do
     test "create_order/1 with valid data creates a order" do
       client = client_fixture()
       project = project_fixture(client)
-      order = %{}
-      |> Enum.into(@valid_attrs)
-      |> Enum.into(%{project_id: project.id})
-      |> Clients.create_order()
+
+      order =
+        %{}
+        |> Enum.into(@valid_attrs)
+        |> Enum.into(%{project_id: project.id})
+        |> Clients.create_order()
+
       assert {:ok, %Order{} = order} = order
       assert order.amount_cur == 42
       assert order.amount_dur == 43

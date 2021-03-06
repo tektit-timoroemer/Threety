@@ -15,7 +15,7 @@ defmodule FourtyWeb.ClientControllerTest do
   describe "index" do
     test "lists all clients", %{conn: conn} do
       conn = get(conn, Routes.client_path(conn, :index))
-      assert html_response(conn, 200) =~ dgettext("clients","index")
+      assert html_response(conn, 200) =~ dgettext("clients", "index")
     end
   end
 
@@ -30,11 +30,11 @@ defmodule FourtyWeb.ClientControllerTest do
     test "show non-existing client", %{conn: conn, client: client} do
       # this will fail due to get_client! failure
       c = Map.replace(client, :id, 0)
+
       assert_raise Ecto.NoResultsError, fn ->
         get(conn, Routes.client_path(conn, :show, c))
-        end
+      end
     end
-
   end
 
   describe "new client" do
@@ -52,12 +52,12 @@ defmodule FourtyWeb.ClientControllerTest do
       assert redirected_to(conn) == Routes.client_path(conn, :show, id)
 
       conn = get(conn, Routes.client_path(conn, :index))
-      assert html_response(conn, 200) =~ dgettext("clients","index")
+      assert html_response(conn, 200) =~ dgettext("clients", "index")
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.client_path(conn, :create), client: @invalid_attrs)
-      assert html_response(conn, 200) =~ dgettext("clients","add")
+      assert html_response(conn, 200) =~ dgettext("clients", "add")
     end
   end
 
@@ -66,7 +66,7 @@ defmodule FourtyWeb.ClientControllerTest do
 
     test "renders form for editing chosen client", %{conn: conn, client: client} do
       conn = get(conn, Routes.client_path(conn, :edit, client))
-      assert html_response(conn, 200) =~ dgettext("clients","edit")
+      assert html_response(conn, 200) =~ dgettext("clients", "edit")
     end
   end
 
@@ -83,7 +83,7 @@ defmodule FourtyWeb.ClientControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn, client: client} do
       conn = put(conn, Routes.client_path(conn, :update, client), client: @invalid_attrs)
-      assert html_response(conn, 200) =~ dgettext("clients","edit")
+      assert html_response(conn, 200) =~ dgettext("clients", "edit")
     end
   end
 
@@ -95,17 +95,17 @@ defmodule FourtyWeb.ClientControllerTest do
       assert redirected_to(conn) == Routes.client_path(conn, :index)
 
       conn = get(conn, Routes.client_path(conn, :index))
-      assert html_response(conn, 200) =~ dgettext("clients","index")
+      assert html_response(conn, 200) =~ dgettext("clients", "index")
     end
 
     test "delete non-existing client", %{conn: conn, client: client} do
       # this will fail due to get_client! failure
       c = Map.replace(client, :id, 0)
+
       assert_raise Ecto.NoResultsError, fn ->
         delete(conn, Routes.client_path(conn, :delete, c))
-        end
+      end
     end
-
   end
 
   defp create_client(_) do

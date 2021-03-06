@@ -12,32 +12,46 @@ defmodule Fourty.Accounting do
 
   # create query for retrieval of account aggregates
 
-  defp balance_per_account_query(accounts \\ []) when is_list(accounts) do 
-    wc = if Enum.empty?(accounts), do: true, else: dynamic([a], a.account_id in ^accounts)
-    dq = from d in Fourty.Accounting.Deposit,
-      select: %{
-        account_id: d.account_id,
-        amount_cur: d.amount_cur,
-        amount_dur: d.amount_dur},
-      where: ^wc
-    wq = from w in Fourty.Accounting.Withdrwl,
-      select: %{
-        account_id: w.account_id,
-        amount_cur: w.amount_cur*(-1),
-        amount_dur: w.amount_dur*(-1)},
-      where: ^wc
+  defp balance_per_account_query(accounts) when is_list(accounts) do
+    wc =
+      if Enum.empty?(accounts),
+        do: true,
+        else: dynamic([a], a.account_id in ^accounts)
+
+    dq =
+      from d in Fourty.Accounting.Deposit,
+        select: %{
+          account_id: d.account_id,
+          amount_cur: d.amount_cur,
+          amount_dur: d.amount_dur
+        },
+        where: ^wc
+
+    wq =
+      from w in Fourty.Accounting.Withdrwl,
+        select: %{
+          account_id: w.account_id,
+          amount_cur: w.amount_cur * -1,
+          amount_dur: w.amount_dur * -1
+        },
+        where: ^wc
+
     uq = union_all(wq, ^dq)
+
     from u in subquery(uq),
       group_by: u.account_id,
-        select: %{
-          account_id: u.account_id,
-          balance_cur: sum(u.amount_cur),
-          balance_dur: sum(u.amount_dur)}
+      select: %{
+        account_id: u.account_id,
+        balance_cur: sum(u.amount_cur),
+        balance_dur: sum(u.amount_dur)
+      }
   end
 
   def load_balance(account) do
-    r = balance_per_account_query([account.id])
-    |> Repo.all()
+    r =
+      balance_per_account_query([account.id])
+      |> Repo.all()
+
     if r == [] do
       %{account | balance_cur: 0, balance_dur: 0}
     else
@@ -56,7 +70,8 @@ defmodule Fourty.Accounting do
   end
 
   def get_balance(balances, account_id) do
-    Enum.find(balances, fn x -> x.account_id == account_id end) || %{ balance_cur: 0, balance_dur: 0}
+    Enum.find(balances, fn x -> x.account_id == account_id end) ||
+      %{balance_cur: 0, balance_dur: 0}
   end
 
   @doc """
@@ -68,39 +83,50 @@ defmodule Fourty.Accounting do
       [%Account{}, ...]
 
   """
+
   # this will generate only a single query!
   # BUT it will list only those clients and projects with accounts...
 
-  def alt_list_accounts(client_id \\ nil, project_id \\ nil ) do
+  def alt_list_accounts(client_id \\ nil, project_id \\ nil) do
     cc = if client_id == nil, do: true, else: dynamic([c], c.id == ^client_id)
-    cp = if project_id == nil, do: true, else: dynamic([c,p], p.id == ^project_id)
-    q = from c in Fourty.Clients.Client,
-      where: ^cc,
-      join: p in assoc(c, :visible_projects),
-      where: ^cp,
-      join: a in assoc(p, :visible_accounts),
-      order_by: [c.id, p.id, a.name],
-      preload: [visible_projects: {p, visible_accounts: a}],
-      select: a.id
+    cp = if project_id == nil, do: true, else: dynamic([c, p], p.id == ^project_id)
+
+    q =
+      from c in Fourty.Clients.Client,
+        where: ^cc,
+        join: p in assoc(c, :visible_projects),
+        where: ^cp,
+        join: a in assoc(p, :visible_accounts),
+        order_by: [c.id, p.id, a.name],
+        preload: [visible_projects: {p, visible_accounts: a}],
+        select: a.id
+
     Repo.all(q)
   end
 
   # the following will generate 3 queries
   # listing all clients and projects whether they have accounts or not
 
-  def list_accounts(client_id \\ nil, project_id \\ nil ) do
+  def list_accounts(client_id \\ nil, project_id \\ nil) do
     cc = if is_nil(client_id), do: true, else: dynamic([c], c.id == ^client_id)
     cp = if is_nil(project_id), do: true, else: dynamic([p], p.id == ^project_id)
-    qa = from a in Account,
-          order_by: a.name
-    qp = from p in Fourty.Clients.Project,
-          where: ^cp,
-          order_by: p.id, 
-          preload: [visible_accounts: ^qa] 
-    qc = from c in Fourty.Clients.Client,
-          where: ^cc,
-          order_by: c.id, 
-          preload: [visible_projects: ^qp]
+
+    qa =
+      from a in Account,
+        order_by: a.name
+
+    qp =
+      from p in Fourty.Clients.Project,
+        where: ^cp,
+        order_by: p.id,
+        preload: [visible_accounts: ^qa]
+
+    qc =
+      from c in Fourty.Clients.Client,
+        where: ^cc,
+        order_by: c.id,
+        preload: [visible_projects: ^qp]
+
     Repo.all(qc)
   end
 
@@ -138,10 +164,12 @@ defmodule Fourty.Accounting do
     [%{key: 1, value: "account 1"}, %{key: 2, value: "account #2"}]
   """
   def get_accounts(project_id) do
-    q = from a in Account,
-      select: [key: a.name, value: a.id],
-      where: [project_id: ^project_id],
-      order_by: a.id
+    q =
+      from a in Account,
+        select: [key: a.name, value: a.id],
+        where: [project_id: ^project_id],
+        order_by: a.id
+
     Repo.all(q)
   end
 
@@ -221,11 +249,6 @@ defmodule Fourty.Accounting do
       [%Deposit{}, ...]
 
   """
-  defp do_list_deposits(query) do
-    q = from d in query, order_by: d.inserted_at
-    Repo.all(q)
-  end
-
   def list_deposits(account_id: account_id) do
     q = from d in Deposit, where: d.account_id == ^account_id
     do_list_deposits(q)
@@ -234,6 +257,12 @@ defmodule Fourty.Accounting do
   def list_deposits(order_id: order_id) do
     q = from d in Deposit, where: d.order_id == ^order_id
     do_list_deposits(q)
+  end
+
+  defp do_list_deposits(query) do
+    q = from d in query, order_by: d.inserted_at
+    Repo.all(q)
+    |> Repo.preload(:account)
   end
 
   @doc """
@@ -331,11 +360,6 @@ defmodule Fourty.Accounting do
       [%Withdrwl{}, ...]
 
   """
-  defp do_list_withdrwls(query) do
-    q = from d in query, order_by: d.inserted_at
-    Repo.all(q)
-  end
-
   def list_withdrwls(account_id: account_id) do
     q = from d in Withdrwl, where: d.account_id == ^account_id
     do_list_withdrwls(q)
@@ -344,6 +368,11 @@ defmodule Fourty.Accounting do
   def list_withdrwls(task_id: task_id) do
     q = from d in Withdrwl, where: d.task_id == ^task_id
     do_list_withdrwls(q)
+  end
+
+  defp do_list_withdrwls(query) do
+    q = from d in query, order_by: d.inserted_at
+    Repo.all(q)
   end
 
   @doc """

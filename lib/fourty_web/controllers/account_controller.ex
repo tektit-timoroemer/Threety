@@ -8,33 +8,33 @@ defmodule FourtyWeb.AccountController do
     accounts = Accounting.list_accounts()
     balances = Accounting.load_all_balances()
     heading = dgettext("accounts", "index")
-    render(conn, "index.html", accounts: accounts,
-      balances: balances, heading: heading)
+    render(conn, "index.html", accounts: accounts, balances: balances, heading: heading)
   end
 
   def index_client(conn, %{"client_id" => client_id}) do
     accounts = Accounting.list_accounts(client_id)
     balances = Accounting.load_all_balances()
-    heading = dgettext("accounts", "index_client",
-      name: List.first(accounts).name)
-    render(conn, "index.html", accounts: accounts,
-      balances: balances, heading: heading)    
+    heading = dgettext("accounts", "index_client", name: List.first(accounts).name)
+    render(conn, "index.html", accounts: accounts, balances: balances, heading: heading)
   end
 
   def index_project(conn, %{"project_id" => project_id}) do
     project = Fourty.Clients.get_project!(project_id)
     accounts = Accounting.list_accounts(project.client_id, project.id)
     balances = Accounting.load_all_balances()
-    heading = dgettext("accounts", "index_project",
-      name: List.first(List.first(accounts).visible_projects).name)
-    render(conn, "index.html", accounts: accounts,
-      balances: balances, heading: heading)
+
+    heading =
+      dgettext("accounts", "index_project",
+        name: List.first(List.first(accounts).visible_projects).name
+      )
+
+    render(conn, "index.html", accounts: accounts, balances: balances, heading: heading)
   end
 
   def new(conn, params) do
     changeset = Ecto.Changeset.cast(%Account{}, params, [:project_id])
     account = Ecto.Changeset.apply_changes(changeset)
-    |> Fourty.Repo.preload(project: [:client])
+      |> Fourty.Repo.preload(project: [:client])
     render(conn, "new.html", account: account, changeset: changeset)
   end
 
@@ -44,10 +44,13 @@ defmodule FourtyWeb.AccountController do
         conn
         |> put_flash(:info, dgettext("accounts", "create success"))
         |> redirect(to: Routes.account_path(conn, :show, account))
+
       {:error, %Ecto.Changeset{} = changeset} ->
-        account = Ecto.Changeset.apply_changes(changeset)
-        |> Fourty.Repo.preload(project: [:client])
-        render(conn, "new.html", account: account, changeset: changeset) 
+        account =
+          Ecto.Changeset.apply_changes(changeset)
+          |> Fourty.Repo.preload(project: [:client])
+
+        render(conn, "new.html", account: account, changeset: changeset)
     end
   end
 
@@ -64,6 +67,7 @@ defmodule FourtyWeb.AccountController do
 
   def update(conn, %{"id" => id, "account" => account_params}) do
     account = Accounting.get_account!(id)
+
     case Accounting.update_account(account, account_params) do
       {:ok, account} ->
         conn

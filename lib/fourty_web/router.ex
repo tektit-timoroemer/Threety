@@ -14,7 +14,6 @@ defmodule FourtyWeb.Router do
     plug Fourty.Users.AdminOnly
   end
 
-
   pipeline :auth_opt do
     plug Fourty.Users.Pipeline
   end

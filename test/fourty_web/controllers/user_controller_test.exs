@@ -12,7 +12,6 @@ defmodule FourtyWeb.UserControllerTest do
     password: "test1234TEST!", password_confirmation: "test1234TEST!",
     rate: 142, role: 1, email: "some.test@test.test"}
   @update_attrs %{username: "some updated name",
-    password: "test1234TEST.", password_confirmation: "test1234TEST.",
     rate: 143, role: 0, email: "other.test@test.test"}
   @invalid_attrs %{username: nil, rate: nil, role: nil, email: nil, 
     password: @bad_password1, password_confirmation: @bad_password1}

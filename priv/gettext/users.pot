@@ -61,11 +61,14 @@ msgstr ""
 msgid "role_admin"
 msgstr ""
 
-msgid "password_new_confirmation"
+msgid "password_confirmation"
 msgstr ""
 
 msgid "password_new"
-msgstr "New Password"
+msgstr ""
+
+msgid "password_new_confirmation"
+msgstr ""
 
 msgid "password_old"
 msgstr ""

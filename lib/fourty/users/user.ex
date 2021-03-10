@@ -3,6 +3,10 @@ defmodule Fourty.Users.User do
   import Ecto.Changeset
   alias Fourty.Validations
 
+  # general schema to use for creating users
+  # - for login, use Fourty.Users.Login
+  # - to update passwords, use Fourty.Users.EditPW
+
   schema "users" do
     field :username, Fourty.TypeTrimmedString
     field :email, :string
@@ -24,8 +28,7 @@ defmodule Fourty.Users.User do
 #      :attempts_no, :last_attempt,
        :role,
        :password, :password_confirmation])
-    |> validate_required([:username, :email, :role,
-       :password, :password_confirmation])
+    |> validate_required([:username, :email, :role])
     |> validate_number(:rate, greater_than_or_equal_to: 0)
     |> validate_format(:email, ~r/^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$/)
     |> Validations.validate_password(:password)

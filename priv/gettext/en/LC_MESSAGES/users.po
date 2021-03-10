@@ -62,11 +62,14 @@ msgstr "Admin"
 msgid "password"
 msgstr "Password"
 
-msgid "password_new_confirmation"
-msgstr "New Password (repeat)"
+msgid "password_confirmation"
+msgstr "Password (repeat)"
 
 msgid "password_new"
 msgstr "New Password"
+
+msgid "password_new_confirmation"
+msgstr "New Password (repeat)"
 
 msgid "password_old"
 msgstr "Current Password"

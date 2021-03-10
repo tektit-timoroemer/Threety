@@ -21,11 +21,11 @@
   <%= my_select_input(f, :role, Fourty.Users.list_roles_for_select()) %><br/>
   <%= error_tag(f, :role) %>
 
-  <%= my_label(f, "users", :password_new) %>
+  <%= my_label(f, "users", :password) %>
   <%= my_password_input(f, :password) %><br/>
   <%= error_tag(f, :password) %>
 
-  <%= my_label(f, "users", :password_new_confirmation) %>
+  <%= my_label(f, "users", :password_confirmation) %>
   <%= my_password_input(f, :password_confirmation) %><br/>
   <%= error_tag(f, :password_confirmation) %>
 

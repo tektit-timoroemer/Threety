@@ -12,6 +12,7 @@ defmodule FourtyWeb.UserController do
 
   def new(conn, _params) do
     changeset = Users.change_user(%User{})
+    |> Ecto.Changeset.validate_required([:password, :password_confirmation])
     render(conn, "new.html", changeset: changeset)
   end
 

@@ -26,7 +26,7 @@ defmodule FourtyWeb.ProjectController do
     case Clients.create_project(project_params) do
       {:ok, project} ->
         conn
-        |> put_flash(:info, dgettext("projects", "create success"))
+        |> put_flash(:info, dgettext("projects", "create_success"))
         |> redirect(to: Routes.project_path(conn, :show, project))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -59,7 +59,7 @@ defmodule FourtyWeb.ProjectController do
     case Clients.update_project(project, project_params) do
       {:ok, project} ->
         conn
-        |> put_flash(:info, dgettext("projects", "update success"))
+        |> put_flash(:info, dgettext("projects", "update_success"))
         |> redirect(to: Routes.project_path(conn, :show, project))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -74,7 +74,7 @@ defmodule FourtyWeb.ProjectController do
     {:ok, _project} = Clients.delete_project(project)
 
     conn
-    |> put_flash(:info, dgettext("projects", "delete success"))
+    |> put_flash(:info, dgettext("projects", "delete_success"))
     |> redirect(to: Routes.project_path(conn, :index))
   end
 end

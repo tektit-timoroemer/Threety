@@ -1,5 +1,4 @@
 defmodule FourtyWeb.ErrorHandler do
-	import Plug.Conn
 	use FourtyWeb, :controller
 
 	# authentication error handler
@@ -8,8 +7,13 @@ defmodule FourtyWeb.ErrorHandler do
 
 	@impl Guardian.Plug.ErrorHandler
   def auth_error(conn, {type, _reason}, _opts) do
-    conn
-    |> put_flash(:error, dgettext("sessions", "authentication_error", type: Atom.to_string(type)))
+    case type do
+      :unauthenticated -> 
+				put_flash(conn, :error, dgettext("sessions", "no_authentication"))
+      _ ->
+				put_flash(conn, :error, dgettext("sessions", "authentication_error",
+					type: Atom.to_string(type)))
+    end
     |> redirect(to: Routes.session_path(conn, :index))
   end
 

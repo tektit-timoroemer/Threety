@@ -32,7 +32,7 @@ defmodule FourtyWeb.DepositController do
     case Accounting.create_deposit(deposit_params) do
       {:ok, deposit} ->
         conn
-        |> put_flash(:info, dgettext("deposits", "create success"))
+        |> put_flash(:info, dgettext("deposits", "create_success"))
         |> redirect(to: Routes.deposit_path(conn, :show, deposit))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -61,7 +61,7 @@ defmodule FourtyWeb.DepositController do
     case Accounting.update_deposit(deposit, deposit_params) do
       {:ok, deposit} ->
         conn
-        |> put_flash(:info, dgettext("deposits", "update success"))
+        |> put_flash(:info, dgettext("deposits", "update_success"))
         |> redirect(to: Routes.deposit_path(conn, :show, deposit))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -74,7 +74,7 @@ defmodule FourtyWeb.DepositController do
     {:ok, _deposit} = Accounting.delete_deposit(deposit)
 
     conn
-    |> put_flash(:info, dgettext("deposits", "delete success"))
+    |> put_flash(:info, dgettext("deposits", "delete_success"))
     |> redirect(to: Routes.deposit_path(conn, :index_account, deposit.account_id))
   end
 end

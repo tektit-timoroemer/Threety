@@ -69,17 +69,17 @@ msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/controllers/deposit_controller.ex:35
-msgid "create success"
+msgid "create_success"
 msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/controllers/deposit_controller.ex:78
-msgid "delete success"
+msgid "delete_success"
 msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/controllers/deposit_controller.ex:65
-msgid "update success"
+msgid "update_success"
 msgstr ""
 
 msgid "deposits"

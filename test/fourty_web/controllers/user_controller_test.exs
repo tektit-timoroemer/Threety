@@ -234,7 +234,7 @@ defmodule FourtyWeb.UserControllerTest do
         user: %{password_old: ConnHelper.get_user_pw(),
                 password: @good_password,
                 password_confirmation: @good_password})
-      assert redirected_to(conn) == Routes.session_path(conn, :index)
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
       conn = get(conn, Routes.user_path(conn, :index))
       assert get_flash(conn, :info) == dgettext("users", "pw_update_success")
     end
@@ -264,7 +264,7 @@ defmodule FourtyWeb.UserControllerTest do
         user: %{password_old: ConnHelper.get_user_pw(),
                 password: @good_password,
                 password_confirmation: @good_password})
-      assert redirected_to(conn) == Routes.session_path(conn, :index)
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
       conn = get(conn, Routes.user_path(conn, :index))
       assert get_flash(conn, :info) == dgettext("users", "pw_update_success")
     end
@@ -275,21 +275,21 @@ defmodule FourtyWeb.UserControllerTest do
                 password: @good_password,
                 password_confirmation: @good_password})
       assert html_response(conn, 302) =~ "redirected"
-      assert redirected_to(conn) == Routes.session_path(conn, :index)
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
 
       conn = put(conn, Routes.user_path(conn, :update_pw),
         user: %{password_old: ConnHelper.get_user_pw(),
                 password: @bad_password1,
                 password_confirmation: @bad_password1})
       assert html_response(conn, 302) =~ "redirected"
-      assert redirected_to(conn) == Routes.session_path(conn, :index)
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
 
       conn = put(conn, Routes.user_path(conn, :update_pw),
         user: %{password_old: ConnHelper.get_user_pw(),
                 password: @good_password,
                 password_confirmation: @good_password})
       assert html_response(conn, 302) =~ "redirected"
-      assert redirected_to(conn) == Routes.session_path(conn, :index)
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
     end
   end
 
@@ -312,13 +312,13 @@ defmodule FourtyWeb.UserControllerTest do
 
       conn = delete(conn, Routes.user_path(conn, :delete, user))
       assert html_response(conn, 302) =~ "redirected"
-      assert redirected_to(conn) == Routes.session_path(conn, :index)
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
     end
 
     test "must not delete chose user - none logged in", %{conn: conn, user: user} do
       conn = delete(conn, Routes.user_path(conn, :delete, user))
       assert html_response(conn, 302) =~ "redirected"
-      assert redirected_to(conn) == Routes.session_path(conn, :index)
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
     end
 
   end

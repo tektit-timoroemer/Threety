@@ -24,17 +24,17 @@ msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/controllers/client_controller.ex:46
-msgid "update success"
+msgid "update_success"
 msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/controllers/client_controller.ex:21
-msgid "create success"
+msgid "create_success"
 msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/controllers/client_controller.ex:59
-msgid "delete success"
+msgid "delete_success"
 msgstr ""
 
 #, elixir-format

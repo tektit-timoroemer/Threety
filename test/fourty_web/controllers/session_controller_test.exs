@@ -3,6 +3,7 @@ defmodule FourtyWeb.SessionControllerTest do
 
   alias Phoenix.HTML.Safe
   alias Fourty.Users.User
+  alias FourtyWeb.ConnHelper
   import FourtyWeb.Gettext, only: [dgettext: 2, dgettext: 3]
 
   @ok_credentials %{username: "testuser", password_plain: "test123TEST."}
@@ -27,7 +28,7 @@ defmodule FourtyWeb.SessionControllerTest do
 
   describe "index" do
     test "show home page (all sessions)", %{conn: conn} do
-      conn = get(conn, Routes.session_path(conn, :index))
+      conn = ConnHelper.get_homepage(conn)
       assert html_response(conn, 200) =~
         Safe.to_iodata(dgettext("sessions", "welcome"))
     end
@@ -44,8 +45,8 @@ defmodule FourtyWeb.SessionControllerTest do
     test "login", %{conn: conn} do
       conn = post(conn, Routes.session_path(conn, :callback, :identity), 
         account: @ok_credentials)
-      assert redirected_to(conn) == Routes.session_path(conn, :index)
-      conn = get(conn, Routes.session_path(conn, :index))
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      conn = ConnHelper.get_homepage(conn)
       assert html_response(conn, 200) =~ 
         dgettext("sessions", "welcome %{user}", user: "testuser")
       assert get_flash(conn, :info) == dgettext("sessions", "authentication_success")
@@ -58,8 +59,8 @@ defmodule FourtyWeb.SessionControllerTest do
     test "login attempt with bad user name", %{conn: conn} do
       conn = post(conn, Routes.session_path(conn, :callback, :identity), 
         account: @bad_credentials_1)
-      assert redirected_to(conn) == Routes.session_path(conn, :index)
-      conn = get(conn, Routes.session_path(conn, :index))
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      conn = ConnHelper.get_homepage(conn)
       assert html_response(conn, 200) =~ 
         Safe.to_iodata(dgettext("sessions", "welcome"))
       assert get_flash(conn, :error) == dgettext("sessions", "authentication_failed")
@@ -68,8 +69,8 @@ defmodule FourtyWeb.SessionControllerTest do
     test "login attempt with bad password", %{conn: conn} do
       conn = post(conn, Routes.session_path(conn, :callback, :identity), 
         account: @bad_credentials_2)
-      assert redirected_to(conn) == Routes.session_path(conn, :index)
-      conn = get(conn, Routes.session_path(conn, :index))
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      conn = ConnHelper.get_homepage(conn)
       assert html_response(conn, 200) =~ 
         Safe.to_iodata(dgettext("sessions", "welcome"))
       assert get_flash(conn, :error) == dgettext("sessions", "authentication_failed")
@@ -78,8 +79,8 @@ defmodule FourtyWeb.SessionControllerTest do
     test "login attempt with bad user name and password", %{conn: conn} do
       conn = post(conn, Routes.session_path(conn, :callback, :identity), 
         account: @bad_credentials_3)
-      assert redirected_to(conn) == Routes.session_path(conn, :index)
-      conn = get(conn, Routes.session_path(conn, :index))
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      conn = ConnHelper.get_homepage(conn)
       assert html_response(conn, 200) =~ 
         Safe.to_iodata(dgettext("sessions", "welcome"))
       assert get_flash(conn, :error) == dgettext("sessions", "authentication_failed")
@@ -93,14 +94,14 @@ defmodule FourtyWeb.SessionControllerTest do
     test "login and logoff", %{conn: conn} do
       conn = post(conn, Routes.session_path(conn, :callback, :identity), 
         account: @ok_credentials)
-      assert redirected_to(conn) == Routes.session_path(conn, :index)
-      conn = get(conn, Routes.session_path(conn, :index))
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      conn = ConnHelper.get_homepage(conn)
       assert html_response(conn, 200) =~ 
         dgettext("sessions", "welcome %{user}", user: "testuser")
 
       conn = get(conn, Routes.session_path(conn, :logout))
-      assert redirected_to(conn) == Routes.session_path(conn, :index)
-      conn = get(conn, Routes.session_path(conn, :index))
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      conn = ConnHelper.get_homepage(conn)
 
       assert html_response(conn, 200) =~ 
         Safe.to_iodata(dgettext("sessions", "welcome"))

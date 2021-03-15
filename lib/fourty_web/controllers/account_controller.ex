@@ -42,7 +42,7 @@ defmodule FourtyWeb.AccountController do
     case Accounting.create_account(account_params) do
       {:ok, account} ->
         conn
-        |> put_flash(:info, dgettext("accounts", "create success"))
+        |> put_flash(:info, dgettext("accounts", "create_success"))
         |> redirect(to: Routes.account_path(conn, :show, account))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -71,7 +71,7 @@ defmodule FourtyWeb.AccountController do
     case Accounting.update_account(account, account_params) do
       {:ok, account} ->
         conn
-        |> put_flash(:info, dgettext("accounts", "update success"))
+        |> put_flash(:info, dgettext("accounts", "update_success"))
         |> redirect(to: Routes.account_path(conn, :show, account))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -84,7 +84,7 @@ defmodule FourtyWeb.AccountController do
     {:ok, _account} = Accounting.delete_account(account)
 
     conn
-    |> put_flash(:info, dgettext("accounts", "delete success"))
+    |> put_flash(:info, dgettext("accounts", "delete_success"))
     |> redirect(to: Routes.account_path(conn, :index))
   end
 end

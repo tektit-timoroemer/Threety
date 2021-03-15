@@ -56,15 +56,15 @@ msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/controllers/project_controller.ex:29
-msgid "create success"
+msgid "create_success"
 msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/controllers/project_controller.ex:62
-msgid "update success"
+msgid "update_success"
 msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/controllers/project_controller.ex:77
-msgid "delete success"
+msgid "delete_success"
 msgstr ""

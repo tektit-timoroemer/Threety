@@ -18,7 +18,7 @@ defmodule FourtyWeb.ClientController do
     case Clients.create_client(client_params) do
       {:ok, client} ->
         conn
-        |> put_flash(:info, dgettext("clients", "create success"))
+        |> put_flash(:info, dgettext("clients", "create_success"))
         |> redirect(to: Routes.client_path(conn, :show, client))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -43,7 +43,7 @@ defmodule FourtyWeb.ClientController do
     case Clients.update_client(client, client_params) do
       {:ok, _client} ->
         conn
-        |> put_flash(:info, dgettext("clients", "update success"))
+        |> put_flash(:info, dgettext("clients", "update_success"))
         |> redirect(to: Routes.client_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -56,7 +56,7 @@ defmodule FourtyWeb.ClientController do
     {:ok, _client} = Clients.delete_client(client)
 
     conn
-    |> put_flash(:info, dgettext("clients", "delete success"))
+    |> put_flash(:info, dgettext("clients", "delete_success"))
     |> redirect(to: Routes.client_path(conn, :index))
   end
 end

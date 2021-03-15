@@ -71,15 +71,15 @@ msgstr "List of Orders for %{name}"
 
 #, elixir-format
 #: lib/fourty_web/controllers/order_controller.ex:60
-msgid "create success"
+msgid "create_success"
 msgstr "Order successfully created."
 
 #, elixir-format
 #: lib/fourty_web/controllers/order_controller.ex:102
-msgid "delete success"
+msgid "delete_success"
 msgstr "Order successfully removed."
 
 #, elixir-format
 #: lib/fourty_web/controllers/order_controller.ex:89
-msgid "update success"
+msgid "update_success"
 msgstr "Order successfully updated."

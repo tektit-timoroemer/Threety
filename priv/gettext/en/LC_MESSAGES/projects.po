@@ -57,15 +57,15 @@ msgstr "Projects"
 
 #, elixir-format
 #: lib/fourty_web/controllers/project_controller.ex:29
-msgid "create success"
+msgid "create_success"
 msgstr "Project successfully added."
 
 #, elixir-format
 #: lib/fourty_web/controllers/project_controller.ex:62
 msgid "update success"
-msgstr "Project successfully updated."
+msgstr "Project_successfully updated."
 
 #, elixir-format
 #: lib/fourty_web/controllers/project_controller.ex:77
 msgid "delete success"
-msgstr "Project successfully removed."
+msgstr "Project_successfully removed."

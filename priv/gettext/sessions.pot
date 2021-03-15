@@ -50,6 +50,9 @@ msgstr ""
 msgid "insufficient_access_rights"
 msgstr ""
 
+msgid "no_authentication"
+msgstr ""
+
 msgid "login"
 msgstr ""
 

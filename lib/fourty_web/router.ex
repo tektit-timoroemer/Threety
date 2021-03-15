@@ -100,4 +100,5 @@ defmodule FourtyWeb.Router do
       live_dashboard "/dashboard", metrics: FourtyWeb.Telemetry
     end
   end
+
 end

@@ -32,16 +32,23 @@ defmodule FourtyWeb.ConnHelper do
 
   require Phoenix.ConnTest
 
+  def homepage_path(conn) do
+    FourtyWeb.Router.Helpers.session_path(conn, :index)
+  end
+
+  def get_homepage(conn) do
+    Phoenix.ConnTest.get(conn, homepage_path(conn))
+  end
+  
   def login_user(conn, username) do
     conn
     |> Phoenix.ConnTest.post(
         FourtyWeb.Router.Helpers.session_path(conn, :callback, :identity),
         account: %{username: username, password_plain: @password})
-    |> Phoenix.ConnTest.get(
-        FourtyWeb.Router.Helpers.session_path(conn, :index))
+    |> get_homepage()
 
   end
 
   def get_user_pw(), do: @password
-  
+
 end

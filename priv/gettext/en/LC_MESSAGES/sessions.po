@@ -38,6 +38,9 @@ msgstr "Authentication completed. You are now logged in."
 msgid "authentication_error"
 msgstr "Authentication failed, reason: %{type}"
 
+msgid "no_authentication"
+msgstr "Please login to access this page."
+
 msgid "insufficient_access_rights"
 msgstr "Your role does not permit access to this page."
 

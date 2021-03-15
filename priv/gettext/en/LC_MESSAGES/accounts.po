@@ -69,15 +69,15 @@ msgstr "List of Accounts for %{name}"
 
 #, elixir-format
 #: lib/fourty_web/controllers/account_controller.ex:45
-msgid "create success"
+msgid "create_success"
 msgstr "Account successfully added."
 
 #, elixir-format
 #: lib/fourty_web/controllers/account_controller.ex:87
-msgid "delete success"
+msgid "delete_success"
 msgstr "Account successfully removed."
 
 #, elixir-format
 #: lib/fourty_web/controllers/account_controller.ex:74
-msgid "update success"
+msgid "update_success"
 msgstr "Account successfully updated."

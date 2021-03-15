@@ -57,7 +57,7 @@ defmodule FourtyWeb.OrderController do
     case Clients.create_order(order_params) do
       {:ok, order} ->
         conn
-        |> put_flash(:info, dgettext("orders", "create success"))
+        |> put_flash(:info, dgettext("orders", "create_success"))
         |> redirect(to: Routes.order_path(conn, :show, order))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -86,7 +86,7 @@ defmodule FourtyWeb.OrderController do
     case Clients.update_order(order, order_params) do
       {:ok, order} ->
         conn
-        |> put_flash(:info, dgettext("orders", "update success"))
+        |> put_flash(:info, dgettext("orders", "update_success"))
         |> redirect(to: Routes.order_path(conn, :show, order))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -99,7 +99,7 @@ defmodule FourtyWeb.OrderController do
     {:ok, _order} = Clients.delete_order(order)
 
     conn
-    |> put_flash(:info, dgettext("orders", "delete success"))
+    |> put_flash(:info, dgettext("orders", "delete_success"))
     |> redirect(to: Routes.order_path(conn, :index))
   end
 end

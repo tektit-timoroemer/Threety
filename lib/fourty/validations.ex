@@ -3,7 +3,7 @@ defmodule Fourty.Validations do
 
   # Ensures that date1 comes before date2 or is equal to date2
 
-  @validate_date_sequence_msg "first date must not be after second date"
+  @validate_date_sequence_msg "date_order_error"
   def validate_date_sequence(changeset, date1, date2) do
     d1 = get_field(changeset, date1)
     d2 = get_field(changeset, date2)
@@ -21,7 +21,7 @@ defmodule Fourty.Validations do
 
   # Ensures that at least one of the given fields is provided
 
-  @validate_at_least_one_msg "at least one must be given"
+  @validate_at_least_one_msg "at_least_one_needed"
   def validate_at_least_one(changeset, fields) when is_list(fields) do
     Enum.map(fields, &get_field(changeset, &1))
     |> Enum.reject(&is_nil/1)
@@ -40,9 +40,10 @@ defmodule Fourty.Validations do
     end
   end
 
-  @validate_time_of_day_msg "time must be between 0:00 and 23:59"
+  @validate_time_of_day_msg "time_format_error"
   def validate_time_of_day(changeset, field) do
-    if field <= 0 or field >= 1440,
+    f = get_field(changeset, field)
+    if f && (f < 0 or f > 1440),
       do: add_error(changeset, field, @validate_time_of_day_msg),
       else: changeset
   end

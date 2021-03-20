@@ -203,6 +203,19 @@ defmodule FourtyWeb.ViewHelpers do
     )
   end
 
+  # similar to my_action but with an icon ...
+
+  def my_icon_action(icon, path) do
+    icon_img = img_tag(
+      FourtyWeb.Endpoint.static_path("/icons/" <> icon <> ".svg"),
+      alt: Gettext.dgettext(FourtyWeb.Gettext, "global", icon), 
+      width: "16", height: "16", role: "img")
+    button(icon_img,
+      to: path,
+      class: "btn btn-sm btn-primary",
+      method: :get)
+  end
+
   # Replacement for password input fields
 
   def my_password_input(form, field) do
@@ -233,6 +246,16 @@ defmodule FourtyWeb.ViewHelpers do
     else
       link(l, to: path, class: "link-primary")
     end
+  end
+
+  # helpers for dates
+
+  def weekday(d) do
+    Gettext.dgettext(FourtyWeb.Gettext, "global", "weekday" <> to_string(Date.day_of_week(d)))
+  end
+
+  def date_with_weekday(d) do
+    weekday(d) <> ", " <> to_string(d)
   end
 
   # helpers for calculations
@@ -282,4 +305,5 @@ defmodule FourtyWeb.ViewHelpers do
 
     sign <> Enum.join(ms) <> @decimal_separator <> String.pad_leading(ls, 2, "0")
   end
+
 end

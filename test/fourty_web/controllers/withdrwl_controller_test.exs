@@ -12,7 +12,16 @@ defmodule FourtyWeb.WithdrwlControllerTest do
     withdrwl
   end
 
+  describe "test access" do
+    @tag :skip
+    test "test access - non-existing user", %{conn: conn, client: client} do
+      conn = get(conn, Routes.withdrwl_path(conn, :index))
+      
+    end    
+  end
+
   describe "index" do
+    @tag :skip
     test "lists all withdrwls", %{conn: conn} do
       conn = get(conn, Routes.withdrwl_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing Withdrwls"
@@ -20,6 +29,7 @@ defmodule FourtyWeb.WithdrwlControllerTest do
   end
 
   describe "new withdrwl" do
+    @tag :skip
     test "renders form", %{conn: conn} do
       conn = get(conn, Routes.withdrwl_path(conn, :new))
       assert html_response(conn, 200) =~ "New Withdrwl"
@@ -27,6 +37,7 @@ defmodule FourtyWeb.WithdrwlControllerTest do
   end
 
   describe "create withdrwl" do
+    @tag :skip
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, Routes.withdrwl_path(conn, :create), withdrwl: @create_attrs)
 
@@ -37,6 +48,7 @@ defmodule FourtyWeb.WithdrwlControllerTest do
       assert html_response(conn, 200) =~ "Show Withdrwl"
     end
 
+    @tag :skip
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.withdrwl_path(conn, :create), withdrwl: @invalid_attrs)
       assert html_response(conn, 200) =~ "New Withdrwl"
@@ -46,6 +58,7 @@ defmodule FourtyWeb.WithdrwlControllerTest do
   describe "edit withdrwl" do
     setup [:create_withdrwl]
 
+    @tag :skip
     test "renders form for editing chosen withdrwl", %{conn: conn, withdrwl: withdrwl} do
       conn = get(conn, Routes.withdrwl_path(conn, :edit, withdrwl))
       assert html_response(conn, 200) =~ "Edit Withdrwl"
@@ -55,6 +68,7 @@ defmodule FourtyWeb.WithdrwlControllerTest do
   describe "update withdrwl" do
     setup [:create_withdrwl]
 
+    @tag :skip
     test "redirects when data is valid", %{conn: conn, withdrwl: withdrwl} do
       conn = put(conn, Routes.withdrwl_path(conn, :update, withdrwl), withdrwl: @update_attrs)
       assert redirected_to(conn) == Routes.withdrwl_path(conn, :show, withdrwl)
@@ -63,6 +77,7 @@ defmodule FourtyWeb.WithdrwlControllerTest do
       assert html_response(conn, 200) =~ "some updated rate_cur_per_hour"
     end
 
+    @tag :skip
     test "renders errors when data is invalid", %{conn: conn, withdrwl: withdrwl} do
       conn = put(conn, Routes.withdrwl_path(conn, :update, withdrwl), withdrwl: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Withdrwl"
@@ -72,6 +87,7 @@ defmodule FourtyWeb.WithdrwlControllerTest do
   describe "delete withdrwl" do
     setup [:create_withdrwl]
 
+    @tag :skip
     test "deletes chosen withdrwl", %{conn: conn, withdrwl: withdrwl} do
       conn = delete(conn, Routes.withdrwl_path(conn, :delete, withdrwl))
       assert redirected_to(conn) == Routes.withdrwl_path(conn, :index)

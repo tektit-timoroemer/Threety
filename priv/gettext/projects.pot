@@ -50,7 +50,7 @@ msgid "index_client"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/layout/root.html.leex:28
+#: lib/fourty_web/templates/layout/root.html.leex:41
 msgid "projects"
 msgstr ""
 

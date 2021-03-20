@@ -37,3 +37,30 @@ msgstr "Show"
 
 msgid "confirm"
 msgstr "Please confirm deletion request:"
+
+msgid "weekday1"
+msgstr "Monday"
+msgid "weekday2"
+msgstr "Tuesday"
+msgid "weekday3"
+msgstr "Wednesday"
+msgid "weekday4"
+msgstr "Thursday"
+msgid "weekday5"
+msgstr "Friday"
+msgid "weekday6"
+msgstr "Saturday"
+msgid "weekday7"
+msgstr "Sunday"
+
+msgid "calendar-minus-fill"
+msgstr "previous day"
+
+msgid "calendar-plus-fill"
+msgstr "next day"
+
+msgid "caret-down-square"
+msgstr "move down"
+
+msgid "caret-up-square"
+msgstr "move up"

@@ -1,47 +1,35 @@
 <%= form_for @changeset, @action, fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+      <p><%= dgettext("errors","error_alert") %></p>
     </div>
   <% end %>
 
-  <%= label f, :date_as_of %>
-  <%= date_select f, :date_as_of %>
-  <%= error_tag f, :date_as_of %>
+  <%= hidden_input(f, :date_as_of) %>
+  <%= hidden_input(f, :user_id) %>
 
-  <%= label f, :duration %>
-  <%= number_input f, :duration %>
-  <%= error_tag f, :duration %>
+  <%= my_label(f, "work_items", :duration) %>
+  <%= my_duration_input(f, :duration) %><br />
+  <%= error_tag(f, :duration) %>
 
-  <%= label f, :time_from %>
-  <%= time_select f, :time_from %>
-  <%= error_tag f, :time_from %>
+  <%= my_label(f, "work_items", :time_from) %>
+  <%= my_duration_input(f, :time_from) %><br />
+  <%= error_tag(f, :time_from) %>
 
-  <%= label f, :time_to %>
-  <%= time_select f, :time_to %>
-  <%= error_tag f, :time_to %>
+  <%= my_label(f, "work_items", :time_to) %>
+  <%= my_duration_input(f, :time_to) %><br />
+  <%= error_tag(f, :time_to) %>
 
-  <%= label f, :comments %>
-  <%= text_input f, :comments %>
-  <%= error_tag f, :comments %>
+  <%= my_label(f, "work_items", :comments) %>
+  <%= my_longtext_input(f, :comments) %><br />
+  <%= error_tag(f, :comments) %>
 
-  <%= label f, :account_id %>
-  <%= number_input f, :account_id %>
-  <%= error_tag f, :account_id %>
+  <%= my_label(f, "work_items", :account_id) %>
+  <%= my_text_input(f, :account_id) %><br />
+  <%= error_tag(f, :account_id) %>
 
-  <%= label f, :user_id %>
-  <%= number_input f, :user_id %>
-  <%= error_tag f, :user_id %>
-
-  <%= label f, :withdrwl_id %>
-  <%= number_input f, :withdrwl_id %>
-  <%= error_tag f, :withdrwl_id %>
-
-  <%= label f, :order %>
-  <%= number_input f, :order %>
-  <%= error_tag f, :order %>
-
-  <div>
-    <%= submit "Save" %>
-  </div>
+  <%= my_submit() %>
+  <%# if Ecto.Changeset.get_field(@changeset, :id),
+        do: my_back_link(Routes.work_item_path(@conn, :show, @work_item )),
+        else: my_back_link(Routes.work_item_path(@conn, :index_date, @date)) %>
 <% end %>

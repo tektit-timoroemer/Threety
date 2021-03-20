@@ -96,20 +96,28 @@ msgstr ""
 #: lib/fourty_web/templates/account/form.html.eex:4
 #: lib/fourty_web/templates/client/form.html.eex:4 lib/fourty_web/templates/deposit/form.html.eex:4
 #: lib/fourty_web/templates/deposit/form_edit.html.eex:4 lib/fourty_web/templates/order/form.html.eex:4
-#: lib/fourty_web/templates/project/form.html.eex:4 lib/fourty_web/templates/withdrwl/form.html.eex:4
+#: lib/fourty_web/templates/project/form.html.eex:4 lib/fourty_web/templates/session/login.html.eex:7
+#: lib/fourty_web/templates/user/edit_pw.html.eex:7 lib/fourty_web/templates/user/form.html.eex:4
+#: lib/fourty_web/templates/withdrwl/form.html.eex:4
 msgid "error_alert"
 msgstr ""
 
-msgid "first date must not be after second date"
+msgid "date_order_error"
 msgstr ""
 
-msgid "at least one must be given"
+msgid "at_least_one_needed"
 msgstr ""
 
-msgid "either duration or start and end must be given"
+msgid "bad_duration_time_combination"
 msgstr ""
 
-msgid "time must be between 0:00 and 23:59"
+msgid "time_sequence_error_start"
+msgstr ""
+
+msgid "time_sequence_error_end"
+msgstr ""
+
+msgid "time_format_error"
 msgstr ""
 
 msgid "authentication"
@@ -117,3 +125,7 @@ msgstr ""
 
 msgid "wrong_old_pw"
 msgstr ""
+
+msgid "bad_duration_time_combination"
+msgstr ""
+

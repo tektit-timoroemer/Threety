@@ -40,7 +40,7 @@ defmodule FourtyWeb.Router do
     delete "/logout", SessionController, :logout
   end
 
-  scope "/", FourtyWeb do
+  scope "/", FourtyWeb, assigns: %{adm_only: true} do
     pipe_through [:browser, :auth_opt, :auth_req, :admin_only]
 
     resources "/users", UserController
@@ -64,19 +64,26 @@ defmodule FourtyWeb.Router do
     resources "/wdrws", WithdrwlController, except: [:new, :index]
     get "/wdrws/wrktm/:wrktm_id/new", WithdrwlController, :new
     get "/wdrws/account/:account_id", WithdrwlController, :index_account
-    get "/wdrws/wrktm/wrktm_id", WithdrwlController, :index_work_item
+    #
+    resources "/wrktms/user/:user_id", WorkItemController,
+      except: [:index, :new], as: :work_item_user
+    get "/wrktms/user/:user_id/new/:date_as_of", WorkItemController, :new,
+      as: :work_item_user
+    get "/wrktms/user/:user_id/date/:date_as_of", WorkItemController, :index_date,
+      as: :work_item_user
   end
 
-  scope "/", FourtyWeb do
+  scope "/", FourtyWeb, assigns: %{adm_only: false} do
     pipe_through [:browser, :auth_opt, :auth_req]
 
     get "/user/edit", UserController, :edit_pw
     patch "/user/update", UserController, :update_pw
     put "/user/update", UserController, :update_pw
 
-    resources "/wrktms", WorkItemController, except: [:new, :index]
+    resources "/wrktms", WorkItemController, except: [:index, :new]
+    get "/wrktms/new/:date_as_of", WorkItemController, :new
     get "/wrktms/account/:account_id", WorkItemController, :index_account
-    get "/wrktms/user/:user_id", WorkItemController, :index_user
+    get "/wrktms/date/:date_as_of", WorkItemController, :index_date
   end
 
   # Other scopes may use custom stacks.

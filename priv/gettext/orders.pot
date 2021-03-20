@@ -31,7 +31,7 @@ msgstr ""
 msgid "description"
 msgstr ""
 
-#: lib/fourty_web/templates/layout/root.html.leex:30
+#: lib/fourty_web/templates/layout/root.html.leex:43
 msgid "orders"
 msgstr ""
 

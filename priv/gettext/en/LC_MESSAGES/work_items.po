@@ -1,0 +1,51 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: en\n"
+"Plural-Forms: nplurals=2\n"
+
+#, elixir-format
+#: lib/fourty_web/controllers/work_item_controller.ex:13
+#: lib/fourty_web/templates/layout/root.html.leex:28
+msgid "index_today"
+msgstr "Today's Work Items"
+
+msgid "index_date"
+msgstr "%{user} Work Items for %{date}"
+
+msgid "my"
+msgstr "My"
+
+msgid "new"
+msgstr "Add Work Item"
+
+msgid "today"
+msgstr "Today"
+
+msgid "date_time"
+msgstr "Date / Time"
+
+msgid "work_items"
+msgstr "Work Items"
+
+msgid "duration"
+msgstr "Duration (hh:mm)"
+
+msgid "time_from"
+msgstr "Start Time (hh:mm)"
+
+msgid "time_to"
+msgstr "End Time (hh:mm)"
+
+msgid "comments"
+msgstr "Comments"
+
+msgid "account_id"
+msgstr "Account"

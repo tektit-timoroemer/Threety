@@ -7,11 +7,13 @@ defmodule Fourty.Repo.Migrations.CreateWithdrwls do
       add :amount_dur, :bigint
       add :description, :string
       add :account_id, references(:accounts, on_delete: :restrict), null: false
-      # add :work_item_id, references(:work_items, on_delete: :restrict), null: false
-      # when table :work_items is available
+#     add :work_item_id, references(:work_items, on_delete: :restrict), null: false
+#     --- done in later migration (forward reference)
       timestamps()
     end
 
     create index(:withdrwls, [:account_id, :inserted_at])
+#   create index(:withdrwls, [:work_item_id, :inserted_at])
+#     --- done in later migration (forward reference)
   end
 end

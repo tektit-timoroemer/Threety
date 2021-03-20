@@ -12,7 +12,7 @@ defmodule Fourty.Repo.Migrations.CreateUsers do
       add :last_attempt, :naive_datetime, null: true
       timestamps()
     end
-
+    create unique_index(:users, [:username])
     create unique_index(:users, [:email])
   end
 

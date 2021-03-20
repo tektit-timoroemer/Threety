@@ -15,7 +15,7 @@ msgstr ""
 #: lib/fourty_web/templates/client/index.html.eex:8 lib/fourty_web/templates/deposit/index.html.eex:11
 #: lib/fourty_web/templates/deposit/index_order.html.eex:12 lib/fourty_web/templates/order/index.html.eex:17
 #: lib/fourty_web/templates/project/index.html.eex:10 lib/fourty_web/templates/user/index.html.eex:13
-#: lib/fourty_web/templates/withdrwl/index.html.eex:11
+#: lib/fourty_web/templates/withdrwl/index.html.eex:11 lib/fourty_web/templates/work_item/index_date.html.eex:11
 msgid "actions"
 msgstr ""
 
@@ -35,4 +35,31 @@ msgid "show"
 msgstr ""
 
 msgid "confirm"
+msgstr ""
+
+msgid "weekday1"
+msgstr ""
+msgid "weekday2"
+msgstr ""
+msgid "weekday3"
+msgstr ""
+msgid "weekday4"
+msgstr ""
+msgid "weekday5"
+msgstr ""
+msgid "weekday6"
+msgstr ""
+msgid "weekday7"
+msgstr ""
+
+msgid "calendar-minus-fill"
+msgstr ""
+
+msgid "calendar-plus-fill"
+msgstr ""
+
+msgid "caret-down-square"
+msgstr ""
+
+msgid "caret-up-square"
 msgstr ""

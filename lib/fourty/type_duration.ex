@@ -40,11 +40,11 @@ defmodule Fourty.TypeDuration do
    {:ok, 0}
   """
   def cast(cur) when is_binary(cur) do
-    # does it look like a currency number?
+    # does it look like a duration?
     if Regex.match?(~r/^\s*\d*(\:[0-5]\d?)?\s*\z/, cur) do
       # yes! remove all blanks
       s = String.replace(cur, ~r/\s/, "")
-      # if it contains no decimal point, add one
+      # if it contains no hour-minutes separator, add one
       s = unless(String.contains?(s, ":"), do: s <> ":00", else: s)
       [msp, lsp] = String.split(s, ":")
       msp = String.pad_leading(msp, 1, "0")

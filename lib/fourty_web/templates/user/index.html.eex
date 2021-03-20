@@ -26,6 +26,7 @@
               <%= my_action_link("global", "show", Routes.user_path(@conn, :show, user)) %>
               <%= my_action_link("global", "edit", Routes.user_path(@conn, :edit, user)) %>
               <%= my_action_link("global", "delete", Routes.user_path(@conn, :delete, user)) %>
+              <%= my_action_link("work_items", "work_items", Routes.work_item_user_path(@conn, :index_date, user, "today")) %>
             </td>
           </tr>
         <% end %>

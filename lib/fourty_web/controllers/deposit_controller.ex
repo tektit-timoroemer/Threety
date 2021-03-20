@@ -24,7 +24,7 @@ defmodule FourtyWeb.DepositController do
       Ecto.Changeset.apply_changes(changeset)
       |> Fourty.Repo.preload(order: [project: [:client]])
 
-    accounts = Accounting.get_accounts(deposit.order.project.id)
+    accounts = Accounting.get_accounts_for_project(deposit.order.project.id)
     render(conn, "new.html", changeset: changeset, deposit: deposit, accounts: accounts)
   end
 
@@ -39,7 +39,7 @@ defmodule FourtyWeb.DepositController do
         deposit =
           Ecto.Changeset.apply_changes(changeset)
           |> Fourty.Repo.preload(order: [project: [:client]])
-        accounts = Accounting.get_accounts(deposit.order.project.id)
+        accounts = Accounting.get_accounts_for_project(deposit.order.project.id)
         render(conn, "new.html", changeset: changeset, deposit: deposit, accounts: accounts)
     end
   end

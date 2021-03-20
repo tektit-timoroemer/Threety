@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/layout/root.html.leex:31
+#: lib/fourty_web/templates/layout/root.html.leex:44
 msgid "users"
 msgstr ""
 
@@ -39,12 +39,15 @@ msgstr ""
 msgid "last_attempt"
 msgstr ""
 
+#: lib/fourty_web/templates/user/new.html.eex:1
 msgid "new"
 msgstr ""
 
+#: lib/fourty_web/templates/user/edit.html.eex:1
 msgid "edit"
 msgstr ""
 
+#: lib/fourty_web/templates/user/show.html.eex:1
 msgid "show"
 msgstr ""
 
@@ -55,9 +58,11 @@ msgstr ""
 msgid "password"
 msgstr ""
 
+#: lib/fourty/users.ex:21
 msgid "role_user"
 msgstr ""
 
+#: lib/fourty/users.ex:22
 msgid "role_admin"
 msgstr ""
 
@@ -73,14 +78,18 @@ msgstr ""
 msgid "password_old"
 msgstr ""
 
+#: lib/fourty_web/controllers/user_controller.ex:53
 msgid "update_success"
 msgstr ""
 
+#: lib/fourty_web/controllers/user_controller.ex:73
 msgid "pw_update_success"
 msgstr ""
 
+#: lib/fourty_web/controllers/user_controller.ex:86
 msgid "delete_success"
 msgstr ""
 
+#: lib/fourty_web/controllers/user_controller.ex:23
 msgid "create_success"
 msgstr ""

@@ -15,6 +15,7 @@ msgstr ""
 msgid "welcome"
 msgstr ""
 
+#: lib/fourty_web/templates/session/index.html.eex:3
 msgid "welcome %{user}"
 msgstr ""
 
@@ -25,20 +26,21 @@ msgid "save"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/session_controller.ex:34
+#: lib/fourty_web/controllers/session_controller.ex:62
 msgid "authentication_failed"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/session_controller.ex:42
+#: lib/fourty_web/controllers/session_controller.ex:44
 msgid "authentication_success"
 msgstr ""
 
+#: lib/fourty_web/error_handler.ex:14
 msgid "authentication_error"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/session_controller.ex:27
+#: lib/fourty_web/controllers/session_controller.ex:34
 msgid "logged_out"
 msgstr ""
 
@@ -47,20 +49,27 @@ msgstr ""
 msgid "login_identity"
 msgstr ""
 
+#: lib/fourty/users/admin.ex:11
 msgid "insufficient_access_rights"
 msgstr ""
 
+#: lib/fourty_web/error_handler.ex:12
 msgid "no_authentication"
 msgstr ""
 
+#: lib/fourty_web/templates/layout/root.html.leex:32
 msgid "login"
 msgstr ""
 
+#: lib/fourty_web/templates/layout/root.html.leex:30
 msgid "logout"
 msgstr ""
 
+#: lib/fourty_web/templates/layout/root.html.leex:29
+#: lib/fourty_web/templates/user/edit_pw.html.eex:1
 msgid "edit_pw"
 msgstr ""
 
+#: lib/fourty_web/templates/layout/root.html.leex:25
 msgid "user"
 msgstr ""

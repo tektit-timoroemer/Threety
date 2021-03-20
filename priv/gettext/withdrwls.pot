@@ -12,21 +12,25 @@ msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/templates/withdrwl/index.html.eex:8
+#: lib/fourty_web/templates/work_item/index_date.html.eex:8
 msgid "amount_cur"
 msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/templates/withdrwl/index.html.eex:9
+#: lib/fourty_web/templates/work_item/index_date.html.eex:9
 msgid "amount_dur"
 msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/templates/withdrwl/index.html.eex:7
+#: lib/fourty_web/templates/work_item/index_date.html.eex:7
 msgid "date_time"
 msgstr ""
 
 #, elixir-format
 #: lib/fourty_web/templates/withdrwl/index.html.eex:10
+#: lib/fourty_web/templates/work_item/index_date.html.eex:10
 msgid "description"
 msgstr ""
 
@@ -41,12 +45,12 @@ msgid "new"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/withdrwl_controller.ex:23
+#: lib/fourty_web/controllers/withdrwl_controller.ex:28
 msgid "create success"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/withdrwl_controller.ex:61
+#: lib/fourty_web/controllers/withdrwl_controller.ex:66
 msgid "delete success"
 msgstr ""
 
@@ -61,7 +65,7 @@ msgid "show"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/controllers/withdrwl_controller.ex:48
+#: lib/fourty_web/controllers/withdrwl_controller.ex:53
 msgid "update success"
 msgstr ""
 

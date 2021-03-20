@@ -25,7 +25,8 @@
                   <%= user = Plug.Conn.get_session(@conn, :current_user); user && user.username || dgettext("sessions", "user") %></a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
                   <%= if Plug.Conn.get_session(@conn, :current_user) do %>
-                    <li><%= link(dgettext("sessions", "change_pw"), to: Routes.user_path(@conn, :edit_pw), class: "dropdown-item") %></li>
+                    <li><%= link(dgettext("work_items", "index_today"), to: Routes.work_item_path(@conn, :index_date, "today"), class: "dropdown-item") %></li>
+                    <li><%= link(dgettext("sessions", "edit_pw"), to: Routes.user_path(@conn, :edit_pw), class: "dropdown-item") %></li>
                     <li><%= link(dgettext("sessions", "logout"), to: Routes.session_path(@conn, :logout), method: :delete, class: "dropdown-item") %></li>
                   <% else %>
                     <li><%= link(dgettext("sessions", "login"), to: Routes.session_path(@conn, :index), class: "dropdown-item") %></li>

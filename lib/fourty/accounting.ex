@@ -163,13 +163,30 @@ defmodule Fourty.Accounting do
     iex> get_accounts(project_id)
     [%{key: 1, value: "account 1"}, %{key: 2, value: "account #2"}]
   """
-  def get_accounts(project_id) do
+  def get_accounts_for_project(project_id) do
     q =
       from a in Account,
         select: [key: a.name, value: a.id],
         where: [project_id: ^project_id],
         order_by: a.id
+    Repo.all(q)
+  end
 
+  @doc """
+  Returns the list of accounts the user has access to
+  suitable for dropdown lists. Note: This is a future feature when
+  access/usage of accounts can be restricted per user.
+
+  ## Examples
+
+    iex> get_accounts_for_user(user_id)
+    [%{key: 1, value: "account 1"}, %{key: 2, value: "account #2"}]
+  """
+  def get_accounts_for_user(_user_id) do
+    q =
+      from a in Account,
+        select: [key: a.name, value: a.id],
+        order_by: a.id
     Repo.all(q)
   end
 

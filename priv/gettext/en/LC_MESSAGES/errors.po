@@ -106,14 +106,23 @@ msgstr "There are problems with your input, please see details below."
 msgid "first date must not be after second date"
 msgstr "First date must not be after second date"
 
-msgid "at least one must be given"
+msgid "at_least_one_needed"
 msgstr "At least one must be given"
 
-msgid "either duration or start and end must be given"
-msgstr "Either duration or start and end time must be given"
+msgid "bad_duration_time_combination"
+msgstr "Either Duration or Start and End Time must be given"
 
-msgid "time must be between 0:00 and 23:59"
-msgstr "Time must be between 0:00 and 23:59"
+msgid "duration_does_not_match_time"
+msgstr "Given Duration does not match duration from Start and End Time"
+
+msgid "time_sequence_error_start"
+msgstr "Start Time must be before End Time"
+
+msgid "time_sequence_error_end"
+msgstr "End Time must be after Start Time"
+
+msgid "time_format_error"
+msgstr "Time must be between 0:00 and 24:00"
 
 msgid "authentication"
 msgstr "Authentication failed: #{type}"

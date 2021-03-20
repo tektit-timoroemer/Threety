@@ -9,7 +9,7 @@ defmodule Fourty.Costs do
   alias Fourty.Costs.WorkItem
 
   @doc """
-  Returns the list of work_items.
+  Returns the list of work_items a the given user and date
 
   ## Examples
 
@@ -17,7 +17,7 @@ defmodule Fourty.Costs do
       [%WorkItem{}, ...]
 
   """
-  def list_work_items do
+  def list_work_items(_user_id, _date_as_of) do
     Repo.all(WorkItem)
   end
 
@@ -38,7 +38,8 @@ defmodule Fourty.Costs do
   def get_work_item!(id), do: Repo.get!(WorkItem, id)
 
   @doc """
-  Creates a work_item.
+  Creates a work_item and inserts it at the end of the given date
+  (sequence will be set to count+1)
 
   ## Examples
 
@@ -50,9 +51,15 @@ defmodule Fourty.Costs do
 
   """
   def create_work_item(attrs \\ %{}) do
-    %WorkItem{}
-    |> WorkItem.changeset(attrs)
-    |> Repo.insert()
+    user_id = Map.get(attrs, "user_id")
+    date_as_of = Map.get(attrs, "date_as_of")
+    query = from w in WorkItem,
+      where: w.user_id == ^user_id and w.date_as_of == ^date_as_of
+    count = Repo.aggregate(query, :count)
+    attrs = Map.put(attrs, "sequence", count + 1)
+    work_item = WorkItem.changeset(%WorkItem{}, attrs)
+    IO.inspect(work_item)
+    Repo.insert(work_item)
   end
 
   @doc """

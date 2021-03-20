@@ -13,6 +13,15 @@ defmodule Fourty.ViewHelperTest do
     |> form_for(%Plug.Conn{})
   end
 
+  describe "test icon buttons" do
+    test "my_icon_action" do
+      icon_action = safe_to_string my_icon_action("calendar-minus", "/")
+      assert icon_action =~ "/assets/static/icons/calendar-minus.svg"
+      assert icon_action =~ "btn btn-sm btn-primary"
+      assert icon_action =~ dgettext("global", "calendar-minus")
+    end
+  end
+
   describe "test duration conversion" do
     test "min2dur" do
       assert min2dur(nil) == ""

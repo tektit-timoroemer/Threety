@@ -40,7 +40,7 @@ msgid "balance_dur"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/layout/root.html.leex:29
+#: lib/fourty_web/templates/layout/root.html.leex:42
 msgid "accounts"
 msgstr ""
 

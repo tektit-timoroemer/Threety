@@ -1,5 +1,10 @@
-<h1>Edit Work item</h1>
-
-<%= render "form.html", Map.put(assigns, :action, Routes.work_item_path(@conn, :update, @work_item)) %>
-
-<span><%= link "Back", to: Routes.work_item_path(@conn, :index) %></span>
+<h1><%= dgettext("work_items", "edit") %></h1>
+<div class="row row-cols-auto">
+	<div class="col-sm-3 p-3 border bg-light">
+		<%= if @adm_only do %>
+			<%= render "form.html", Map.put(assigns, :action, Routes.work_item_user_path(@conn, :update, @work_item)) %>
+		<% else %>
+			<%= render "form.html", Map.put(assigns, :action, Routes.work_item_path(@conn, :update, @work_item)) %>
+		<% end %>
+	</div>
+</div>

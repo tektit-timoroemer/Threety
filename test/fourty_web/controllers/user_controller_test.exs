@@ -188,7 +188,7 @@ defmodule FourtyWeb.UserControllerTest do
       assert get_flash(conn, :info) == dgettext("sessions", "authentication_success")
 
       conn = get(conn, Routes.user_path(conn, :edit_pw))
-      assert html_response(conn, 200) =~ dgettext("sessions", "change_pw")
+      assert html_response(conn, 200) =~ dgettext("sessions", "edit_pw")
     end
 
     test "renders edit pw form for changing password - user", %{conn: conn} do
@@ -197,7 +197,7 @@ defmodule FourtyWeb.UserControllerTest do
       assert get_flash(conn, :info) == dgettext("sessions", "authentication_success")
 
       conn = get(conn, Routes.user_path(conn, :edit_pw))
-      assert html_response(conn, 200) =~ dgettext("sessions", "change_pw")
+      assert html_response(conn, 200) =~ dgettext("sessions", "edit_pw")
     end
 
     test "edit pw redirects to homepage when not signed in", %{conn: conn} do

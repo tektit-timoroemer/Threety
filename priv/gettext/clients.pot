@@ -18,7 +18,7 @@ msgid "name"
 msgstr ""
 
 #, elixir-format
-#: lib/fourty_web/templates/layout/root.html.leex:27
+#: lib/fourty_web/templates/layout/root.html.leex:40
 msgid "clients"
 msgstr ""
 

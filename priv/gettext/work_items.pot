@@ -1,0 +1,47 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new translations manually only if they're dynamic
+## translations that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here as no
+## effect: edit them in PO (.po) files instead.
+msgid ""
+msgstr ""
+
+#, elixir-format
+#: lib/fourty_web/controllers/work_item_controller.ex:13
+#: lib/fourty_web/templates/layout/root.html.leex:28
+msgid "index_today"
+msgstr ""
+
+msgid "index_date"
+msgstr ""
+
+msgid "new"
+msgstr ""
+
+msgid "today"
+msgstr ""
+
+msgid "date_time"
+msgstr ""
+
+msgid "work_items"
+msgstr ""
+
+msgid "duration"
+msgstr ""
+
+msgid "time_from"
+msgstr ""
+
+msgid "time_to"
+msgstr ""
+
+msgid "comments"
+msgstr ""
+
+msgid "account_id"
+msgstr ""

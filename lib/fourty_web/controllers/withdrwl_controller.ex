@@ -11,8 +11,13 @@ defmodule FourtyWeb.WithdrwlController do
     render(conn, "index.html", withdrwls: withdrwls, heading: heading)
   end
 
-  def new(conn, _params) do
-    changeset = Accounting.change_withdrwl(%Withdrwl{})
+  def new(conn, params) do
+    changeset = Ecto.Changeset.cast(%Withdrwl{}, params, [:wrktm_id])
+    withdrwl = 
+      Ecto.Changeset.apply_changes(changeset)
+      |> Fourty.Repo.preload(wrktm: [:user])
+    # create list of accounts to choose from
+#    accounts = Accounting.get_accounts()
     render(conn, "new.html", changeset: changeset)
   end
 

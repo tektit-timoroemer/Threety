@@ -22,8 +22,12 @@ defmodule Fourty.Costs do
       [%WorkItem{}, ...]
 
   """
-  def list_work_items(_user_id, _date_as_of) do
-    Repo.all(WorkItem)
+  def list_work_items(user_id, date_as_of) do
+    q = from w in WorkItem, 
+      where: w.user_id == ^user_id and
+        w.date_as_of == ^date_as_of,
+      order_by: w.sequence
+    Repo.all(q)
   end
 
   @doc """

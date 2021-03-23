@@ -17,3 +17,11 @@ Fourty.Users.create_user(%{
 	password: "test1234TEST!",
 	password_confirmation: "test1234TEST!",
 	role: 1})
+
+Fourty.Users.create_user(%{
+	username: "Test",
+	email: "test.test@test.test",
+	rate: 123,
+	password: "test1234TEST!",
+	password_confirmation: "test1234TEST!",
+	role: 0})

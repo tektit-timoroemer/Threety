@@ -32,11 +32,11 @@
           <td><%= work_item.comments %></td>
           <td>
             <%= if @adm_only do %>
-              <%= my_action_link("global", "show", Routes.work_item_user_path(@conn, :show, @user_id, work_item)) %>
-              <%= my_action_link("global", "edit", Routes.work_item_user_path(@conn, :edit, @user_id, work_item)) %>
-              <%= my_action_link("global", "delete", Routes.work_item_user_path(@conn, :delete, @user_id, work_item)) %>
+              <%= my_action_link("global", "show", Routes.work_item_user_path(@conn, :show, work_item.user_id, work_item)) %>
+              <%= my_action_link("global", "edit", Routes.work_item_user_path(@conn, :edit, work_item.user_id, work_item)) %>
+              <%= my_action_link("global", "delete", Routes.work_item_user_path(@conn, :delete, work_item.user_id, work_item)) %>
             <% else %>
-              <img src="/assets/static/icons/caret-down-square.svg" alt="move down" width="32" height="32" />
+              <%= my_action_link("global", "down", Routes.work_item_path(@conn, :show, work_item)) %>
               <%= my_action_link("global", "show", Routes.work_item_path(@conn, :show, work_item)) %>
               <%= my_action_link("global", "edit", Routes.work_item_path(@conn, :edit, work_item)) %>
               <%= my_action_link("global", "delete", Routes.work_item_path(@conn, :delete, work_item)) %>

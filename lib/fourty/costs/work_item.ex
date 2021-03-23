@@ -29,42 +29,65 @@ defmodule Fourty.Costs.WorkItem do
     ])
     |> validate_required([:date_as_of, :user_id, :account_id])
     |> validate_number(:duration, greater_than: 0)
-    |> Fourty.Validations.validate_time_of_day(:time_from)
-    |> Fourty.Validations.validate_time_of_day(:time_to)
-    |> validate_time_sequence(:time_from, :time_to)
-    |> validate_combination(:duration, :time_from, :time_to)
-    |> validate_duration_time(:duration, :time_from, :time_to)
+    |> validate_time_of_day(:time_from)
+    |> validate_time_of_day(:time_to)
+    |> validate_time_sequence()
+    |> validate_combination()
+    |> validate_duration_time()
+    |> assoc_constraint(:user)
+  end
+        
+  def get_duration(changeset, default \\ nil) do
+    d = get_field(changeset, :duration)
+    if changeset.valid? do
+      if d do
+        d 
+      else
+        get_field(changeset, :time_to) - get_field(changeset, :time_from)
+      end
+    else
+      default
+    end
+  end
+
+  @validate_time_of_day_msg "time_format_error"
+  defp validate_time_of_day(changeset, field) do
+    f = get_field(changeset, field)
+    if f && (f < 0 or f > 1440) do
+      add_error(changeset, field, @validate_time_of_day_msg)
+    else
+      changeset
+    end
   end
 
   @validate_time_sequence_msg "time_sequence_error_"
-  defp validate_time_sequence(changeset, time_start, time_end) do
-    s = get_field(changeset, time_start)
-    e = get_field(changeset, time_end)
+  defp validate_time_sequence(changeset) do
+    f = get_field(changeset, :time_from)
+    t = get_field(changeset, :time_to)
 
-    if (s && e) do
-      if (s < e) do
+    if changeset.valid? && (f && t) do
+      if (f < t) do
         changeset
       else
-        add_error(changeset, time_start, @validate_time_sequence_msg <> "start")
-        |> add_error(time_end, @validate_time_sequence_msg <> "end")
+        add_error(changeset, :time_from, @validate_time_sequence_msg <> "start")
+        |> add_error(:time_to, @validate_time_sequence_msg <> "end")
       end
     else
       changeset
     end    
   end
 
-
   @validate_duration_time_msg "duration_does_not_match_time"
-  defp validate_duration_time(changeset, duration, time_start, time_end) do
-    d = get_field(changeset, duration)
-    s = get_field(changeset, time_start)
-    e = get_field(changeset, time_end)
+  defp validate_duration_time(changeset) do
+    d = get_field(changeset, :duration)
+    f = get_field(changeset, :time_from)
+    t = get_field(changeset, :time_to)
 
-    if d && s && e do # all values must be given
-      if d == (e - s) do # duration matches computed duration?
+    if changeset.valid? && d && f && t do # all values must be given
+      if d == (t - f) do # duration matches computed duration?
         changeset 
       else
-        add_error(changeset, duration, @validate_duration_time_msg)
+        add_error(changeset, :duration, @validate_duration_time_msg)
       end
     else
       changeset
@@ -73,28 +96,28 @@ defmodule Fourty.Costs.WorkItem do
   end
 
   @validate_combination_msg "bad_duration_time_combination"
-  defp validate_combination(changeset, duration, time_start, time_end) do
-    d = get_field(changeset, duration)
-    s = get_field(changeset, time_start)
-    e = get_field(changeset, time_end)
+  defp validate_combination(changeset) do
+    d = get_field(changeset, :duration)
+    f = get_field(changeset, :time_from)
+    t = get_field(changeset, :time_to)
     c = changeset
 
-    unless d || (s && e) do
+    unless c.valid? && (d || (f && t)) do
       c =
         unless(d,
-          do: add_error(c, duration, @validate_combination_msg),
+          do: add_error(c, :duration, @validate_combination_msg),
           else: c
         )
 
       c =
-        unless(s,
-          do: add_error(c, time_start, @validate_combination_msg),
+        unless(f,
+          do: add_error(c, :time_from, @validate_combination_msg),
           else: c
         )
 
 #     c =
-        unless(e,
-          do: add_error(c, time_end, @validate_combination_msg),
+        unless(t,
+          do: add_error(c, :time_to, @validate_combination_msg),
           else: c
         )
     else

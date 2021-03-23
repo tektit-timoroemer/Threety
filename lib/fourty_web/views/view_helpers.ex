@@ -3,6 +3,8 @@ defmodule FourtyWeb.ViewHelpers do
   Input Helper for views to ensure consistent user interface
   """
   use Phoenix.HTML
+  import Fourty.TypeDuration, only: [min2dur: 1]
+  import Fourty.TypeCurrency, only: [int2cur: 1]
 
   # the list of required fields can be found in form.source which
   # contains the underlying changeset
@@ -262,48 +264,6 @@ defmodule FourtyWeb.ViewHelpers do
 
   def delta(value1, value2) do
     value1 && value2 && value1 - value2
-  end
-
-  # format integer to hh:mm for display in views
-
-  def min2dur(nil), do: ""
-  def min2dur(%Decimal{} = dec), do: min2dur(Decimal.to_integer(dec))
-  def min2dur(str) when is_binary(str), do: str
-
-  def min2dur(value) when is_integer(value) do
-    sign = if value < 0, do: "-", else: ""
-    v = abs(value)
-    r = rem(v, 60)
-
-    sign <>
-      Integer.to_string(trunc(v / 60)) <>
-      ":" <>
-      String.pad_leading(Integer.to_string(r), 2, "0")
-  end
-
-  # format integer to currency d ddd ... ddd.dd for display in views
-
-  @thousands_separator " "
-  @decimal_separator "."
-
-  def int2cur(nil), do: ""
-  def int2cur(%Decimal{} = dec), do: int2cur(Decimal.to_integer(dec))
-  def int2cur(str) when is_binary(str), do: str
-
-  def int2cur(value) when is_integer(value) do
-    sign = if value < 0, do: "-", else: ""
-    v = abs(value)
-    ls = Integer.to_string(rem(v, 100))
-    ms = Integer.to_string(trunc(v / 100))
-    lm = String.length(ms)
-    ms = String.graphemes(ms)
-
-    {ms, _} =
-      Enum.map_reduce(ms, lm, fn c, i ->
-        {if(rem(i, 3) == 0, do: @thousands_separator <> c, else: c), i - 1}
-      end)
-
-    sign <> Enum.join(ms) <> @decimal_separator <> String.pad_leading(ls, 2, "0")
   end
 
 end

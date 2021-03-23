@@ -35,6 +35,9 @@ msgstr "Delete"
 msgid "show"
 msgstr "Show"
 
+msgid "index"
+msgstr "Index"
+
 msgid "confirm"
 msgstr "Please confirm deletion request:"
 

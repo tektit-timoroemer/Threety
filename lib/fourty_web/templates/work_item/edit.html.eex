@@ -2,7 +2,7 @@
 <div class="row row-cols-auto">
 	<div class="col-sm-3 p-3 border bg-light">
 		<%= if @adm_only do %>
-			<%= render "form.html", Map.put(assigns, :action, Routes.work_item_user_path(@conn, :update, @work_item)) %>
+			<%= render "form.html", Map.put(assigns, :action, Routes.work_item_user_path(@conn, :update, @work_item.user_id, @work_item)) %>
 		<% else %>
 			<%= render "form.html", Map.put(assigns, :action, Routes.work_item_path(@conn, :update, @work_item)) %>
 		<% end %>

@@ -22,6 +22,12 @@ msgstr ""
 msgid "new"
 msgstr ""
 
+msgid "edit"
+msgstr ""
+
+msgid "show"
+msgstr ""
+
 msgid "today"
 msgstr ""
 
@@ -44,4 +50,16 @@ msgid "comments"
 msgstr ""
 
 msgid "account_id"
+msgstr ""
+
+msgid "withdrwl_description"
+msgstr ""
+
+msgid "create_success"
+msgstr ""
+
+msgid "update_success"
+msgstr ""
+
+msgid "delete_success"
 msgstr ""

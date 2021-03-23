@@ -7,7 +7,8 @@ defmodule FourtyWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_fourty_key",
-    signing_salt: "BM+1pXIQ"
+    signing_salt: "BM+1pXIQ",
+    max_age: 12*60*60 # 12 hours
   ]
 
   socket "/socket", FourtyWeb.UserSocket,

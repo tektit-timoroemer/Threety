@@ -5,31 +5,57 @@
     </div>
   <% end %>
 
-  <%= hidden_input(f, :date_as_of) %>
   <%= hidden_input(f, :user_id) %>
+  <%= hidden_input(f, :date_as_of) %>
+
+  <%= my_label("work_items", "user") %>
+  <%= my_text_value(@username) %><br />
+
+  <%= my_label("work_items", "date_as_of") %>
+  <%= my_date_value(@date_as_of) %><br />
 
   <%= my_label(f, "work_items", :duration) %>
   <%= my_duration_input(f, :duration) %><br />
   <%= error_tag(f, :duration) %>
 
-  <%= my_label(f, "work_items", :time_from) %>
-  <%= my_duration_input(f, :time_from) %><br />
-  <%= error_tag(f, :time_from) %>
-
-  <%= my_label(f, "work_items", :time_to) %>
-  <%= my_duration_input(f, :time_to) %><br />
-  <%= error_tag(f, :time_to) %>
+  <div class="row align-items-end">
+    <div class="col-sm-6">
+      <%= my_label(f, "work_items", :time_from) %>
+    </div>
+    <div class="col-sm-6">
+      <%= my_label(f, "work_items", :time_to) %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <%= my_duration_input(f, :time_from) %><br />
+      <%= error_tag(f, :time_from) %>
+    </div>
+    <div class="col-sm-6">
+      <%= my_duration_input(f, :time_to) %><br />
+      <%= error_tag(f, :time_to) %>
+    </div>
+  </div>
 
   <%= my_label(f, "work_items", :comments) %>
   <%= my_longtext_input(f, :comments) %><br />
   <%= error_tag(f, :comments) %>
 
   <%= my_label(f, "work_items", :account_id) %>
-  <%= my_text_input(f, :account_id) %><br />
-  <%= error_tag(f, :account_id) %>
+  <%= my_select_input(f, :account_id, @accounts) %><br />
 
   <%= my_submit() %>
-  <%# if Ecto.Changeset.get_field(@changeset, :id),
-        do: my_back_link(Routes.work_item_path(@conn, :show, @work_item )),
-        else: my_back_link(Routes.work_item_path(@conn, :index_date, @date)) %>
+  <%= if Ecto.Changeset.get_field(@changeset, :id) do %>
+    <%= if @adm_only do %>
+      <%= my_back_link(Routes.work_item_user_path(@conn, :show, @work_item.user_id, @work_item)) %> 
+    <% else %>
+      <%= my_back_link(Routes.work_item_path(@conn, :show, @work_item )) %>
+    <% end %>
+  <% else %>
+    <%= if @adm_only do %>
+      <%= my_back_link(Routes.work_item_user_path(@conn, :index_date, @work_item.user_id, @work_item.date_as_of)) %>
+    <% else %>
+      <%= my_back_link(Routes.work_item_path(@conn, :index_date, @work_item.date_as_of)) %>
+    <% end %>
+  <% end %>
 <% end %>

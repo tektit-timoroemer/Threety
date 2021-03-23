@@ -66,6 +66,25 @@ defmodule Fourty.Users do
   def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
+  Retrieve the booking rate for the given user.
+  
+  Raises `Ecto.NoResultsError` if the user does not exist.
+
+  ## Examples
+
+      iex> get_rate_for_user!(id)
+      123
+
+      iex> get_rate_for_user!(id)
+      ** (Ecto.NoResultserror)
+
+  """
+  def get_rate_for_user!(id) do
+    [%{rate: rate}] = Repo.all(from u in User, where: u.id == ^id, select: map(u, [:rate])) 
+    rate
+  end
+
+  @doc """
   Find user with the given credentials in %Ueberauth.Auth{}
   and set information.
   """

@@ -26,6 +26,12 @@ msgstr "My"
 msgid "new"
 msgstr "Add Work Item"
 
+msgid "edit"
+msgstr "Edit Work Item"
+
+msgid "show"
+msgstr "Show Work Item"
+
 msgid "today"
 msgstr "Today"
 
@@ -49,3 +55,21 @@ msgstr "Comments"
 
 msgid "account_id"
 msgstr "Account"
+
+msgid "user"
+msgstr "For User"
+
+msgid "date_as_of"
+msgstr "On Date"
+
+msgid "withdrwl_description"
+msgstr "on %{date_as_of} by user %{user_id} with rate %{rate}"
+
+msgid "create_success"
+msgstr "Work Item successfully created."
+
+msgid "update_success"
+msgstr "Work Item successfully updated."
+
+msgid "delete_success"
+msgstr "Work Item successfully deleted."

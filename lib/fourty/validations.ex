@@ -40,14 +40,6 @@ defmodule Fourty.Validations do
     end
   end
 
-  @validate_time_of_day_msg "time_format_error"
-  def validate_time_of_day(changeset, field) do
-    f = get_field(changeset, field)
-    if f && (f < 0 or f > 1440),
-      do: add_error(changeset, field, @validate_time_of_day_msg),
-      else: changeset
-  end
-
   # common password validation
 
   def validate_password(changeset, password) do

@@ -1,8 +1,7 @@
 <h1><%= @heading %></h1>
 <div class="row row-cols-auto">
-  <div class="col-sm-9 p-3 border bg-light">
+  <div class="col-sm-11 p-3 border bg-light">
     <%= if @adm_only do %>
-    <p><%= "Value of @adm_only: " <> to_string(@adm_only)%></p>
       <%= my_icon_action("calendar-minus-fill", Routes.work_item_user_path(@conn, :index_date, @user_id, to_string( Date.add(@date_as_of,-1))))%>
       <%= my_action("work_items", "new", Routes.work_item_user_path(@conn, :new, @user_id, to_string(@date_as_of))) %>
       <%= my_icon_action("calendar-plus-fill", Routes.work_item_user_path(@conn, :index_date, @user_id, Date.add(@date_as_of, 1) |> to_string()))%>
@@ -16,19 +15,21 @@
       <thead>
         <tr>
           <th class="col-sm-2"><%= dgettext("work_items", "date_time") %></th>
-          <th class="col-sm-1 text-end"><%= dgettext("withdrwls", "amount_cur") %></th>
-          <th class="col-sm-1 text-end"><%= dgettext("withdrwls", "amount_dur") %></th>
-          <th class="col-sm-3"><%= dgettext("withdrwls", "description") %></th>
-          <th class="col-sm-2"><%= dgettext("global", "actions") %></th>
+          <th class="col-sm-1 text-end"><%= dgettext("work_items", "duration") %></th>
+          <th class="col-sm-1 text-end"><%= dgettext("work_items", "time_from") %></th>
+          <th class="col-sm-1 text-end"><%= dgettext("work_items", "time_to") %></th>
+          <th class="col-sm-3"><%= dgettext("work_items", "comments") %></th>
+          <th class="col-sm-3"><%= dgettext("global", "actions") %></th>
         </tr>
       </thead>
       <tbody>
       <%= for work_item <- @work_items do %>
         <tr>
           <td><%= my_date_time(work_item.inserted_at) %></td>
-          <td class="text-end"><%# int2cur(withdrwl.amount_cur) %></td>
-          <td class="text-end"><%# min2dur(withdrwl.amount_dur) %></td>
-          <td><%= work_item.description %></td>
+          <td class="text-end"><%= min2dur(work_item.duration) %></td>
+          <td class="text-end"><%= min2dur(work_item.time_from) %></td>
+          <td class="text-end"><%= min2dur(work_item.time_to) %></td>
+          <td><%= work_item.comments %></td>
           <td>
             <%= if @adm_only do %>
               <%= my_action_link("global", "show", Routes.work_item_user_path(@conn, :show, @user_id, work_item)) %>

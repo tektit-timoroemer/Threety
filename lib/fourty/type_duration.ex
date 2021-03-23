@@ -7,6 +7,9 @@ defmodule Fourty.TypeDuration do
   casting must permit values formatted as durations, i.e. hh:mm,
   :mm, or hh.
 
+  This type is also used for time of day specifications because we do
+  not need the extra precision.
+
   ## Examples
 
   iex> cast("  :01")
@@ -76,4 +79,22 @@ defmodule Fourty.TypeDuration do
   end
 
   def type, do: :integer
+
+  # format integer to hh:mm for display in views
+
+  def min2dur(nil), do: ""
+  def min2dur(%Decimal{} = dec), do: min2dur(Decimal.to_integer(dec))
+  def min2dur(str) when is_binary(str), do: str
+
+  def min2dur(value) when is_integer(value) do
+    sign = if value < 0, do: "-", else: ""
+    v = abs(value)
+    r = rem(v, 60)
+
+    sign <>
+      Integer.to_string(trunc(v / 60)) <>
+      ":" <>
+      String.pad_leading(Integer.to_string(r), 2, "0")
+  end
+  
 end

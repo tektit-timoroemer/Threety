@@ -81,4 +81,30 @@ defmodule Fourty.TypeCurrency do
   end
 
   def type, do: :integer
+
+  # format integer to currency d ddd ... ddd.dd for display in views
+
+  @thousands_separator " "
+  @decimal_separator "."
+
+  def int2cur(nil), do: ""
+  def int2cur(%Decimal{} = dec), do: int2cur(Decimal.to_integer(dec))
+  def int2cur(str) when is_binary(str), do: str
+
+  def int2cur(value) when is_integer(value) do
+    sign = if value < 0, do: "-", else: ""
+    v = abs(value)
+    ls = Integer.to_string(rem(v, 100))
+    ms = Integer.to_string(trunc(v / 100))
+    lm = String.length(ms)
+    ms = String.graphemes(ms)
+
+    {ms, _} =
+      Enum.map_reduce(ms, lm, fn c, i ->
+        {if(rem(i, 3) == 0, do: @thousands_separator <> c, else: c), i - 1}
+      end)
+
+    sign <> Enum.join(ms) <> @decimal_separator <> String.pad_leading(ls, 2, "0")
+  end
+  
 end

@@ -1,53 +1,45 @@
-<h1>Show Work item</h1>
+<h1><%= dgettext("work_items", "show") %></h1>
+<div class="row row-cols-auto">
+  <div class="col-sm-3 p-3 border bg-light">
 
-<ul>
+    <%= my_label("work_items", "user") %>
+    <%= my_text_value(@work_item.user.username) %><br />
 
-  <li>
-    <strong>Date as of:</strong>
-    <%= @work_item.date_as_of %>
-  </li>
+    <%= my_label("work_items", "date_as_of") %>
+    <%= my_date_value(@work_item.date_as_of) %><br />
 
-  <li>
-    <strong>Duration:</strong>
-    <%= @work_item.duration %>
-  </li>
+    <%= my_label("work_items", "duration") %>
+    <%= my_duration_value(@work_item.duration) %><br />
 
-  <li>
-    <strong>Time from:</strong>
-    <%= @work_item.time_from %>
-  </li>
+    <div class="row align-items-end">
+        <div class="col-sm-6">
+            <%= my_label("work_items", "time_from") %>
+        </div>
+        <div class="col-sm-6">
+            <%= my_label("work_items", "time_to") %>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <%= my_duration_value(@work_item.time_from) %>
+        </div>
+        <div class="col-sm-6">
+            <%= my_duration_value(@work_item.time_to) %>
+        </div>
+    </div>
+    <br />
 
-  <li>
-    <strong>Time to:</strong>
-    <%= @work_item.time_to %>
-  </li>
+    <%= my_label("work_items", "comments") %>
+    <%= my_longtext_value(@work_item.comments) %><br />
 
-  <li>
-    <strong>Comments:</strong>
-    <%= @work_item.comments %>
-  </li>
+    <%= my_label("work_items", "account_id") %>
+    <%= if @adm_only do %>
+        <%= my_text_link(@work_item.withdrwl.account.name, Routes.account_path(@conn, :show, @work_item.withdrwl.account.id)) %><br />
+        <%= my_action("global", "edit", Routes.work_item_user_path(@conn, :edit, @work_item.user_id, @work_item)) %>
+        <%= my_action("global", "index", Routes.work_item_user_path(@conn, :index_date, @work_item.user_id, to_string(@work_item.date_as_of))) %>
+    <% else %>
+        <%= my_text_value(@work_item.withdrwl.account.name) %><br />
+        <%= my_action("global", "edit", Routes.work_item_path(@conn, :edit, @work_item)) %>
+        <%= my_action("global", "index", Routes.work_item_path(@conn, :index_date, to_string(@work_item.date_as_of))) %>
+    <% end %>
 
-  <li>
-    <strong>Account:</strong>
-    <%= @work_item.account_id %>
-  </li>
-
-  <li>
-    <strong>User:</strong>
-    <%= @work_item.user_id %>
-  </li>
-
-  <li>
-    <strong>Withdrwl:</strong>
-    <%= @work_item.withdrwl_id %>
-  </li>
-
-  <li>
-    <strong>Order:</strong>
-    <%= @work_item.order %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: Routes.work_item_path(@conn, :edit, @work_item) %></span>
-<span><%= link "Back", to: Routes.work_item_path(@conn, :index) %></span>

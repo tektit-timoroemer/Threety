@@ -2,6 +2,7 @@ defmodule FourtyWeb.WorkItemController do
   use FourtyWeb, :controller
 
   alias Fourty.Costs
+  alias Fourty.Accounting
   alias Fourty.Costs.WorkItem
   alias FourtyWeb.ViewHelpers
 
@@ -64,27 +65,33 @@ defmodule FourtyWeb.WorkItemController do
 
     # need to extract adm_only because it is an atom not a string
 
-    {adm_only, assigns} = Map.pop!(conn.assigns, :adm_only)
+    {adm_only, assigns} = Map.pop(conn.assigns, :adm_only, false)
     params = Map.merge(params, assigns)
+
+    # user_id is the id for the user to create a work item for;
+    # it is "0" if it is for the current user
+
     user_id = Map.get(params, "user_id", "0")
     user = get_user(conn, user_id)
     params = Map.put(params, "user_id", user.id)
     changeset = Costs.change_work_item(%WorkItem{}, params)
-    IO.inspect(changeset)
-    render(conn, "new.html", changeset: changeset,
-      adm_only: Map.get(conn.assigns, :adm_only, false))
+    accounts = Accounting.get_accounts_for_user(user.id)
+    render(conn, "new.html", changeset: changeset, accounts: accounts,
+      adm_only: adm_only, user_id: user_id, username: user.username)
   end
 
   def create(conn, %{"work_item" => work_item_params}) do
-    IO.inspect(work_item_params)
+    {adm_only, _assigns} = Map.pop(conn.assigns, :adm_only, false)
     case Costs.create_work_item(work_item_params) do
       {:ok, work_item} ->
         conn
         |> put_flash(:info, dgettext("work_items", "create_success"))
         |> redirect(to: Routes.work_item_path(conn, :show, work_item))
       {:error, %Ecto.Changeset{} = changeset} ->
+        user_id = Ecto.Changeset.fetch_field(changeset, :user_id)
+        accounts = Accounting.get_accounts_for_user(user_id)
         render(conn, "new.html", changeset: changeset,
-          date_as_of: Map.get(work_item_params, "date_as_of"))
+          accounts: accounts, adm_only: adm_only)
     end
   end
 
@@ -94,22 +101,34 @@ defmodule FourtyWeb.WorkItemController do
   end
 
   def edit(conn, %{"id" => id}) do
+    {adm_only, assigns} = Map.pop(conn.assigns, :adm_only, false)
     work_item = Costs.get_work_item!(id)
     changeset = Costs.change_work_item(work_item)
-    render(conn, "edit.html", work_item: work_item, changeset: changeset)
+    accounts = Accounting.get_accounts_for_user(work_item.user_id)
+    render(conn, "edit.html", work_item: work_item, 
+      changeset: changeset, accounts: accounts, adm_only: adm_only,
+      date_as_of: work_item.date_as_of, username: work_item.user.username)
   end
 
   def update(conn, %{"id" => id, "work_item" => work_item_params}) do
+    {adm_only, assigns} = Map.pop(conn.assigns, :adm_only, false)
     work_item = Costs.get_work_item!(id)
-
     case Costs.update_work_item(work_item, work_item_params) do
-      {:ok, work_item} ->
+      {:ok, %{work_item: work_item, withdrwl: _withdrwl}} ->
+        redirect_path = if adm_only do
+          Routes.work_item_user_path(conn, :show, work_item.user_id, work_item)
+        else
+          Routes.work_item_path(conn, :show, work_item)
+        end
         conn
         |> put_flash(:info, dgettext("work_items", "update_success"))
-        |> redirect(to: Routes.work_item_path(conn, :show, work_item))
+        |> redirect(to: redirect_path)
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", work_item: work_item, changeset: changeset)
+      {:error, :work_item, %Ecto.Changeset{} = changeset, %{}} ->
+        accounts = Accounting.get_accounts_for_user(work_item.user_id)
+        render(conn, "edit.html", work_item: work_item,
+          changeset: changeset, accounts: accounts, adm_only: adm_only,
+          date_as_of: work_item.date_as_of, username: work_item.user.username)
     end
   end
 

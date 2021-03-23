@@ -15,8 +15,6 @@ defmodule Fourty.Users.User do
     field :password_confirmation, Fourty.TypeTrimmedString, virtual: true
     field :rate, Fourty.TypeCurrency
     field :role, :integer, default: 0
-#   field :attempts_no, :integer, default: 0
-#   field :last_attempt, :naive_datetime
     has_many :work_items, Fourty.Costs.WorkItem
     timestamps()
   end
@@ -25,11 +23,10 @@ defmodule Fourty.Users.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:username, :email, :rate,
-#      :attempts_no, :last_attempt,
        :role,
        :password, :password_confirmation])
     |> validate_required([:username, :email, :role])
-    |> validate_number(:rate, greater_than_or_equal_to: 0)
+    |> validate_number(:rate, greater_than: 0)
     |> validate_format(:email, ~r/^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$/)
     |> Validations.validate_password(:password)
     |> validate_confirmation(:password)

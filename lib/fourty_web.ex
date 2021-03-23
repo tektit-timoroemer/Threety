@@ -37,6 +37,10 @@ defmodule FourtyWeb do
       import Phoenix.Controller,
         only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
 
+      # import from types
+      import Fourty.TypeCurrency, only: [int2cur: 1]
+      import Fourty.TypeDuration, only: [min2dur: 1]
+
       # Include shared imports and aliases for views
       unquote(view_helpers())
     end

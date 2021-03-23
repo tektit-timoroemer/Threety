@@ -167,15 +167,15 @@ defmodule Fourty.Accounting do
     q =
       from a in Account,
         select: [key: a.name, value: a.id],
-        where: [project_id: ^project_id],
+        where: [project_id: ^project_id, visible: true],
         order_by: a.id
     Repo.all(q)
   end
 
   @doc """
-  Returns the list of accounts the user has access to
-  suitable for dropdown lists. Note: This is a future feature when
-  access/usage of accounts can be restricted per user.
+  Returns the list of accounts the user has access to;
+  suitable for dropdown lists. Note: The specification for a user_id
+  is a future feature when access/usage of accounts may be restricted.
 
   ## Examples
 
@@ -186,6 +186,7 @@ defmodule Fourty.Accounting do
     q =
       from a in Account,
         select: [key: a.name, value: a.id],
+        where: [visible: true],
         order_by: a.id
     Repo.all(q)
   end

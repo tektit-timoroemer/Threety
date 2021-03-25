@@ -14,6 +14,57 @@ defmodule Fourty.Costs do
   alias Fourty.Accounting.Withdrwl
 
   @doc """
+  Exchange the sequence number of the two items (utility to allow
+  manual sorting of work_items). Must only be permitted for same user
+  and for same date!
+  """
+  def flip_sequence(item1, item2) do
+    Multi.new()
+    |> Multi.run(:get_items, fn _repo, _changes ->
+        get_items([item1, item2])
+        end)
+    |> Multi.run(:update_item1a, fn repo, %{get_items: %{item1a: cs}} ->
+        repo.update(cs)
+        end)
+    |> Multi.run(:update_item2, fn repo, %{get_items: %{item2: cs}} ->
+        repo.update(cs)
+        end)
+    |> Multi.run(:update_item1b, fn repo, %{get_items: %{item1b: cs}} ->
+        repo.update(cs)
+        end)
+    |> Repo.transaction()
+  end
+
+  # retrieve and check 2 items, returns {:error, msg} or 
+  # {:ok, [changeset for item1, changeset for item2]}
+
+  defp get_items(item_list) when length(item_list) == 2 do
+    q = from w in WorkItem, where: w.id in ^item_list
+    items = Repo.all(q)
+    if length(items) != 2 do
+      {:error, "invalid_no_of_items"}
+    else
+      [item1, item2] = items
+      cond do
+      item1.date_as_of != item2.date_as_of ->
+        {:error, "items_not_same_date"}
+      item1.user_id != item2.user_id ->
+        {:error, "items_not_same_user"}
+      true ->
+        # note: need to set account_id because it is required but virtual
+        # also need to consider unique constraint for sequence numbers ...
+        item1a_cs = Fourty.Costs.WorkItem.changeset(item1, %{account_id: 0})
+        |> Changeset.change(sequence: 0)
+        item2_cs = Fourty.Costs.WorkItem.changeset(item2, %{account_id: 0})
+        |> Changeset.change(sequence: item1.sequence)
+        item1b_cs = Fourty.Costs.WorkItem.changeset(item1, %{account_id: 0})
+        |> Changeset.change(sequence: item2.sequence)
+        {:ok, %{item1a: item1a_cs, item2: item2_cs, item1b: item1b_cs}}
+      end
+    end   
+  end
+
+  @doc """
   Returns the list of work_items a the given user and date
 
   ## Examples
@@ -83,11 +134,6 @@ defmodule Fourty.Costs do
     |> Repo.insert()
   end
 
-  defp get_withdrwl_for_work_item(id) do
-    query = from w in Withdrwl, where: w.work_item_id == ^id
-    Repo.all(query) 
-  end
-
   defp create_withdrwl_description(user_id, date_as_of, rate) do
     dgettext("work_items", "withdrwl_description",
       user_id: user_id, date_as_of: date_as_of, 
@@ -134,9 +180,9 @@ defmodule Fourty.Costs do
     withdrwl_cs = Withdrwl.changeset(work_item.withdrwl, %{
         amount_cur: amount_cur, amount_dur: duration,
         description: description, account_id: account_id})
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:work_item, work_item_cs)
-    |> Ecto.Multi.update(:withdrwl, withdrwl_cs)
+    Multi.new()
+    |> Multi.update(:work_item, work_item_cs)
+    |> Multi.update(:withdrwl, withdrwl_cs)
     |> Repo.transaction()
   end
 

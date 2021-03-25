@@ -14,6 +14,34 @@ defmodule FourtyWeb.WorkItemController do
     end
   end
 
+  defp get_date_as_of(params) do
+    date_as_of = Map.get(params, "date_as_of", "today")
+    case date_as_of do
+      "today" ->
+        Date.utc_today
+      _ ->
+        Date.from_iso8601!(date_as_of)
+    end
+  end
+
+  # exchanges sequence number of the given items
+
+  def flip(conn, %{"item1" => item1, "item2" => item2} = params) do
+    {adm_only, _assigns} = Map.pop(conn.assigns, :adm_only, false)
+    user_id = Map.get(params, "user_id", "0")
+    date_as_of = get_date_as_of(params)
+    conn = case Costs.flip_sequence(item1, item2) do
+      {:error, last_step, _failure_info} ->
+        put_flash(conn, :info, dgettext("work_items", "flip_failed", last_step))
+      {:ok, _} -> conn
+      end
+    redirect(conn, to: if adm_only do
+        Routes.work_item_user_path(conn, :index_date, user_id, to_string(date_as_of))
+      else
+        Routes.work_item_path(conn, :index_date, to_string(date_as_of))
+      end)
+  end
+
   # index_date:
   # date defaults to today
   # user defaults to current user
@@ -23,14 +51,14 @@ defmodule FourtyWeb.WorkItemController do
 
     # determine for which date to report
 
-    date_as_of = Map.get(params, "date_as_of", "today")
+    date_as_of = get_date_as_of(params)
     today = Date.utc_today
-    date_as_of = if (date_as_of == "today") do
+    if Date.compare(date_as_of, today) == :gt do
+      put_flash(conn, :info, dgettext("work_items", "date_reset_to_today"))
       today
     else
-      Date.from_iso8601!(date_as_of)
+      date_as_of
     end
-    date_as_of = if(Date.compare(date_as_of, today) == :gt, do: today, else: date_as_of)
 
     # have date, now prepare a nice label for the heading
 
@@ -72,12 +100,14 @@ defmodule FourtyWeb.WorkItemController do
     # it is "0" if it is for the current user
 
     user_id = Map.get(params, "user_id", "0")
+    date_as_of = Map.get(params, "date_as_of")
     user = get_user(conn, user_id)
     params = Map.put(params, "user_id", user.id)
     changeset = Costs.change_work_item(%WorkItem{}, params)
     accounts = Accounting.get_accounts_for_user(user.id)
     render(conn, "new.html", changeset: changeset, accounts: accounts,
-      adm_only: adm_only, user_id: user_id, username: user.username)
+      adm_only: adm_only, user_id: user_id, date_as_of: date_as_of, 
+      username: user.username)
   end
 
   def create(conn, %{"work_item" => work_item_params}) do
@@ -101,7 +131,7 @@ defmodule FourtyWeb.WorkItemController do
   end
 
   def edit(conn, %{"id" => id}) do
-    {adm_only, assigns} = Map.pop(conn.assigns, :adm_only, false)
+    {adm_only, _assigns} = Map.pop(conn.assigns, :adm_only, false)
     work_item = Costs.get_work_item!(id)
     changeset = Costs.change_work_item(work_item)
     accounts = Accounting.get_accounts_for_user(work_item.user_id)
@@ -111,7 +141,7 @@ defmodule FourtyWeb.WorkItemController do
   end
 
   def update(conn, %{"id" => id, "work_item" => work_item_params}) do
-    {adm_only, assigns} = Map.pop(conn.assigns, :adm_only, false)
+    {adm_only, _assigns} = Map.pop(conn.assigns, :adm_only, false)
     work_item = Costs.get_work_item!(id)
     case Costs.update_work_item(work_item, work_item_params) do
       {:ok, %{work_item: work_item, withdrwl: _withdrwl}} ->
@@ -123,7 +153,6 @@ defmodule FourtyWeb.WorkItemController do
         conn
         |> put_flash(:info, dgettext("work_items", "update_success"))
         |> redirect(to: redirect_path)
-
       {:error, :work_item, %Ecto.Changeset{} = changeset, %{}} ->
         accounts = Accounting.get_accounts_for_user(work_item.user_id)
         render(conn, "edit.html", work_item: work_item,

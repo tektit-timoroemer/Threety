@@ -69,6 +69,8 @@ defmodule FourtyWeb.Router do
       except: [:index, :new], as: :work_item_user
     get "/wrktms/user/:user_id/new/:date_as_of", WorkItemController, :new,
       as: :work_item_user
+    get "/wrktms/user/:user_id/date/:date_as_of/flip/:item1/:item2", 
+      WorkItemController, :flip, as: :work_item_user
     get "/wrktms/user/:user_id/date/:date_as_of", WorkItemController, :index_date,
       as: :work_item_user
   end
@@ -83,6 +85,7 @@ defmodule FourtyWeb.Router do
     resources "/wrktms", WorkItemController, except: [:index, :new]
     get "/wrktms/new/:date_as_of", WorkItemController, :new
     get "/wrktms/account/:account_id", WorkItemController, :index_account
+    get "/wrktms/date/:date_as_of/flip/:item1/:item2", WorkItemController, :flip
     get "/wrktms/date/:date_as_of", WorkItemController, :index_date
   end
 

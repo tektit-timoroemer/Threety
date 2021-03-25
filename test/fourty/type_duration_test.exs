@@ -37,4 +37,19 @@ defmodule Fourty.TypeDurationTest do
       assert changeset.valid?
     end
   end
+
+  describe "test duration conversion" do
+    test "min2dur" do
+      assert min2dur(nil) == ""
+      assert min2dur(1) == "0:01"
+      assert min2dur(9) == "0:09"
+      assert min2dur(10) == "0:10"
+      assert min2dur(59) == "0:59"
+      assert min2dur(60) == "1:00"
+      assert min2dur(599) == "9:59"
+      assert min2dur(600) == "10:00"
+      assert min2dur(601) == "10:01"
+    end
+  end
+   
 end

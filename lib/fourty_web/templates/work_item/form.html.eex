@@ -53,9 +53,9 @@
     <% end %>
   <% else %>
     <%= if @adm_only do %>
-      <%= my_back_link(Routes.work_item_user_path(@conn, :index_date, @work_item.user_id, @work_item.date_as_of)) %>
+      <%= my_back_link(Routes.work_item_user_path(@conn, :index_date, @user_id, @work_item.date_as_of)) %>
     <% else %>
-      <%= my_back_link(Routes.work_item_path(@conn, :index_date, @work_item.date_as_of)) %>
+      <%= my_back_link(Routes.work_item_path(@conn, :index_date, @date_as_of)) %>
     <% end %>
   <% end %>
 <% end %>

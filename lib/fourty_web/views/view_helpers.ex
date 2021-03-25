@@ -265,5 +265,5 @@ defmodule FourtyWeb.ViewHelpers do
   def delta(value1, value2) do
     value1 && value2 && value1 - value2
   end
-
+  
 end

@@ -37,4 +37,26 @@ defmodule Fourty.TypeCurrencyTest do
       assert changeset.valid?
     end
   end
+
+  describe "test currency conversion" do
+    test "int2cur with positive numbers" do
+      assert int2cur(nil) == ""
+      assert int2cur(1) == "0.01"
+      assert int2cur(99) == "0.99"
+      assert int2cur(100) == "1.00"
+      assert int2cur(101) == "1.01"
+      assert int2cur(111) == "1.11"
+      assert int2cur(123_456_789) == "1 234 567.89"
+    end
+
+    test "int2cur with negative numbers" do
+      assert int2cur(-1) == "-0.01"
+      assert int2cur(-99) == "-0.99"
+      assert int2cur(-100) == "-1.00"
+      assert int2cur(-101) == "-1.01"
+      assert int2cur(-111) == "-1.11"
+      assert int2cur(-123_456_789) == "-1 234 567.89"
+    end
+  end
+
 end

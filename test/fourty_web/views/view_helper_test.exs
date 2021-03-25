@@ -15,45 +15,10 @@ defmodule Fourty.ViewHelperTest do
 
   describe "test icon buttons" do
     test "my_icon_action" do
-      icon_action = safe_to_string my_icon_action("calendar-minus", "/")
-      assert icon_action =~ "/assets/static/icons/calendar-minus.svg"
+      icon_action = safe_to_string my_icon_action("calendar-minus-fill", "/")
+      assert icon_action =~ "/icons/calendar-minus-fill.svg"
       assert icon_action =~ "btn btn-sm btn-primary"
-      assert icon_action =~ dgettext("global", "calendar-minus")
-    end
-  end
-
-  describe "test duration conversion" do
-    test "min2dur" do
-      assert min2dur(nil) == ""
-      assert min2dur(1) == "0:01"
-      assert min2dur(9) == "0:09"
-      assert min2dur(10) == "0:10"
-      assert min2dur(59) == "0:59"
-      assert min2dur(60) == "1:00"
-      assert min2dur(599) == "9:59"
-      assert min2dur(600) == "10:00"
-      assert min2dur(601) == "10:01"
-    end
-  end
-
-  describe "test currency conversion" do
-    test "int2cur with positive numbers" do
-      assert int2cur(nil) == ""
-      assert int2cur(1) == "0.01"
-      assert int2cur(99) == "0.99"
-      assert int2cur(100) == "1.00"
-      assert int2cur(101) == "1.01"
-      assert int2cur(111) == "1.11"
-      assert int2cur(123_456_789) == "1 234 567.89"
-    end
-
-    test "int2cur with negative numbers" do
-      assert int2cur(-1) == "-0.01"
-      assert int2cur(-99) == "-0.99"
-      assert int2cur(-100) == "-1.00"
-      assert int2cur(-101) == "-1.01"
-      assert int2cur(-111) == "-1.11"
-      assert int2cur(-123_456_789) == "-1 234 567.89"
+      assert icon_action =~ dgettext("global", "calendar-minus-fill")
     end
   end
 
@@ -186,5 +151,32 @@ defmodule Fourty.ViewHelperTest do
                ~s'<input class="form-check-input" type="checkbox" ' <>
                  ~s'checked disabled readonly>'
     end
+  end
+
+  describe "miscellaneous functions" do
+
+    test "delta" do
+      assert delta(nil, nil) == nil
+      assert delta(nil, 1) == nil
+      assert delta(1, nil) == nil
+      assert delta(1, 1) == 0
+      assert delta(1, 2) == -1
+      assert delta(2, 1) == 1
+    end
+
+    test "weekday" do
+      assert weekday(~D[2021-03-01]) == dgettext("global", "weekday1")
+      assert weekday(~D[2021-03-02]) == dgettext("global", "weekday2")
+      assert weekday(~D[2021-03-03]) == dgettext("global", "weekday3")
+      assert weekday(~D[2021-03-04]) == dgettext("global", "weekday4")
+      assert weekday(~D[2021-03-05]) == dgettext("global", "weekday5")
+      assert weekday(~D[2021-03-06]) == dgettext("global", "weekday6")
+      assert weekday(~D[2021-03-07]) == dgettext("global", "weekday7")
+    end
+
+    test "date_with_weekday" do
+      assert date_with_weekday(~D[2021-03-01]) == "Monday, 2021-03-01"
+    end
+
   end
 end

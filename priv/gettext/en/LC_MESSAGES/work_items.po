@@ -73,3 +73,15 @@ msgstr "Work Item successfully updated."
 
 msgid "delete_success"
 msgstr "Work Item successfully deleted."
+
+msgid "date_reset_to_today"
+msgstr "Cannot use date in future, using today's date instead."
+
+msgid "invalid_no_of_items"
+msgstr "Internal Error in Costs.get_items/2: two work items not found"
+
+msgid "items_not_same_date"
+msgstr "Internal Error in Cost.get_items/2: work items must be of same date"
+
+msgid "items_not_same_user"
+msgstr "Internal Error in Cost.get_items/2: work items must be of same user"

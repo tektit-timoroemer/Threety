@@ -63,3 +63,15 @@ msgstr ""
 
 msgid "delete_success"
 msgstr ""
+
+msgid "date_reset_to_today"
+msgstr ""
+
+msgid "invalid_no_of_items"
+msgstr ""
+
+msgid "items_not_same_date"
+msgstr ""
+
+msgid "items_not_same_user"
+msgstr ""

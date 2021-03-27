@@ -95,6 +95,25 @@ defmodule Fourty.Costs.WorkItem do
 
   end
 
+  # The following implementation allows only to enter either a
+  # duration or a start and end time. Alternatively, the following
+  # scheme could be possible:
+  # - define default duration (e.g. 10 min)
+  # - define a granularity for the current time (e.g. round to 
+  #   nearest 10 minute interval, e.g. at 12:04 -> 12:00, at 12:06
+  #   -> 12:10, or always truncated to the nearest 10 minute 
+  #   interval, i.e. at 12:09 -> 12:00, at 12:11 -> 12:10)
+  # - missing values could be computed as follows:
+  #   given (d - duration, f - from, t - to)
+  #   dft : check if duration matches time range
+  #   d__ : f = now, e = now + d
+  #   df_ : e = f + d
+  #   d_t : f = e - d
+  #   _f_ : d = default, e = f - d
+  #   _ft : d = t - f
+  #   __t : d = default, f = t - d
+  #   ___ : d = default, f = now, t = f + d
+
   @validate_combination_msg "bad_duration_time_combination"
   defp validate_combination(changeset) do
     d = get_field(changeset, :duration)

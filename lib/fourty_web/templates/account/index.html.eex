@@ -51,7 +51,7 @@
                 <%= my_action_link("global", "delete", Routes.account_path(@conn, :delete, account)) %>
                 <%= my_action_link("orders", "orders", Routes.order_path(@conn, :index_account, account)) %>
                 <%= my_action_link("deposits", "deposits", Routes.deposit_path(@conn, :index_account, account)) %>
-                <%= my_action_link("withdrwls", "withdrawals", Routes.withdrwl_path(@conn, :index_account, account)) %>
+                <%= my_action_link("work_items", "work_items", Routes.work_item_user_path(@conn, :index_account, "all", account)) %>
               </td>
             </tr>
           <% end %>

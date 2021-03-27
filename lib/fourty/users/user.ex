@@ -13,7 +13,7 @@ defmodule Fourty.Users.User do
     field :password_encrypted, :string
     field :password, Fourty.TypeTrimmedString, virtual: true
     field :password_confirmation, Fourty.TypeTrimmedString, virtual: true
-    field :rate, Fourty.TypeCurrency
+    field :rate, Fourty.TypeCurrency, default: 0
     field :role, :integer, default: 0
     has_many :work_items, Fourty.Costs.WorkItem
     timestamps()

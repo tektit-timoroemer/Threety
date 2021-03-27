@@ -68,7 +68,7 @@ defmodule Fourty.Users do
   @doc """
   Retrieve the booking rate for the given user.
   
-  Raises `Ecto.NoResultsError` if the user does not exist.
+  Returns 0 if the user or rate do not exist.
 
   ## Examples
 
@@ -76,12 +76,14 @@ defmodule Fourty.Users do
       123
 
       iex> get_rate_for_user!(id)
-      ** (Ecto.NoResultserror)
+      0
 
   """
   def get_rate_for_user!(id) do
-    [%{rate: rate}] = Repo.all(from u in User, where: u.id == ^id, select: map(u, [:rate])) 
-    rate
+    case id && Repo.all(from u in User, where: u.id == ^id, select: map(u, [:rate])) do
+      [%{rate: rate}] -> rate
+      _ -> 0 # user not found, return useless rate
+    end
   end
 
   @doc """

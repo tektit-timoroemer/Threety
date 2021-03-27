@@ -73,6 +73,8 @@ defmodule FourtyWeb.Router do
       WorkItemController, :flip, as: :work_item_user
     get "/wrktms/user/:user_id/date/:date_as_of", WorkItemController, :index_date,
       as: :work_item_user
+    get "/wrktms/user/:user_id/account/:account_id", WorkItemController, :index_account,
+      as: :work_item_user
   end
 
   scope "/", FourtyWeb, assigns: %{adm_only: false} do

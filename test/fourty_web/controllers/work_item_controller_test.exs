@@ -1,50 +1,217 @@
 defmodule FourtyWeb.WorkItemControllerTest do
   use FourtyWeb.ConnCase
 
+  alias FourtyWeb.ConnHelper
+  import FourtyWeb.Gettext, only: [dgettext: 2]
   alias Fourty.Costs
+  alias Fourty.Accounting
+  alias Fourty.Users
+  alias Fourty.Clients
 
-  @create_attrs %{
-    account_id: 42,
-    comments: "some comments",
-    date_as_of: ~D[2010-04-17],
-    duration: 42,
-    order: 42,
-    time_from: ~T[14:00:00],
-    time_to: ~T[14:00:00],
-    user_id: 42,
-    withdrwl_id: 42
-  }
-  @update_attrs %{
-    account_id: 43,
-    comments: "some updated comments",
-    date_as_of: ~D[2011-05-18],
-    duration: 43,
-    order: 43,
-    time_from: ~T[15:01:01],
-    time_to: ~T[15:01:01],
-    user_id: 43,
-    withdrwl_id: 43
-  }
-  @invalid_attrs %{
-    account_id: nil,
-    comments: nil,
-    date_as_of: nil,
-    duration: nil,
-    order: nil,
-    time_from: nil,
-    time_to: nil,
-    user_id: nil,
-    withdrwl_id: nil
-  }
+    @create_attrs %{duration: 10, date_as_of: "today", user_id: 0}
+    @update_attrs %{duration: 20}
 
-  def fixture(:work_item) do
-    {:ok, work_item} = Costs.create_work_item(@create_attrs)
-    work_item
+    @valid_attrs %{
+      comments: "some comments",
+      date_as_of: ~D[2021-03-25],
+      time_from: "14:00",
+      time_to: "14:01",
+    }
+    @update_attrs %{
+      comments: "some updated comments",
+      date_as_of: ~D[2021-03-26],
+      duration: 2,
+      time_from: "15:00",
+      time_to: "15:02",
+    }
+    @invalid_attrs %{
+      comments: nil,
+      date_as_of: nil,
+      duration: nil,
+      time_from: nil,
+      time_to: nil,
+    }
+
+    @min_user_attrs %{
+      username: "me",
+      email: "me@test.test",
+      rate: 100
+    }
+
+    @min_account_attrs %{name: "name of account"} # project_id: project_fixture()
+    @min_project_attrs %{name: "name of project"} # client_id: client_fixture()
+    @min_client_attrs %{name: "name of client"}
+
+    def client_fixture(attrs \\ %{}) do
+      {:ok, client} =
+        Map.merge(@min_client_attrs, attrs)
+        |> Clients.create_client()
+      client
+    end
+
+    def project_fixture(attrs \\ %{client_id: client_fixture().id}) do
+      {:ok, project} =
+        Map.merge(@min_project_attrs, attrs)
+        |> Clients.create_project()
+      project
+    end
+
+    def user_fixture(attrs \\ %{}) do
+      {:ok, user} = 
+        Map.merge(@min_user_attrs, attrs)
+        |> Users.create_user()
+      user
+    end
+
+    def account_fixture(attrs \\ %{project_id: project_fixture().id}) do
+      {:ok, account} = 
+        Map.merge(@min_account_attrs, attrs)
+        |> Accounting.create_account()
+      account
+    end
+
+    def work_item_fixture(attrs \\ %{user_id: user_fixture().id, account_id: account_fixture().id}) do
+      {:ok, work_item} =
+        Map.merge(@valid_attrs, attrs)
+        |> Costs.create_work_item()
+      work_item
+    end
+
+    def same_work_items_1?(wi1, wi2) do
+      # return true if both work_items are identical ignoring
+      # all associations, including withdrwl records
+      Map.equal?(
+        Map.drop(wi1, [:user, :withdrwl, :account_id]),
+        Map.drop(wi2, [:user, :withdrwl, :account_id]))
+    end
+
+    def same_work_items_2?(wi1, wi2) do
+      # return true if both work_items are identical ignoring any
+      # associations other than withdrwl (which may or may not be loaded)
+      Map.equal?(
+        Map.drop(wi1.withdrwl, [:account, :work_item]),
+        Map.drop(wi2.withdrwl, [:account, :work_item]))
+      &&
+      same_work_items_1?(wi1, wi2)
+    end
+
+    test "validate support fixtures creation" do
+      c = client_fixture()
+      assert %Fourty.Clients.Client{name: "name of client"} = c
+      p = project_fixture(%{client_id: c.id})
+      assert %Fourty.Clients.Project{name: "name of project"} = p
+      assert p.client_id == c.id
+      a = account_fixture(%{project_id: p.id})
+      assert %Fourty.Accounting.Account{name: "name of account"} = a 
+      assert a.project_id == p.id
+      u = user_fixture()
+      assert u.username == "me"
+    end
+
+  describe "test access" do
+    setup [:create_work_item]
+
+    test "non-existing user", 
+      %{conn: conn, work_item: work_item} do
+
+      user_id = work_item.user_id
+      date_as_of = "today"
+      attrs = @create_attrs
+
+      conn = get(conn, Routes.work_item_path(conn, :index_date, date_as_of))
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+      conn = get(conn, Routes.work_item_path(conn, :flip, date_as_of, 1, 2))
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+      conn = get(conn, Routes.work_item_path(conn, :new, date_as_of))
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+      conn = get(conn, Routes.work_item_path(conn, :delete, work_item))
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+      conn = put(conn, Routes.work_item_path(conn, :update, work_item),
+        work_item: @update_attrs)
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+      conn = put(conn, Routes.work_item_path(conn, :update, work_item),
+        work_item: @invalid_attrs)
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+      conn = post(conn, Routes.work_item_path(conn, :create), work_item: attrs)
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+      conn = get(conn, Routes.work_item_path(conn, :show, work_item))
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+      conn = get(conn, Routes.work_item_path(conn, :edit, work_item))
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+
+      conn = get(conn, Routes.work_item_user_path(conn, :edit, user_id, work_item))
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+      conn = get(conn, Routes.work_item_user_path(conn, :show, user_id, work_item))
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+      conn = post(conn, Routes.work_item_user_path(conn, :create, user_id), work_item: attrs)
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+      conn = put(conn, Routes.work_item_user_path(conn, :update, user_id, work_item))
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+      conn = delete(conn, Routes.work_item_user_path(conn, :delete, user_id, work_item))
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+      conn = get(conn, Routes.work_item_user_path(conn, :new, user_id, date_as_of))
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+      conn = get(conn, Routes.work_item_user_path(conn, :flip, user_id, date_as_of, 1, 2))
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+      conn = get(conn, Routes.work_item_user_path(conn, :index_date, user_id, date_as_of))
+      assert html_response(conn, 302) =~ "redirected"
+      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
+      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
+
+    end
   end
 
-  describe "index" do
-    test "lists all work_items", %{conn: conn} do
-      conn = get(conn, Routes.work_item_path(conn, :index))
+  describe "index_date" do
+    test "lists all work_items for given user and date", %{conn: conn} do
+      conn = get(conn, Routes.work_item_path(conn, :index_date, "2021-03-26"))
       assert html_response(conn, 200) =~ "Listing Work items"
     end
   end
@@ -113,7 +280,7 @@ defmodule FourtyWeb.WorkItemControllerTest do
   end
 
   defp create_work_item(_) do
-    work_item = fixture(:work_item)
+    work_item = work_item_fixture()
     %{work_item: work_item}
   end
 end

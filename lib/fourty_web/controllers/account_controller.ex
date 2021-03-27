@@ -22,12 +22,10 @@ defmodule FourtyWeb.AccountController do
     project = Fourty.Clients.get_project!(project_id)
     accounts = Accounting.list_accounts(project.client_id, project.id)
     balances = Accounting.load_all_balances()
-
     heading =
       dgettext("accounts", "index_project",
         name: List.first(List.first(accounts).visible_projects).name
       )
-
     render(conn, "index.html", accounts: accounts, balances: balances, heading: heading)
   end
 

@@ -42,6 +42,14 @@ defmodule FourtyWeb.WorkItemController do
       end)
   end
 
+  # display all work_items for the given account and user
+
+  def index_account(conn, _params) do
+    conn
+    |> put_flash(:info, "not yet implemented")
+    |> redirect(to: Routes.session_path(conn, :index))
+  end
+
   # index_date:
   # date defaults to today
   # user defaults to current user
@@ -162,11 +170,15 @@ defmodule FourtyWeb.WorkItemController do
   end
 
   def delete(conn, %{"id" => id}) do
+    {adm_only, _assigns} = Map.pop(conn.assigns, :adm_only, false)
     work_item = Costs.get_work_item!(id)
     {:ok, _work_item} = Costs.delete_work_item(work_item)
-
     conn
     |> put_flash(:info, dgettext("work_items", "delete_success"))
-    |> redirect(to: Routes.work_item_path(conn, :index_date, work_item.date))
+    |> redirect(to: if adm_only do
+          Routes.work_item_user_path(conn, :index_date, work_item.user_id, to_string(work_item.date_as_of))
+        else
+          Routes.work_item_path(conn, :index_date, to_string(work_item.date_as_of))
+        end)
   end
 end

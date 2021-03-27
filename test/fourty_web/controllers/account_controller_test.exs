@@ -81,11 +81,6 @@ defmodule FourtyWeb.AccountControllerTest do
       assert html_response(conn, 302) =~ "redirected"
       assert redirected_to(conn) == ConnHelper.homepage_path(conn)
       assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
-
-      conn = delete(conn, Routes.account_path(conn, :delete, account))
-      assert html_response(conn, 302) =~ "redirected"
-      assert redirected_to(conn) == ConnHelper.homepage_path(conn)
-      assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
     end
 
     test "test access - user w/o admin rights", %{conn: conn, account: account} do

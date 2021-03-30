@@ -7,7 +7,7 @@ defmodule Fourty.Repo.Migrations.CreateWorkItems do
       add :duration, :integer
       add :time_from, :integer
       add :time_to, :integer
-      add :comments, :string
+      add :label, :string
       add :sequence, :integer
 #     add :user_id, references(:users), null: false
 #     --- done in later migration (forward reference)

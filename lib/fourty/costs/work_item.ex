@@ -4,7 +4,7 @@ defmodule Fourty.Costs.WorkItem do
 
   schema "work_items" do
     field :account_id, :integer, virtual: true
-    field :comments, :string
+    field :label, :string
     field :date_as_of, :date
     field :duration, Fourty.TypeDuration
     field :time_from, Fourty.TypeDuration
@@ -24,7 +24,7 @@ defmodule Fourty.Costs.WorkItem do
       :duration,
       :time_from,
       :time_to,
-      :comments,
+      :label,
       :user_id
     ])
     |> validate_required([:date_as_of, :user_id, :account_id])

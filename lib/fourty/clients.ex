@@ -34,8 +34,7 @@ defmodule Fourty.Clients do
     q =
       from c in Client,
         order_by: c.id,
-        select: %{key: c.id, value: c.name}
-
+        select: %{key: c.id, value: c.label}
     Repo.all(q)
   end
 
@@ -164,9 +163,8 @@ defmodule Fourty.Clients do
     q =
       from p in Project,
         order_by: p.id,
-        select: %{key: p.id, value: p.name},
+        select: %{key: p.id, value: p.label},
         where: [client_id: ^client_id]
-
     Repo.all(q)
   end
 

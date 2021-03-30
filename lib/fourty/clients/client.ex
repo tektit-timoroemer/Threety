@@ -2,8 +2,8 @@ defmodule Fourty.Clients.Client do
   @moduledoc """
   The Clients schema:
 
-  `name` should be unique and 
-  should not contain any unnecessary whitespace.
+  `label` must be unique and 
+  must not contain any unnecessary whitespace.
 
   There can be 0 to n projects per `client`.
 
@@ -12,7 +12,7 @@ defmodule Fourty.Clients.Client do
   import Ecto.Changeset
 
   schema "clients" do
-    field :name, Fourty.TypeTrimmedString
+    field :label, Fourty.TypeTrimmedString
     has_many :projects, Fourty.Clients.Project
     has_many :visible_projects, Fourty.Clients.Project, where: [visible: true]
     timestamps()
@@ -21,8 +21,8 @@ defmodule Fourty.Clients.Client do
   @doc false
   def changeset(client, attrs) do
     client
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
-    |> unique_constraint(:name)
+    |> cast(attrs, [:label])
+    |> validate_required([:label])
+    |> unique_constraint(:label)
   end
 end

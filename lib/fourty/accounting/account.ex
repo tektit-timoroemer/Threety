@@ -2,8 +2,8 @@ defmodule Fourty.Accounting.Account do
   @moduledoc """
   The Account schema:
 
-  `name` must be unique for each owner of the account, i.e. currently
-  the `project` of a `client`. The `name` should not contain any
+  `label` must be unique for each owner of the account, i.e. currently
+  the `project` of a `client`. The `label` should not contain any
   unnecessary whitespace.
 
   There can be 0 to n accounts per `project`.
@@ -15,7 +15,7 @@ defmodule Fourty.Accounting.Account do
   import Ecto.Changeset
 
   schema "accounts" do
-    field :name, Fourty.TypeTrimmedString
+    field :label, Fourty.TypeTrimmedString
     field :date_end, :date, default: nil
     field :date_start, :date, default: nil
     field :visible, :boolean, default: true
@@ -30,10 +30,10 @@ defmodule Fourty.Accounting.Account do
   @doc false
   def changeset(account, attrs) do
     account
-    |> cast(attrs, [:name, :date_start, :date_end, :visible, :project_id])
-    |> validate_required([:name, :project_id])
+    |> cast(attrs, [:label, :date_start, :date_end, :visible, :project_id])
+    |> validate_required([:label, :project_id])
     |> Fourty.Validations.validate_date_sequence(:date_start, :date_end)
     |> assoc_constraint(:project)
-    |> unique_constraint(:name, name: :accounts_project_id_name_index)
+    |> unique_constraint(:label, label: :accounts_project_id_label_index)
   end
 end

@@ -5,7 +5,7 @@ defmodule Fourty.Accounting.Deposit do
   schema "deposits" do
     field :amount_cur, Fourty.TypeCurrency, default: nil
     field :amount_dur, Fourty.TypeDuration, default: nil
-    field :description, :string
+    field :label, :string
     belongs_to :account, Fourty.Accounting.Account
     belongs_to :order, Fourty.Clients.Order
     timestamps()
@@ -14,8 +14,8 @@ defmodule Fourty.Accounting.Deposit do
   @doc false
   def changeset(deposit, attrs) do
     deposit
-    |> cast(attrs, [:amount_dur, :amount_cur, :description, :account_id, :order_id])
-    |> validate_required([:description, :account_id, :order_id])
+    |> cast(attrs, [:amount_dur, :amount_cur, :label, :account_id, :order_id])
+    |> validate_required([:label, :account_id, :order_id])
     |> assoc_constraint(:account)
     |> assoc_constraint(:order)
     |> Fourty.Validations.validate_at_least_one([:amount_cur, :amount_dur])

@@ -75,7 +75,7 @@ defmodule Fourty.Accounting do
   end
 
   @doc """
-  Returns the list of accounts in the order of their names
+  Returns the list of accounts in the order of their labels
 
   ## Examples
 
@@ -97,7 +97,7 @@ defmodule Fourty.Accounting do
         join: p in assoc(c, :visible_projects),
         where: ^cp,
         join: a in assoc(p, :visible_accounts),
-        order_by: [c.id, p.id, a.name],
+        order_by: [c.id, p.id, a.label],
         preload: [visible_projects: {p, visible_accounts: a}],
         select: a.id
 
@@ -113,7 +113,7 @@ defmodule Fourty.Accounting do
 
     qa =
       from a in Account,
-        order_by: a.name
+        order_by: a.label
 
     qp =
       from p in Fourty.Clients.Project,
@@ -166,7 +166,7 @@ defmodule Fourty.Accounting do
   def get_accounts_for_project(project_id) do
     q =
       from a in Account,
-        select: [key: a.name, value: a.id],
+        select: [key: a.label, value: a.id],
         where: [project_id: ^project_id, visible: true],
         order_by: a.id
     Repo.all(q)
@@ -185,7 +185,7 @@ defmodule Fourty.Accounting do
   def get_accounts_for_user(_user_id) do
     q =
       from a in Account,
-        select: [key: a.name, value: a.id],
+        select: [key: a.label, value: a.id],
         where: [visible: true],
         order_by: a.id
     Repo.all(q)

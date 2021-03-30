@@ -6,7 +6,7 @@ defmodule Fourty.Clients.Order do
     field :date_eff, :date
     field :amount_cur, Fourty.TypeCurrency
     field :amount_dur, Fourty.TypeDuration
-    field :description, :string
+    field :label, :string
     field :sum_cur, Fourty.TypeCurrency, virtual: true, default: 0
     field :sum_dur, Fourty.TypeDuration, virtual: true, default: 0
     belongs_to :project, Fourty.Clients.Project
@@ -17,8 +17,8 @@ defmodule Fourty.Clients.Order do
   @doc false
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:date_eff, :amount_cur, :amount_dur, :description, :project_id])
-    |> validate_required([:project_id, :description])
+    |> cast(attrs, [:date_eff, :amount_cur, :amount_dur, :label, :project_id])
+    |> validate_required([:project_id, :label])
     |> assoc_constraint(:project)
   end
 end

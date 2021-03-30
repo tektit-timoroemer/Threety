@@ -3,11 +3,11 @@
   <div class="col-sm-3 p-3 border bg-light">
 
     <%= my_label("accounts", "Account") %>
-    <%= my_text_link(@deposit.account.name, Routes.account_path(@conn, :show,
+    <%= my_text_link(@deposit.account.label, Routes.account_path(@conn, :show,
         @deposit.account.id)) %><br />
 
     <%= my_label("orders", "order") %>
-    <%= my_text_link(@deposit.order.description, Routes.order_path(@conn,
+    <%= my_text_link(@deposit.order.label, Routes.order_path(@conn,
         :show, @deposit.order.id)) %><br />
 
     <%= my_label("deposits", "amount_cur") %>
@@ -16,7 +16,7 @@
     <%= my_label("deposits", "amount_dur") %>
     <%= my_duration_value(@deposit.amount_dur) %><br />
 
-    <%= my_label("deposits", "description_long") %>
-    <%= my_longtext_value(@deposit.description) %><br />
+    <%= my_label("deposits", "label_long") %>
+    <%= my_longtext_value(@deposit.label) %><br />
 
     <%= my_action("global", "edit", Routes.deposit_path(@conn, :edit, @deposit)) %>

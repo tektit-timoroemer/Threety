@@ -10,7 +10,7 @@
           <th class="col-sm-3">&nbsp;</th>
         </tr>
         <tr>
-          <th class="col-sm-2"><%= dgettext("orders", "description") %></th>
+          <th class="col-sm-2"><%= dgettext("orders", "label") %></th>
           <th class="col-sm-1"><%= dgettext("orders", "date_eff") %></th>
           <th class="col-sm-1 text-end"><%= dgettext("orders", "amount_cur") %></th>
           <th class="col-sm-1 text-end"><%= dgettext("orders", "amount_dur") %></th>
@@ -21,9 +21,9 @@
         <%= for client <- @orders do %>
         <tr>
           <td colspan="4">
-            <%= dgettext("clients", "name") %>&nbsp;:&nbsp;
+            <%= dgettext("clients", "label") %>&nbsp;:&nbsp;
             <strong>
-              <%= link client.name, to: Routes.client_path(@conn, :show, client.id) %>
+              <%= link client.label, to: Routes.client_path(@conn, :show, client.id) %>
             </strong>s
           </td>
           <td>
@@ -33,9 +33,9 @@
         <%= for project <- client.visible_projects do %>
           <tr>
             <td class="indent-1" colspan="4">
-              <%= dgettext("projects", "name") %>&nbsp;:&nbsp;
+              <%= dgettext("projects", "label") %>&nbsp;:&nbsp;
               <strong>
-                <%= link project.name, to: Routes.project_path(@conn, :show, project.id) %>
+                <%= link project.label, to: Routes.project_path(@conn, :show, project.id) %>
               </strong>
             </td>
             <td>
@@ -45,7 +45,7 @@
           <%= for order <- project.orders do %>
           <% order = Map.merge(order, Fourty.Clients.get_order_sums(@order_sums, order.id)) %>
           <tr>
-            <td class="indent-2"><%= order.description %></td>
+            <td class="indent-2"><%= order.label %></td>
             <td><%= order.date_eff %></td>
             <td class="text-end">
               <%= int2cur(order.amount_cur) %><br />

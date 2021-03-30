@@ -1,13 +1,33 @@
 defmodule Fourty.Clients.Project do
   @moduledoc """
-  The Project schema:
 
-  `label` should be unique for each `client` 
-  and should not contain any unnecessary whitespace.
+  The Project schema describes a project for the given client. There can
+  be one or more projects per client and each project may be accounted
+  for using one or more accounts.
 
-  There can be 0 to n projects per `client`.
+  Project start and completion dates may be set for documentation
+  purposes, however accounting will run separately, i.e. accounts for a
+  given project may be used before the date_start or after date_end date
+  - there is no connection between the date_start and date_end dates of
+  the associated accounts.
 
-  date_start should be before date_end.
+  ## Fields
+
+    - label: the unique name or identifier of this project. This text
+    must be unique for all projects of the given client. Any leading 
+    and trailing as well as duplicate whitespace characters will be
+    removed before the label is stored in the system.
+
+    - date_start: This is for documentation purposes only: You can use
+    this field to show the actual project start date. The date_start
+    date must occur before the date_end date (if given).
+
+    - date_end: This is for documentation purposes only: You can use
+    this field to show the actual project completion date. The date_end
+    date must occur on or after the date_start date.
+
+    - visible: Clearing this flag will cause this project to be 
+    omitted from any reports and listings.
 
   """
   use Ecto.Schema

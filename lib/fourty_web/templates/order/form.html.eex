@@ -6,18 +6,18 @@
   <% end %>
 
   <%= hidden_input(f, :client_id) %>
-  <%= my_label("clients", "name") %>
-  <%= my_text_link(@order.project.client.name,
+  <%= my_label("clients", "label") %>
+  <%= my_text_link(@order.project.client.label,
       Routes.client_path(@conn, :show, @order.project.client.id)) %><br />
 
   <%= hidden_input(f, :project_id) %>
-  <%= my_label("projects", "name") %>
-  <%= my_text_link(@order.project.name,
+  <%= my_label("projects", "label") %>
+  <%= my_text_link(@order.project.label,
       Routes.project_path(@conn, :show, @order.project.id)) %><br />
 
-  <%= my_label("orders", "description") %>
-  <%= my_longtext_input(f, :description) %><br />
-  <%= error_tag(f, :description) %>
+  <%= my_label("orders", "label") %>
+  <%= my_longtext_input(f, :label) %><br />
+  <%= error_tag(f, :label) %>
 
   <%= my_label("orders", "date_eff") %>
   <%= my_date_input(f, :date_eff) %><br />

@@ -34,11 +34,11 @@
 
     <%= my_label("work_items", "account_id") %>
     <%= if @adm_only do %>
-        <%= my_text_link(@work_item.withdrwl.account.name, Routes.account_path(@conn, :show, @work_item.withdrwl.account.id)) %><br />
+        <%= my_text_link(@work_item.withdrwl.account.label, Routes.account_path(@conn, :show, @work_item.withdrwl.account.id)) %><br />
         <%= my_action("global", "edit", Routes.work_item_user_path(@conn, :edit, @work_item.user_id, @work_item)) %>
         <%= my_action("global", "index", Routes.work_item_user_path(@conn, :index_date, @work_item.user_id, to_string(@work_item.date_as_of))) %>
     <% else %>
-        <%= my_text_value(@work_item.withdrwl.account.name) %><br />
+        <%= my_text_value(@work_item.withdrwl.account.label) %><br />
         <%= my_action("global", "edit", Routes.work_item_path(@conn, :edit, @work_item)) %>
         <%= my_action("global", "index", Routes.work_item_path(@conn, :index_date, to_string(@work_item.date_as_of))) %>
     <% end %>

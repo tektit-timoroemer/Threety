@@ -4,14 +4,14 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th class="col-sm-3"><%= dgettext("clients", "name") %></th>
+          <th class="col-sm-3"><%= dgettext("clients", "label") %></th>
           <th class="col-sm-3"><%= dgettext("global", "actions") %></th>
         </tr>
       </thead>
       <tbody>
         <%= for client <- @clients do %>
         <tr>
-          <td><%= client.name %></td>
+          <td><%= client.label %></td>
           <td>
             <%= my_action_link("global", "show", Routes.client_path(@conn, :show, client)) %>
             <%= my_action_link("global", "edit", Routes.client_path(@conn, :edit, client)) %>

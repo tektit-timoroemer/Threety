@@ -153,7 +153,7 @@ defmodule FourtyWeb.DepositControllerTest do
       conn = ConnHelper.login_user(conn, "admin")
       account = fixture(:account)
       conn = get(conn, Routes.deposit_path(conn, :index_account, account.id))
-      assert html_response(conn, 200) =~ dgettext("deposits", "index_account", name: account.name)
+      assert html_response(conn, 200) =~ dgettext("deposits", "index_account", name: account.label)
     end
   end
 

@@ -35,6 +35,7 @@ defmodule Fourty.Costs.WorkItem do
     |> validate_combination()
     |> validate_duration_time()
     |> assoc_constraint(:user)
+    |> validate_account()
   end
 
   # compute duration if not yet given unless changeset has errors
@@ -45,6 +46,23 @@ defmodule Fourty.Costs.WorkItem do
       get_field(changeset, :time_to) - get_field(changeset, :time_from)
     else
       d
+    end
+  end
+
+  # ensure that account is open for transactions
+
+  @validate_account_msg "invalid_account"
+  defp validate_account(changeset) do
+    a = 
+      get_field(changeset, :account_id)
+      |> Fourty.Accounting.get_account_solo!()
+    today = Date.utc_today
+    if is_nil(a.date_start) ||
+       (Date.compare(today, a.date_start) == :lt) ||
+       (a.date_end && Date.compare(a.date_end, today) == :ge) do
+      add_error(changeset, :account_id, @validate_account_msg)
+    else
+      changeset    
     end
   end
 

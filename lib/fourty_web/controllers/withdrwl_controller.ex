@@ -7,7 +7,7 @@ defmodule FourtyWeb.WithdrwlController do
   def index_account(conn, %{"account_id" => account_id}) do
     withdrwls = Accounting.list_withdrwls(account_id: account_id)
     account = Fourty.Accounting.get_account_solo!(account_id)
-    heading = dgettext("withdrwls", "index_account", name: account.name)
+    heading = dgettext("withdrwls", "index_account", label: account.label)
     render(conn, "index.html", withdrwls: withdrwls, heading: heading)
   end
 

@@ -122,11 +122,11 @@ defmodule Fourty.Costs do
     duration = WorkItem.get_duration(work_item_cs)
     rate = Users.get_rate_for_user!(user_id)
     amount_cur = compute_cost(duration, rate)
-    description = create_withdrwl_description(user_id, date_as_of, rate)
+    label = create_withdrwl_label(user_id, date_as_of, rate)
     max_sequence = get_max_sequence(user_id, date_as_of)
     withdrwl_cs = Withdrwl.changeset(%Withdrwl{}, %{
         amount_cur: amount_cur, amount_dur: duration,
-        description: description, account_id: account_id})
+        label: label, account_id: account_id})
     work_item_cs
     |> Changeset.put_change(:sequence, max_sequence + 1)
     |> Changeset.put_change(:duration, duration)
@@ -134,8 +134,8 @@ defmodule Fourty.Costs do
     |> Repo.insert()
   end
 
-  defp create_withdrwl_description(user_id, date_as_of, rate) do
-    dgettext("work_items", "withdrwl_description",
+  defp create_withdrwl_label(user_id, date_as_of, rate) do
+    dgettext("work_items", "withdrwl_label",
       user_id: user_id, date_as_of: date_as_of, 
       rate: Fourty.TypeCurrency.int2cur(rate))
   end
@@ -181,7 +181,7 @@ defmodule Fourty.Costs do
     duration = WorkItem.get_duration(work_item_cs)
     amount_cur = compute_cost(duration, rate)
     account_id = Changeset.get_field(work_item_cs, :account_id)
-    description = create_withdrwl_description(user_id, date_as_of, rate)
+    label = create_withdrwl_label(user_id, date_as_of, rate)
     work_item_cs = 
       if work_item_cs.valid? do
         Changeset.put_change(work_item_cs, :duration, duration)
@@ -190,7 +190,7 @@ defmodule Fourty.Costs do
       end
     withdrwl_cs = Withdrwl.changeset(work_item.withdrwl, %{
         amount_cur: amount_cur, amount_dur: duration,
-        description: description, account_id: account_id})
+        label: label, account_id: account_id})
     Multi.new()
     |> Multi.update(:withdrwl, withdrwl_cs)
     |> Multi.update(:work_item, work_item_cs)

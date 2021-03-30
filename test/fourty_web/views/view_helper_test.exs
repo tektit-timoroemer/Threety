@@ -7,7 +7,7 @@ defmodule Fourty.ViewHelperTest do
   defp project_form_fixture() do
     Fourty.Clients.Project.changeset(
       %Fourty.Clients.Project{},
-      %{name: "TEST NAME", date_start: ~D[2010-04-17], visible: true}
+      %{label: "TEST NAME", date_start: ~D[2010-04-17], visible: true}
     )
     |> Map.replace(:action, :insert)
     |> form_for(%Plug.Conn{})
@@ -26,11 +26,11 @@ defmodule Fourty.ViewHelperTest do
     test "my_label for forms" do
       f = project_form_fixture()
 
-      # required field: name
+      # required field: label
 
-      l = safe_to_string(my_label(f, "projects", :name))
-      t = dgettext("projects", "name")
-      assert l == "<label class=\"form-label\" for=\"project_name\">#{t} *</label>"
+      l = safe_to_string(my_label(f, "projects", :label))
+      t = dgettext("projects", "label")
+      assert l == "<label class=\"form-label\" for=\"project_label\">#{t} *</label>"
 
       # optional field: visible
 
@@ -57,13 +57,13 @@ defmodule Fourty.ViewHelperTest do
     test "my_text_input" do
       f = project_form_fixture()
 
-      # required field :name
+      # required field :label
 
-      l = safe_to_string(my_text_input(f, :name))
+      l = safe_to_string(my_text_input(f, :label))
 
       assert l ==
                ~s'<input class="form-control is-valid" ' <>
-                 ~s'id="project_name" name="project[name]" type="text" ' <>
+                 ~s'id="project_label" label="project[label]" type="text" ' <>
                  ~s'value="TEST NAME" required>'
 
       # optional field: visible
@@ -72,7 +72,7 @@ defmodule Fourty.ViewHelperTest do
 
       assert l ==
                ~s'<input class="form-control is-valid" ' <>
-                 ~s'id="project_visible" name="project[visible]" ' <>
+                 ~s'id="project_visible" label="project[visible]" ' <>
                  ~s'type="text" value="true">'
 
       # field with errors
@@ -81,7 +81,7 @@ defmodule Fourty.ViewHelperTest do
 
       assert l ==
                ~s'<input class="form-control is-invalid" ' <>
-                 ~s'id="project_client_id" name="project[client_id]" ' <>
+                 ~s'id="project_client_id" label="project[client_id]" ' <>
                  ~s'type="text" required>'
     end
 
@@ -97,13 +97,13 @@ defmodule Fourty.ViewHelperTest do
     test "my_longtext_input" do
       f = project_form_fixture()
 
-      # required field :name
+      # required field :label
 
-      l = safe_to_string(my_longtext_input(f, :name))
+      l = safe_to_string(my_longtext_input(f, :label))
 
       assert l ==
                ~s'<textarea class="form-control is-valid" ' <>
-                 ~s'id="project_name" name="project[name]" required>' <>
+                 ~s'id="project_label" label="project[label]" required>' <>
                  ~s'\nTEST NAME</textarea>'
 
       # optional field: visible
@@ -112,7 +112,7 @@ defmodule Fourty.ViewHelperTest do
 
       assert l ==
                ~s'<textarea class="form-control is-valid" ' <>
-                 ~s'id="project_visible" name="project[visible]">' <>
+                 ~s'id="project_visible" label="project[visible]">' <>
                  ~s'\ntrue</textarea>'
 
       # field with errors
@@ -121,7 +121,7 @@ defmodule Fourty.ViewHelperTest do
 
       assert l ==
                ~s'<textarea class="form-control is-invalid" ' <>
-                 ~s'id="project_client_id" name="project[client_id]" required>' <>
+                 ~s'id="project_client_id" label="project[client_id]" required>' <>
                  ~s'\n</textarea>'
     end
 
@@ -138,9 +138,9 @@ defmodule Fourty.ViewHelperTest do
       l = safe_to_string(my_checkbox_input(f, :visible))
 
       assert l ==
-               ~s'<input name="project[visible]" type="hidden" ' <>
+               ~s'<input label="project[visible]" type="hidden" ' <>
                  ~s'value="false"><input class="form-check-input is-valid" ' <>
-                 ~s'id="project_visible" name="project[visible]" ' <>
+                 ~s'id="project_visible" label="project[visible]" ' <>
                  ~s'type="checkbox" value="true" checked>'
     end
 

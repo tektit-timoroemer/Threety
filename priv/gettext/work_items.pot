@@ -43,7 +43,7 @@ msgstr ""
 msgid "time_to"
 msgstr ""
 
-msgid "comments"
+msgid "label"
 msgstr ""
 
 msgid "account_id"
@@ -71,4 +71,7 @@ msgid "items_not_same_date"
 msgstr ""
 
 msgid "items_not_same_user"
+msgstr ""
+
+msgid "invalid_account"
 msgstr ""

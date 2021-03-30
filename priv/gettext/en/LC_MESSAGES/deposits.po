@@ -29,10 +29,10 @@ msgstr "Amount (€)"
 msgid "amount_dur"
 msgstr "Amount (h)"
 
-msgid "description"
+msgid "label"
 msgstr "Description"
 
-msgid "description_long"
+msgid "label_long"
 msgstr "Deposit Description"
 
 msgid "xfer"

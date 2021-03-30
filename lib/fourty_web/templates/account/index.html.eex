@@ -4,7 +4,7 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th class="col-sm-3"><%= dgettext("accounts", "name") %></th>
+          <th class="col-sm-3"><%= dgettext("accounts", "label") %></th>
           <th class="col-sm-1"><%= dgettext("accounts", "date_start") %></th>
           <th class="col-sm-1"><%= dgettext("accounts", "date_end") %></th>
           <th class="col-sm-1 text-end"><%= dgettext("accounts", "balance_cur") %></th>
@@ -16,9 +16,9 @@
         <%= for client <- @accounts do %>
         <tr>
           <td colspan="5">
-            <%= dgettext("clients", "name") %>&nbsp;:&nbsp;
+            <%= dgettext("clients", "label") %>&nbsp;:&nbsp;
             <strong>
-              <%= link client.name, to: Routes.client_path(@conn, :show, client.id) %>
+              <%= link client.label, to: Routes.client_path(@conn, :show, client.id) %>
             </strong>
           </td>
           <td>
@@ -28,9 +28,9 @@
         <%= for project <- client.visible_projects do %>
           <tr>
             <td class="indent-1" colspan="5">
-              <%= dgettext("projects", "name") %>&nbsp;:&nbsp;
+              <%= dgettext("projects", "label") %>&nbsp;:&nbsp;
               <strong>
-                <%= link project.name, to: Routes.project_path(@conn, :show, project.id) %>
+                <%= link project.label, to: Routes.project_path(@conn, :show, project.id) %>
               </strong>
             </td>
             <td>
@@ -40,7 +40,7 @@
           <%= for account <- project.visible_accounts do %>
             <% account = Map.merge(account, Fourty.Accounting.get_balance(@balances, account.id)) %>
             <tr>
-              <td class="indent-2"><%= account.name %></td>
+              <td class="indent-2"><%= account.label %></td>
               <td><%= account.date_start %></td>
               <td><%= account.date_end %></td>
               <td class="text-end"><%= int2cur(account.balance_cur) %></td>
@@ -63,7 +63,7 @@
       Map.has_key?(@conn.path_params, "client_id") -> 
         my_action("accounts", "index", Routes.account_path(@conn, :index));
       Map.has_key?(@conn.path_params, "project_id") ->
-        my_action("accounts", "index_client", Routes.account_path(@conn, :index_client, List.first(@accounts).id), name: List.first(@accounts).name);
+        my_action("accounts", "index_client", Routes.account_path(@conn, :index_client, List.first(@accounts).id), label: List.first(@accounts).label);
       true -> "";
         end %>
   </div>

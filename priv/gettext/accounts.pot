@@ -17,7 +17,7 @@ msgstr ""
 
 #: lib/fourty_web/templates/account/index.html.eex:7
 #: lib/fourty_web/templates/deposit/index_order.html.eex:11
-msgid "name"
+msgid "label"
 msgstr ""
 
 #: lib/fourty_web/templates/account/index.html.eex:8

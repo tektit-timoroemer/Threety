@@ -2,16 +2,16 @@
 <div class="row row-cols-auto">
   <div class="col-sm-3 p-3 border bg-light">
 
-    <%= my_label("clients", "name") %>
-    <%= my_text_link(@order.project.client.name,
+    <%= my_label("clients", "label") %>
+    <%= my_text_link(@order.project.client.label,
         Routes.client_path(@conn, :show, @order.project.client.id)) %><br />
 
-    <%= my_label("projects", "name") %>
-    <%= my_text_link(@order.project.name,
+    <%= my_label("projects", "label") %>
+    <%= my_text_link(@order.project.label,
         Routes.project_path(@conn, :show, @order.project.id)) %><br />
 
-    <%= my_label("orders", "description") %>
-    <%= my_longtext_value(@order.description) %><br />
+    <%= my_label("orders", "label") %>
+    <%= my_longtext_value(@order.label) %><br />
 
     <%= my_label("orders", "date_eff") %>
     <%= my_date_value(@order.date_eff) %><br />

@@ -4,7 +4,7 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th class="col-sm-3"><%= dgettext("projects", "name") %></th>
+          <th class="col-sm-3"><%= dgettext("projects", "label") %></th>
           <th class="col-sm-1"><%= dgettext("projects", "date_start") %></th>
           <th class="col-sm-1"><%= dgettext("projects", "date_end") %></th>
           <th class="col-sm-3"><%= dgettext("global", "actions") %></th>
@@ -15,9 +15,9 @@
           <%# unless length(client.visible_projects) == 0 do %>
           <tr>
             <td colspan="3">
-              <%= dgettext("clients","name") %>&nbsp;:&nbsp;
+              <%= dgettext("clients","label") %>&nbsp;:&nbsp;
               <strong>
-                <%= link client.name, to: Routes.client_path(@conn, :show, client.id) %>
+                <%= link client.label, to: Routes.client_path(@conn, :show, client.id) %>
               </strong>
             </td>
             <td>
@@ -28,7 +28,7 @@
           <%# end %>
           <%= for project <- client.visible_projects do %>
             <tr>
-              <td class="indent-1" ><%= project.name %></td>
+              <td class="indent-1" ><%= project.label %></td>
               <td><%= project.date_start %></td>
               <td><%= project.date_end %></td>
               <td>

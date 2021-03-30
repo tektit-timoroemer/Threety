@@ -29,7 +29,7 @@ msgstr "Date"
 #, elixir-format
 #: lib/fourty_web/templates/deposit/index.html.eex:10
 #: lib/fourty_web/templates/order/index.html.eex:13
-msgid "description"
+msgid "label"
 msgstr "Description"
 
 #: lib/fourty_web/templates/layout/root.html.leex:30
@@ -59,15 +59,15 @@ msgstr "Show Order"
 
 #: lib/fourty_web/controllers/order_controller.ex:20
 msgid "index_project"
-msgstr "List of Orders for %{name}"
+msgstr "List of Orders for %{label}"
 
 #: lib/fourty_web/controllers/order_controller.ex:30
 msgid "index_client"
-msgstr "List of Orders for %{name}"
+msgstr "List of Orders for %{label}"
 
 #: lib/fourty_web/controllers/order_controller.ex:39
 msgid "index_account"
-msgstr "List of Orders for %{name}"
+msgstr "List of Orders for %{label}"
 
 #, elixir-format
 #: lib/fourty_web/controllers/order_controller.ex:60

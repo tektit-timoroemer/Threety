@@ -1,11 +1,22 @@
 defmodule Fourty.Clients.Client do
   @moduledoc """
-  The Clients schema:
 
-  `label` must be unique and 
-  must not contain any unnecessary whitespace.
+  The Clients schema holds information about the clients in the system:
+  at this time, this information consists only of the label (string)
+  which can be used to identify a specific client, for example by name.
 
-  There can be 0 to n projects per `client`.
+  For each client, you may add one or more `projects`.
+
+  ## Fields
+
+    - label: must be a unique identifier of the client record. Any
+    leading and trailing as well as duplicate whitespace characters
+    will be removed before the label is stored in the system.
+
+  ## Notes
+
+    - visible_projects are those projects which have the visible flag
+    set.
 
   """
   use Ecto.Schema

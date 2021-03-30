@@ -1,14 +1,48 @@
 defmodule Fourty.Accounting.Account do
   @moduledoc """
-  The Account schema:
 
-  `label` must be unique for each owner of the account, i.e. currently
-  the `project` of a `client`. The `label` should not contain any
-  unnecessary whitespace.
+  The Account schema contains information about a specific account -
+  similar to a bank account. An account shows deposits (when money or
+  time is added to an account) and withdrawels (when money or time is
+  removed from an account).
 
-  There can be 0 to n accounts per `project`.
+  Accounts can only be used for transactions in the period [date_start,
+  date_end]. This permits to add accounts before allowing any
+  transactions on the account. If further permits to close accounts for
+  further transactions.
 
-  date_start should be before date_end.
+  An account can be made not visible in order to hide it from any
+  reports. However, all accounts and transactions will be kept in the
+  system until explicitly removed.
+
+  An account always belongs to a single project but a project can have
+  more than one account.
+
+  ## Fields
+
+    - label: the unique name or identifier of the account (this 
+    corresponds to the account number of a bank account). Any leading 
+    and trailing as well as duplicate whitespace characters will be
+    removed before the label is stored in the system.
+
+    - date_start: the date on which this account is open for
+    transactions. The date_start date must occur before the date_end
+    date.
+
+    - date_end: the date when the account is closed for any further
+    transactions. The date_end date must occur on or after the
+    date_start date. When date_start equal to date_end, the account
+    was effectively never open.
+
+    - visible: when the flag is cleared, the account will not be shown
+    in any reports and listings. Normally, you would first close an
+    account and then clear this flag.
+
+    - balance_cur: is an internally used field and holds the current
+    balance (in currency units) during computations.
+
+    - balance_dur: is an internally used field and holds the current
+    balance (in time units) during computations.
 
   """
   use Ecto.Schema

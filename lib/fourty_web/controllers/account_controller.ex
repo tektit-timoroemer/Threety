@@ -14,7 +14,7 @@ defmodule FourtyWeb.AccountController do
   def index_client(conn, %{"client_id" => client_id}) do
     accounts = Accounting.list_accounts(client_id)
     balances = Accounting.load_all_balances()
-    heading = dgettext("accounts", "index_client", name: List.first(accounts).name)
+    heading = dgettext("accounts", "index_client", label: List.first(accounts).label)
     render(conn, "index.html", accounts: accounts, balances: balances, heading: heading)
   end
 
@@ -24,7 +24,7 @@ defmodule FourtyWeb.AccountController do
     balances = Accounting.load_all_balances()
     heading =
       dgettext("accounts", "index_project",
-        name: List.first(List.first(accounts).visible_projects).name
+        label: List.first(List.first(accounts).visible_projects).label
       )
     render(conn, "index.html", accounts: accounts, balances: balances, heading: heading)
   end

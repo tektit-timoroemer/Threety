@@ -11,7 +11,7 @@ defmodule FourtyWeb.ProjectController do
 
   def index_client(conn, %{"client_id" => client_id}) do
     projects = Clients.list_projects(client_id)
-    heading = dgettext("projects", "index_client", name: List.first(projects).name)
+    heading = dgettext("projects", "index_client", label: List.first(projects).label)
     render(conn, "index.html", projects: projects, heading: heading)
   end
 

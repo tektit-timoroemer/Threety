@@ -23,7 +23,7 @@ msgstr ""
 #, elixir-format
 #: lib/fourty_web/templates/account/index.html.eex:31
 #: lib/fourty_web/templates/order/index.html.eex:36 lib/fourty_web/templates/project/index.html.eex:7
-msgid "name"
+msgid "label"
 msgstr ""
 
 #, elixir-format

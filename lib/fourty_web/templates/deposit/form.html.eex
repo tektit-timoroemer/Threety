@@ -5,15 +5,15 @@
     </div>
   <% end %>
 
-  <%= my_label("clients", "name") %>
-  <%= my_text_value(@deposit.order.project.client.name) %><br />
+  <%= my_label("clients", "label") %>
+  <%= my_text_value(@deposit.order.project.client.label) %><br />
 
-  <%= my_label("projects", "name") %>
-  <%= my_text_value(@deposit.order.project.name) %><br />
+  <%= my_label("projects", "label") %>
+  <%= my_text_value(@deposit.order.project.label) %><br />
 
   <%= hidden_input(f, :order_id) %>
-  <%= my_label("orders", "description") %>
-  <%= my_longtext_value(@deposit.order.description) %><br />
+  <%= my_label("orders", "label") %>
+  <%= my_longtext_value(@deposit.order.label) %><br />
 
   <%= my_label("orders", "date_eff") %>
   <%= my_date_value(@deposit.order.date_eff) %><br />
@@ -35,9 +35,9 @@
   <%= my_duration_input(f, :amount_dur) %><br />
   <%= error_tag(f, :amount_dur) %>
 
-  <%= my_label("deposits", "description") %>
-  <%= my_longtext_input(f, :description) %><br />
-  <%= error_tag(f, :description) %>
+  <%= my_label("deposits", "label") %>
+  <%= my_longtext_input(f, :label) %><br />
+  <%= error_tag(f, :label) %>
 
   <%= my_submit() %>
   <%= if Ecto.Changeset.get_field(@changeset, :id),

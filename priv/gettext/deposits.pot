@@ -28,10 +28,10 @@ msgstr ""
 msgid "amount_dur"
 msgstr ""
 
-msgid "description"
+msgid "label"
 msgstr ""
 
-msgid "description_long"
+msgid "label_long"
 msgstr ""
 
 msgid "xfer"

@@ -303,7 +303,8 @@ defmodule Fourty.Accounting do
   end
 
   @doc """
-  Creates a deposit.
+  Creates a deposit. This method does NOT check if the account is
+  open or closed or visible!
 
   ## Examples
 
@@ -321,7 +322,8 @@ defmodule Fourty.Accounting do
   end
 
   @doc """
-  Updates a deposit.
+  Updates a deposit. This method does NOT check if the account is
+  open or closed or visible!
 
   ## Examples
 

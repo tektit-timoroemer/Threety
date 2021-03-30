@@ -2,14 +2,14 @@
 <div class="row row-cols-auto">
 	<div class="col-sm-3 p-3 border bg-light">
 
-		<%= my_label("clients","name") %>
+		<%= my_label("clients","label") %>
 	    <div class="d-grid gap-2">
-		<%= my_text_link(@project.client.name, Routes.client_path(@conn, :show,
+		<%= my_text_link(@project.client.label, Routes.client_path(@conn, :show,
 			@project.client.id)) %><br />
 		</div>
 
-		<%= my_label("projects", "name") %>
-		<%= my_text_value(@project.name) %><br />
+		<%= my_label("projects", "label") %>
+		<%= my_text_value(@project.label) %><br />
 
 		<%= my_label("projects", "date_start") %>
 		<%= my_date_value(@project.date_start) %><br />

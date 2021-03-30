@@ -22,6 +22,7 @@ defmodule FourtyWeb.ClientController do
         |> redirect(to: Routes.client_path(conn, :show, client))
 
       {:error, %Ecto.Changeset{} = changeset} ->
+        IO.inspect(changeset)
         render(conn, "new.html", changeset: changeset)
     end
   end

@@ -6,11 +6,11 @@
   <% end %>
 
   <%= my_label("accounts", "Account") %><br />
-  <%= my_text_link(@deposit.account.name, Routes.account_path(@conn, :show,
+  <%= my_text_link(@deposit.account.label, Routes.account_path(@conn, :show,
     @deposit.account.id)) %><br />
 
   <%= my_label("orders", "order") %>
-  <%= my_text_link(@deposit.order.description, Routes.order_path(@conn,
+  <%= my_text_link(@deposit.order.label, Routes.order_path(@conn,
     :show, @deposit.order.id)) %><br />
 
   <%= my_label("deposits", "amount_cur") %>
@@ -21,9 +21,9 @@
   <%= my_duration_input(f, :amount_dur) %><br />
   <%= error_tag(f, :amount_dur) %>
 
-  <%= my_label("deposits", "description") %>
-  <%= my_longtext_input(f, :description) %><br />
-  <%= error_tag(f, :description) %>
+  <%= my_label("deposits", "label") %>
+  <%= my_longtext_input(f, :label) %><br />
+  <%= error_tag(f, :label) %>
 
   <%= my_submit() %>
   <%= my_back_link(Routes.deposit_path(@conn, :show, @deposit))%>

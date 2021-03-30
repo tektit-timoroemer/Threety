@@ -71,7 +71,7 @@ defmodule FourtyWeb.WorkItemController do
     # have date, now prepare a nice label for the heading
 
     date_label = if (date_as_of == today) do
-      dgettext("work_items", "today")
+      dgettext("global", "today")
     else
       ViewHelpers.date_with_weekday(date_as_of)
     end
@@ -126,10 +126,13 @@ defmodule FourtyWeb.WorkItemController do
         |> put_flash(:info, dgettext("work_items", "create_success"))
         |> redirect(to: Routes.work_item_path(conn, :show, work_item))
       {:error, %Ecto.Changeset{} = changeset} ->
-        user_id = Ecto.Changeset.fetch_field(changeset, :user_id)
-        accounts = Accounting.get_accounts_for_user(user_id)
-        render(conn, "new.html", changeset: changeset,
-          accounts: accounts, adm_only: adm_only)
+        user_id = Ecto.Changeset.get_field(changeset, :user_id)
+        user = get_user(conn, user_id)
+        date_as_of = Ecto.Changeset.get_field(changeset, :date_as_of)
+        accounts = Accounting.get_accounts_for_user(user.id)
+        render(conn, "new.html", changeset: changeset, accounts: accounts,
+          adm_only: adm_only, user_id: user_id,
+          date_as_of: to_string(date_as_of), username: user.username)
     end
   end
 

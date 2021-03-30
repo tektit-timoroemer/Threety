@@ -229,7 +229,7 @@ defmodule Fourty.CostsTest do
       attrs = Map.merge(valid_attrs, %{user_id: u.id, account_id: a.id})
       assert {:ok, %WorkItem{} = work_item} = Costs.create_work_item(attrs)
 
-      {:error, :work_item, %Ecto.Changeset{}, %{}} = 
+      {:error, :withdrwl, %Ecto.Changeset{}, %{}} = 
         Costs.update_work_item(work_item, @invalid_attrs)
       assert same_work_items_2?(work_item, Costs.get_work_item!(work_item.id))
     end

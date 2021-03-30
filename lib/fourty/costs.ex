@@ -119,7 +119,7 @@ defmodule Fourty.Costs do
     user_id = Changeset.get_field(work_item_cs, :user_id)
     account_id = Changeset.get_field(work_item_cs, :account_id)
     date_as_of = Changeset.get_field(work_item_cs, :date_as_of)
-    duration = WorkItem.get_duration(work_item_cs, 0)
+    duration = WorkItem.get_duration(work_item_cs)
     rate = Users.get_rate_for_user!(user_id)
     amount_cur = compute_cost(duration, rate)
     description = create_withdrwl_description(user_id, date_as_of, rate)
@@ -141,7 +141,11 @@ defmodule Fourty.Costs do
   end
 
   defp compute_cost(duration, rate) do
-    div((duration * rate), 60)
+    if duration && rate do
+      div((duration * rate), 60)
+    else
+      nil
+    end
   end
 
   # determine the hightest sequence number used so far for this
@@ -174,7 +178,7 @@ defmodule Fourty.Costs do
     user_id = Changeset.get_field(work_item_cs, :user_id)
     date_as_of = Changeset.get_field(work_item_cs, :date_as_of)
     rate = Users.get_rate_for_user!(user_id)
-    duration = WorkItem.get_duration(work_item_cs, 0)
+    duration = WorkItem.get_duration(work_item_cs)
     amount_cur = compute_cost(duration, rate)
     account_id = Changeset.get_field(work_item_cs, :account_id)
     description = create_withdrwl_description(user_id, date_as_of, rate)

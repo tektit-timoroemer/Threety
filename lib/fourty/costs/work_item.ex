@@ -36,17 +36,15 @@ defmodule Fourty.Costs.WorkItem do
     |> validate_duration_time()
     |> assoc_constraint(:user)
   end
-        
-  def get_duration(changeset, default \\ nil) do
+
+  # compute duration if not yet given unless changeset has errors
+
+  def get_duration(changeset) do
     d = get_field(changeset, :duration)
-    if changeset.valid? do
-      if d do
-        d 
-      else
-        get_field(changeset, :time_to) - get_field(changeset, :time_from)
-      end
+    if changeset.valid? && is_nil(d) do
+      get_field(changeset, :time_to) - get_field(changeset, :time_from)
     else
-      default
+      d
     end
   end
 

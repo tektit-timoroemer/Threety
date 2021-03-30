@@ -32,9 +32,6 @@ msgstr "Edit Work Item"
 msgid "show"
 msgstr "Show Work Item"
 
-msgid "today"
-msgstr "Today"
-
 msgid "date_time"
 msgstr "Date / Time"
 

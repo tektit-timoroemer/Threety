@@ -3,50 +3,52 @@ defmodule Fourty.AccountingTest do
 
   alias Fourty.Accounting
 
+  @valid_attrs %{
+    date_end: ~D[2010-04-17],
+    date_start: ~D[2010-04-17],
+    name: "some name"
+    }
+  @update_attrs %{
+    date_end: ~D[2011-05-18],
+    date_start: ~D[2011-05-18],
+    name: "some updated name"
+  }
+  @invalid_attrs %{
+    date_end: nil,
+    date_start: nil,
+    name: nil
+  }
+
+  @min_account_attrs %{name: "name of account"} # project_id: project_fixture()
+  @min_project_attrs %{name: "name of project"} # client_id: client_fixture()
+  @min_client_attrs %{name: "name of client"}
+
+
+  defp same_accounts?(a1, a2) do
+    # return true if both accounts are identical ignoring any
+    # associations and virtual fields
+    Map.equal?(
+      Map.drop(a1, [:project, :balance_dur, :balance_cur]),
+      Map.drop(a2, [:project, :balance_dur, :balance_cur]))
+  end
+
+  def project_id() do
+    {:ok, client} = 
+      Fourty.Clients.create_client(@min_client_attrs)
+    {:ok, project} =
+      Fourty.Clients.create_project(Map.merge(@min_project_attrs, %{client_id: client.id}))
+    project.id
+  end
+
+  def account_fixture(attrs \\ %{project_id: project_id()}) do
+    {:ok, account} = 
+      Map.merge(@min_account_attrs, attrs)
+      |> Accounting.create_account()
+    account
+  end
+
   describe "accounts" do
     alias Fourty.Accounting.Account
-
-    @valid_attrs %{
-      date_end: ~D[2010-04-17],
-      date_start: ~D[2010-04-17],
-      name: "some name"
-      }
-    @update_attrs %{
-      date_end: ~D[2011-05-18],
-      date_start: ~D[2011-05-18],
-      name: "some updated name"
-    }
-    @invalid_attrs %{
-      balance_cur: nil,
-      balance_dur: nil,
-      date_end: nil,
-      date_start: nil,
-      name: nil
-    }
-
-    defp same_accounts?(a1, a2) do
-      # return true if both accounts are identical ignoring any
-      # associations
-      Map.equal?(Map.drop(a1, [:project]), Map.drop(a2, [:project]))
-    end
-
-    def project_id() do
-      {:ok, client} = Fourty.Clients.create_client(%{name: "test-client"})
-
-      {:ok, project} =
-        Fourty.Clients.create_project(%{name: "test-project", client_id: client.id})
-
-      project.id
-    end
-
-    def account_fixture(attrs \\ %{}) do
-      {:ok, account} =
-        attrs
-        |> Enum.into(Map.merge(@valid_attrs, %{project_id: project_id()}))
-        |> Accounting.create_account()
-
-      account
-    end
 
     test "list_accounts/0 returns all accounts" do
       account = account_fixture()
@@ -69,10 +71,10 @@ defmodule Fourty.AccountingTest do
 
     test "create_account/1 with valid data creates an account" do
       assert {:ok, %Account{} = account} =
-               Accounting.create_account(Map.merge(@valid_attrs, %{project_id: project_id()}))
+        Accounting.create_account(Map.merge(@valid_attrs, %{project_id: project_id()}))
 
-      assert account.balance_cur == 0
-      assert account.balance_dur == 0
+      assert account.balance_cur == nil
+      assert account.balance_dur == nil
       assert account.date_end == ~D[2010-04-17]
       assert account.date_start == ~D[2010-04-17]
       assert account.name == "some name"
@@ -85,8 +87,8 @@ defmodule Fourty.AccountingTest do
     test "update_account/2 with valid data updates the account" do
       account = account_fixture()
       assert {:ok, %Account{} = account} = Accounting.update_account(account, @update_attrs)
-      assert account.balance_cur == 0
-      assert account.balance_dur == 0
+      assert account.balance_cur == nil
+      assert account.balance_dur == nil
       assert account.date_end == ~D[2011-05-18]
       assert account.date_start == ~D[2011-05-18]
       assert account.name == "some updated name"
@@ -143,23 +145,25 @@ defmodule Fourty.AccountingTest do
       deposit
     end
 
-    def same_deposit?(d1, d2) do
+    def same_deposits?(d1, d2) do
       Map.equal?(Map.drop(d1, [:account, :order]), Map.drop(d2, [:account, :order]))
     end
 
     test "list_deposits/account_id returns all deposits for given account" do
       deposit = deposit_fixture()
-      assert Accounting.list_deposits(account_id: deposit.account_id) == [deposit]
+      [d1] = Accounting.list_deposits(account_id: deposit.account_id)
+      assert same_deposits?(d1, deposit)
     end
 
     test "list_deposits/order_id returns all deposits for given order" do
       deposit = deposit_fixture()
-      assert Accounting.list_deposits(order_id: deposit.order_id) == [deposit]
+      [d1] = Accounting.list_deposits(order_id: deposit.order_id)
+      assert same_deposits?(d1, deposit)
     end
 
     test "get_deposit!/1 returns the deposit with given id" do
       deposit = deposit_fixture()
-      assert same_deposit?(Accounting.get_deposit!(deposit.id), deposit)
+      assert same_deposits?(Accounting.get_deposit!(deposit.id), deposit)
     end
 
     test "create_deposit/1 with valid data creates a deposit" do
@@ -192,7 +196,7 @@ defmodule Fourty.AccountingTest do
     test "update_deposit/2 with invalid data returns error changeset" do
       deposit = deposit_fixture()
       assert {:error, %Ecto.Changeset{}} = Accounting.update_deposit(deposit, @invalid_attrs)
-      assert same_deposit?(deposit, Accounting.get_deposit!(deposit.id))
+      assert same_deposits?(deposit, Accounting.get_deposit!(deposit.id))
     end
 
     test "delete_deposit/1 deletes the deposit" do
@@ -214,18 +218,18 @@ defmodule Fourty.AccountingTest do
     @update_attrs %{amount_cur: 44, amount_dur: 45, description: "updated withdrawals"}
     @invalid_attrs %{amount_cur: nil, amount_dur: nil, description: nil}
 
-    def withdrwl_fixture(attrs \\ %{}) do
-      {:ok, withdrwl} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Accounting.create_withdrwl()
+    def 
 
+
+    def withdrwl_fixture(attrs \\ %{account_id: account_fixture().id}) do
+      attrs = Map.merge(@valid_attrs, attrs)
+      {:ok, withdrwl} = Accounting.create_withdrwl(attrs)
       withdrwl
     end
 
     test "list_withdrwls/0 returns all withdrwls" do
       withdrwl = withdrwl_fixture()
-      assert Accounting.list_withdrwls() == [withdrwl]
+      assert Accounting.list_withdrwls(:withdrwls) == [withdrwl]
     end
 
     test "get_withdrwl!/1 returns the withdrwl with given id" do

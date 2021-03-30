@@ -28,9 +28,6 @@ msgstr ""
 msgid "show"
 msgstr ""
 
-msgid "today"
-msgstr ""
-
 msgid "date_time"
 msgstr ""
 

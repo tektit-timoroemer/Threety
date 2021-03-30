@@ -6,11 +6,14 @@ defmodule Fourty.UsersTest do
   describe "users" do
     alias Fourty.Users.User
 
+    @pw1 "T0Psecre!"
+    @pw2 "NEW5ecre!" 
+
     @valid_attrs %{username: "some name",
-      password: "topsecret", password_confirmation: "topsecret",
+      password: @pw1, password_confirmation: @pw1,
       rate: 142, role: 0, email: "test@test.test"}
     @update_attrs %{username: "some updated name",
-      password: "newsecret", password_confirmation: "newsecret",
+      password: @pw2, password_confirmation: @pw2,
       rate: 143, role: 1, email: "other.test@test.test"}
     @invalid_attrs %{username: nil, rate: nil, role: nil, email: nil}
 
@@ -45,7 +48,7 @@ defmodule Fourty.UsersTest do
 
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = u} = Users.create_user(@valid_attrs)
-      assert {:ok, u} == Argon2.check_pass(u, "topsecret", hash_key: :password_encrypted)
+      assert {:ok, u} == Argon2.check_pass(u, @pw1, hash_key: :password_encrypted)
       assert u.username == "some name"
       assert u.rate == 142
       assert u.role == 0
@@ -59,7 +62,7 @@ defmodule Fourty.UsersTest do
     test "update_user/2 with valid data updates the user" do
       u = user_fixture()
       assert {:ok, %User{} = u} = Users.update_user(u, @update_attrs)
-      assert {:ok, u} == Argon2.check_pass(u, "newsecret", hash_key: :password_encrypted)
+      assert {:ok, u} == Argon2.check_pass(u, @pw2, hash_key: :password_encrypted)
       assert u.username == "some updated name"
       assert u.rate == 143
       assert u.role == 1
@@ -85,7 +88,11 @@ defmodule Fourty.UsersTest do
   end
 
   describe "sessions" do
-    alias Fourty.Users.Session
+    # alias Fourty.Users.Session
+
+    test "missing" do
+      assert true
+    end
   end
 
 end

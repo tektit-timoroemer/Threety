@@ -56,14 +56,11 @@ msgstr "Saturday"
 msgid "weekday7"
 msgstr "Sunday"
 
+msgid "today"
+msgstr "Today"
+
 msgid "calendar-minus-fill"
 msgstr "previous day"
 
 msgid "calendar-plus-fill"
 msgstr "next day"
-
-msgid "caret-down-square"
-msgstr "move down"
-
-msgid "caret-up-square"
-msgstr "move up"

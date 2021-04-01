@@ -1,19 +1,19 @@
-defmodule FourtyWeb.WithdrwlController do
+defmodule FourtyWeb.WithdrawalController do
   use FourtyWeb, :controller
 
   alias Fourty.Accounting
-  alias Fourty.Accounting.Withdrwl
+  alias Fourty.Accounting.Withdrawal
 
   def index_account(conn, %{"account_id" => account_id}) do
-    withdrwls = Accounting.list_withdrwls(account_id: account_id)
+    withdrawals = Accounting.list_withdrawals(account_id: account_id)
     account = Fourty.Accounting.get_account_solo!(account_id)
-    heading = dgettext("withdrwls", "index_account", label: account.label)
-    render(conn, "index.html", withdrwls: withdrwls, heading: heading)
+    heading = dgettext("withdrawals", "index_account", label: account.label)
+    render(conn, "index.html", withdrawals: withdrawals, heading: heading)
   end
 
   def new(conn, params) do
-    changeset = Ecto.Changeset.cast(%Withdrwl{}, params, [:wrktm_id])
-    withdrwl = 
+    changeset = Ecto.Changeset.cast(%Withdrawal{}, params, [:wrktm_id])
+    withdrawal = 
       Ecto.Changeset.apply_changes(changeset)
       |> Fourty.Repo.preload(wrktm: [:user])
     # create list of accounts to choose from
@@ -21,12 +21,12 @@ defmodule FourtyWeb.WithdrwlController do
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"withdrwl" => withdrwl_params}) do
-    case Accounting.create_withdrwl(withdrwl_params) do
-      {:ok, withdrwl} ->
+  def create(conn, %{"withdrawal" => withdrawal_params}) do
+    case Accounting.create_withdrawal(withdrawal_params) do
+      {:ok, withdrawal} ->
         conn
-        |> put_flash(:info, dgettext("withdrwls", "create success"))
-        |> redirect(to: Routes.withdrwl_path(conn, :show, withdrwl))
+        |> put_flash(:info, dgettext("withdrawals", "create success"))
+        |> redirect(to: Routes.withdrawal_path(conn, :show, withdrawal))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -34,36 +34,36 @@ defmodule FourtyWeb.WithdrwlController do
   end
 
   def show(conn, %{"id" => id}) do
-    withdrwl = Accounting.get_withdrwl!(id)
-    render(conn, "show.html", withdrwl: withdrwl)
+    withdrawal = Accounting.get_withdrawal!(id)
+    render(conn, "show.html", withdrawal: withdrawal)
   end
 
   def edit(conn, %{"id" => id}) do
-    withdrwl = Accounting.get_withdrwl!(id)
-    changeset = Accounting.change_withdrwl(withdrwl)
-    render(conn, "edit.html", withdrwl: withdrwl, changeset: changeset)
+    withdrawal = Accounting.get_withdrawal!(id)
+    changeset = Accounting.change_withdrawal(withdrawal)
+    render(conn, "edit.html", withdrawal: withdrawal, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "withdrwl" => withdrwl_params}) do
-    withdrwl = Accounting.get_withdrwl!(id)
+  def update(conn, %{"id" => id, "withdrawal" => withdrawal_params}) do
+    withdrawal = Accounting.get_withdrawal!(id)
 
-    case Accounting.update_withdrwl(withdrwl, withdrwl_params) do
-      {:ok, withdrwl} ->
+    case Accounting.update_withdrawal(withdrawal, withdrawal_params) do
+      {:ok, withdrawal} ->
         conn
-        |> put_flash(:info, dgettext("withdrwls", "update success"))
-        |> redirect(to: Routes.withdrwl_path(conn, :show, withdrwl))
+        |> put_flash(:info, dgettext("withdrawals", "update success"))
+        |> redirect(to: Routes.withdrawal_path(conn, :show, withdrawal))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", withdrwl: withdrwl, changeset: changeset)
+        render(conn, "edit.html", withdrawal: withdrawal, changeset: changeset)
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    withdrwl = Accounting.get_withdrwl!(id)
-    {:ok, _withdrwl} = Accounting.delete_withdrwl(withdrwl)
+    withdrawal = Accounting.get_withdrawal!(id)
+    {:ok, _withdrawal} = Accounting.delete_withdrawal(withdrawal)
 
     conn
-    |> put_flash(:info, dgettext("withdrwls", "delete success"))
-    |> redirect(to: Routes.withdrwl_path(conn, :index))
+    |> put_flash(:info, dgettext("withdrawals", "delete success"))
+    |> redirect(to: Routes.withdrawal_path(conn, :index))
   end
 end

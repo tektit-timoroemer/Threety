@@ -1,0 +1,14 @@
+<h1><%= dgettext("withdrawals","show") %></h1>
+<div class="row row-cols-auto">
+  <div class="col-sm-3 p-3 border bg-light">
+
+    <%= my_label("withdrawals", "amount_cur") %>
+    <%= my_currency_value(@withdrawal.amount_cur) %><br />
+
+    <%= my_label("withdrawals", "amount_dur") %>
+    <%= my_duration_value(@withdrawal.amount_dur) %><br />
+
+    <%= my_label("withdrawals", "description_long") %>
+    <%= my_longtext_value(@withdrawal.description) %><br />
+
+    <%= my_action("global", "edit", Routes.withdrwl_path(@conn, :edit, @withdrawal)) %>

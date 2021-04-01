@@ -6,9 +6,7 @@ defmodule Fourty.Accounting do
   import Ecto.Query, warn: false
   alias Fourty.Repo
 
-  alias Fourty.Accounting.Account
-  alias Fourty.Accounting.Deposit
-  alias Fourty.Accounting.Withdrwl
+  alias Fourty.Accounting.{Account, Deposit, Withdrawal}
 
   # create query for retrieval of account aggregates
 
@@ -28,7 +26,7 @@ defmodule Fourty.Accounting do
         where: ^wc
 
     wq =
-      from w in Fourty.Accounting.Withdrwl,
+      from w in Fourty.Accounting.Withdrawal,
         select: %{
           account_id: w.account_id,
           amount_cur: w.amount_cur * -1,
@@ -369,110 +367,110 @@ defmodule Fourty.Accounting do
     Deposit.changeset(deposit, attrs)
   end
 
-  alias Fourty.Accounting.Withdrwl
+  alias Fourty.Accounting.Withdrawal
 
   @doc """
-  Returns the list of withdrwls.
+  Returns the list of withdrawals.
 
   ## Examples
 
-      iex> list_withdrwls()
-      [%Withdrwl{}, ...]
+      iex> list_withdrawals()
+      [%Withdrawal{}, ...]
 
   """
-  def list_withdrwls(account_id: account_id) do
-    q = from d in Withdrwl, where: d.account_id == ^account_id
-    do_list_withdrwls(q)
+  def list_withdrawals(account_id: account_id) do
+    q = from d in Withdrawal, where: d.account_id == ^account_id
+    do_list_withdrawals(q)
   end
 
-  def list_withdrwls(task_id: task_id) do
-    q = from d in Withdrwl, where: d.task_id == ^task_id
-    do_list_withdrwls(q)
+  def list_withdrawals(task_id: task_id) do
+    q = from d in Withdrawal, where: d.task_id == ^task_id
+    do_list_withdrawals(q)
   end
 
-  defp do_list_withdrwls(query) do
+  defp do_list_withdrawals(query) do
     q = from d in query, order_by: d.inserted_at
     Repo.all(q)
   end
 
   @doc """
-  Gets a single withdrwl.
+  Gets a single withdrawal.
 
-  Raises `Ecto.NoResultsError` if the Withdrwl does not exist.
+  Raises `Ecto.NoResultsError` if the Withdrawal does not exist.
 
   ## Examples
 
-      iex> get_withdrwl!(123)
-      %Withdrwl{}
+      iex> get_withdrawal!(123)
+      %Withdrawal{}
 
-      iex> get_withdrwl!(456)
+      iex> get_withdrawal!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_withdrwl!(id), do: Repo.get!(Withdrwl, id)
+  def get_withdrawal!(id), do: Repo.get!(Withdrawal, id)
 
   @doc """
-  Creates a withdrwl.
+  Creates a withdrawal.
 
   ## Examples
 
-      iex> create_withdrwl(%{field: value})
-      {:ok, %Withdrwl{}}
+      iex> create_withdrawal(%{field: value})
+      {:ok, %Withdrawal{}}
 
-      iex> create_withdrwl(%{field: bad_value})
+      iex> create_withdrawal(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_withdrwl(attrs \\ %{}) do
-    %Withdrwl{}
-    |> Withdrwl.changeset(attrs)
+  def create_withdrawal(attrs \\ %{}) do
+    %Withdrawal{}
+    |> Withdrawal.changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Updates a withdrwl.
+  Updates a withdrawal.
 
   ## Examples
 
-      iex> update_withdrwl(withdrwl, %{field: new_value})
-      {:ok, %Withdrwl{}}
+      iex> update_withdrawal(withdrawal, %{field: new_value})
+      {:ok, %Withdrawal{}}
 
-      iex> update_withdrwl(withdrwl, %{field: bad_value})
+      iex> update_withdrawal(withdrawal, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_withdrwl(%Withdrwl{} = withdrwl, attrs) do
-    withdrwl
-    |> Withdrwl.changeset(attrs)
+  def update_withdrawal(%Withdrawal{} = withdrawal, attrs) do
+    withdrawal
+    |> Withdrawal.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Deletes a withdrwl.
+  Deletes a withdrawal.
 
   ## Examples
 
-      iex> delete_withdrwl(withdrwl)
-      {:ok, %Withdrwl{}}
+      iex> delete_withdrawal(withdrawal)
+      {:ok, %Withdrawal{}}
 
-      iex> delete_withdrwl(withdrwl)
+      iex> delete_withdrawal(withdrawal)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_withdrwl(%Withdrwl{} = withdrwl) do
-    Repo.delete(withdrwl)
+  def delete_withdrawal(%Withdrawal{} = withdrawal) do
+    Repo.delete(withdrawal)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking withdrwl changes.
+  Returns an `%Ecto.Changeset{}` for tracking withdrawal changes.
 
   ## Examples
 
-      iex> change_withdrwl(withdrwl)
-      %Ecto.Changeset{data: %Withdrwl{}}
+      iex> change_withdrawal(withdrawal)
+      %Ecto.Changeset{data: %Withdrawal{}}
 
   """
-  def change_withdrwl(%Withdrwl{} = withdrwl, attrs \\ %{}) do
-    Withdrwl.changeset(withdrwl, attrs)
+  def change_withdrawal(%Withdrawal{} = withdrawal, attrs \\ %{}) do
+    Withdrawal.changeset(withdrawal, attrs)
   end
 end

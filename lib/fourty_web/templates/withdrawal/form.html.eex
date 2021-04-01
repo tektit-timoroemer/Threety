@@ -5,21 +5,21 @@
     </div>
   <% end %>
 
-  <%= my_label("withdrwls", "amount_cur") %>
+  <%= my_label("withdrawals", "amount_cur") %>
   <%= my_currency_input(f, :amount_cur) %><br />
   <%= error_tag(f, :amount_cur) %>
 
-  <%= my_label("withdrwls", "amount_dur") %>
+  <%= my_label("withdrawals", "amount_dur") %>
   <%= my_duration_input(f, :amount_dur) %><br />
   <%= error_tag(f, :amount_dur) %>
 
-  <%= my_label("withdrwls", "description") %>
+  <%= my_label("withdrawals", "description") %>
   <%= my_longtext_input(f, :description) %><br />
   <%= error_tag(f, :description) %>
 
   <%= my_submit() %>
-  <%# if Ecto.Changeset.get_field(@changeset, :id),
-        do: my_back_link(Routes.task_path(@conn, :show, @deposit.task_id )),
-        else: my_back_link(Routes.task_path(@conn, :index)) %>
+  <%= if Ecto.Changeset.get_field(@changeset, :id),
+        do: my_back_link(Routes.withdrawal_path(@conn, :show, @withdrawal.id)),
+        else: my_back_link(Routes.withdrawal_path(@conn, :index)) %>
 
 <% end %>

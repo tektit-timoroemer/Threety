@@ -56,7 +56,7 @@ defmodule Fourty.Accounting.Account do
     field :balance_cur, Fourty.TypeCurrency, virtual: true, default: nil
     field :balance_dur, Fourty.TypeDuration, virtual: true, default: nil
     belongs_to :project, Fourty.Clients.Project
-    has_many :withdrwls, Fourty.Accounting.Withdrwl
+    has_many :withdrawals, Fourty.Accounting.Withdrawal
     has_many :deposits, Fourty.Accounting.Deposit
     timestamps()
   end

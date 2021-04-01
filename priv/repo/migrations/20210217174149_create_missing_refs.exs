@@ -3,10 +3,10 @@ defmodule Fourty.Repo.Migrations.CreateMissingRefs do
 
   def up do
 
-    alter table(:withdrwls) do
-      add_if_not_exists(:work_item_id, references(:work_items), null: false)
+    alter table(:withdrawals) do
+      add_if_not_exists(:work_item_id, references(:work_items))
     end
-    create index(:withdrwls, [:work_item_id])
+    create index(:withdrawals, [:work_item_id])
 
 
     alter table(:work_items) do
@@ -18,13 +18,13 @@ defmodule Fourty.Repo.Migrations.CreateMissingRefs do
 
   def down do
  
-    drop_if_exists index(:withdrwls, [:work_item_id])
+    drop_if_exists index(:withdrawals, [:work_item_id])
     alter table(:work_items) do
       remove_if_exists(:user_id, references(:users))
     end
  
     drop_if_exists index(:work_items, [:user_id, :date_as_of, :sequence])
-    alter table(:withdrwls) do
+    alter table(:withdrawals) do
       remove_if_exists(:work_item_id, references(:work_items))
     end
 

@@ -7,7 +7,7 @@ defmodule Fourty.Repo.Migrations.CreateOrders do
       add :amount_cur, :bigint
       add :amount_dur, :bigint
       add :label, :string
-      add :project_id, references(:projects, on_delete: :delete_all), null: false
+      add :project_id, references(:projects), null: false
       timestamps()
     end
   end

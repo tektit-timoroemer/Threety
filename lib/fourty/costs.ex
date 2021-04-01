@@ -11,7 +11,7 @@ defmodule Fourty.Costs do
 
   alias Fourty.Costs.WorkItem
   alias Fourty.Users
-  alias Fourty.Accounting.Withdrwl
+  alias Fourty.Accounting.Withdrawal
 
   @doc """
   Exchange the sequence number of the two items (utility to allow
@@ -97,7 +97,7 @@ defmodule Fourty.Costs do
   """
   def get_work_item!(id) do
     Repo.get!(WorkItem, id)
-    |> Repo.preload([:user, withdrwl: [:account]])
+    |> Repo.preload([:user, withdrawal: [:account]])
   end
 
   @doc """
@@ -122,20 +122,20 @@ defmodule Fourty.Costs do
     duration = WorkItem.get_duration(work_item_cs)
     rate = Users.get_rate_for_user!(user_id)
     amount_cur = compute_cost(duration, rate)
-    label = create_withdrwl_label(user_id, date_as_of, rate)
+    label = create_withdrawal_label(user_id, date_as_of, rate)
     max_sequence = get_max_sequence(user_id, date_as_of)
-    withdrwl_cs = Withdrwl.changeset(%Withdrwl{}, %{
+    withdrawal_cs = Withdrawal.changeset(%Withdrawal{}, %{
         amount_cur: amount_cur, amount_dur: duration,
         label: label, account_id: account_id})
     work_item_cs
     |> Changeset.put_change(:sequence, max_sequence + 1)
     |> Changeset.put_change(:duration, duration)
-    |> Changeset.put_assoc(:withdrwl, withdrwl_cs)
+    |> Changeset.put_assoc(:withdrawal, withdrawal_cs)
     |> Repo.insert()
   end
 
-  defp create_withdrwl_label(user_id, date_as_of, rate) do
-    dgettext("work_items", "withdrwl_label",
+  defp create_withdrawal_label(user_id, date_as_of, rate) do
+    dgettext("work_items", "withdrawal_label",
       user_id: user_id, date_as_of: date_as_of, 
       rate: Fourty.TypeCurrency.int2cur(rate))
   end
@@ -181,18 +181,18 @@ defmodule Fourty.Costs do
     duration = WorkItem.get_duration(work_item_cs)
     amount_cur = compute_cost(duration, rate)
     account_id = Changeset.get_field(work_item_cs, :account_id)
-    label = create_withdrwl_label(user_id, date_as_of, rate)
+    label = create_withdrawal_label(user_id, date_as_of, rate)
     work_item_cs = 
       if work_item_cs.valid? do
         Changeset.put_change(work_item_cs, :duration, duration)
       else
         work_item_cs
       end
-    withdrwl_cs = Withdrwl.changeset(work_item.withdrwl, %{
+    withdrawal_cs = Withdrawal.changeset(work_item.withdrawal, %{
         amount_cur: amount_cur, amount_dur: duration,
         label: label, account_id: account_id})
     Multi.new()
-    |> Multi.update(:withdrwl, withdrwl_cs)
+    |> Multi.update(:withdrawal, withdrawal_cs)
     |> Multi.update(:work_item, work_item_cs)
     |> Repo.transaction()
   end
@@ -211,7 +211,7 @@ defmodule Fourty.Costs do
   """
   def delete_work_item(%WorkItem{} = work_item) do
     Multi.new()
-    |> Multi.delete(:delete1, work_item.withdrwl)
+    |> Multi.delete(:delete1, work_item.withdrawal)
     |> Multi.delete(:delete2, work_item)
     |> Repo.transaction()
   end

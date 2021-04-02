@@ -10,8 +10,6 @@ defmodule Fourty.Setup do
   @project_label_prefix "project"
   @account_label_prefix "account"
   @order_label "label for order"
-  @deposit_label "label for deposit"
-  @withdrwl_label "label for withdrwl"
   @work_item_date ~D[2021-01-01]
   @work_item_duration 10
   @user_username_prefix "user_"
@@ -57,7 +55,7 @@ defmodule Fourty.Setup do
     Map.equal?(u1, u2)
   end
 
-  def same_withdrwls?(w1, w2) do
+  def same_withdrawals?(w1, w2) do
     Map.equal?(
       Map.drop(w1, [:account, :work_item]),
       Map.drop(w2, [:account, :work_item])
@@ -66,16 +64,16 @@ defmodule Fourty.Setup do
 
   def same_work_items?(wi1, wi2) do
     # return true if both work_items are identical ignoring
-    # all associations, including withdrwl records
+    # all associations, including withdrawal records
     Map.equal?(
-      Map.drop(wi1, [:user, :withdrwl, :account_id]),
-      Map.drop(wi2, [:user, :withdrwl, :account_id]))
+      Map.drop(wi1, [:user, :withdrawal, :account_id]),
+      Map.drop(wi2, [:user, :withdrawal, :account_id]))
   end
 
-  def same_work_items_and_withdrwls?(wi1, wi2) do
+  def same_work_items_and_withdrawals?(wi1, wi2) do
     # return true if both work_items are identical ignoring any
-    # associations other than withdrwl (which may or may not be loaded)
-    same_withdrwls?(wi1.withdrwl, wi2.withdrwl)
+    # associations other than withdrawal (which may or may not be loaded)
+    same_withdrawals?(wi1.withdrawal, wi2.withdrawal)
       && same_work_items?(wi1, wi2)
   end
 
@@ -139,19 +137,17 @@ defmodule Fourty.Setup do
 
   def deposit_fixture(attrs \\ %{}) do
     merged_attrs =
-      Map.merge(attrs, %{label: @deposit_label, amount_cur: 100})
+      Map.merge(attrs, %{amount_cur: 100})
       |> Map.put_new(:account_id, account_fixture().id)
-      |> Map.put_new(:order_id, order_fixture().id)
     {:ok, deposit} = Accounting.create_deposit(merged_attrs)
     deposit
   end
 
-  def withdrwl_fixture(attrs \\ %{}) do
+  def withdrawal_fixture(attrs \\ %{}) do
     merged_attrs =
-      Map.merge(attrs, %{label: @withdrwl_label, amount_cur: 100})
+      Map.merge(attrs, %{amount_cur: 100})
       |> Map.put_new(:account_id, account_fixture().id)
-      |> Map.put_new(:work_item_id, work_item_fixture().id)
-    {:ok, withdrwl} = Accounting.create_withdrwl(merged_attrs)
-    withdrwl
+    {:ok, withdrawal} = Accounting.create_withdrawal(merged_attrs)
+    withdrawal
   end 
 end

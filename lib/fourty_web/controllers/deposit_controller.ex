@@ -36,7 +36,6 @@ defmodule FourtyWeb.DepositController do
         |> redirect(to: Routes.deposit_path(conn, :show, deposit))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        IO.inspect(changeset)
         deposit =
           Ecto.Changeset.apply_changes(changeset)
           |> Fourty.Repo.preload(order: [project: [:client]])

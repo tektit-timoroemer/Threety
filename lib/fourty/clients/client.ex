@@ -7,6 +7,8 @@ defmodule Fourty.Clients.Client do
 
   For each client, you may add one or more `projects`.
 
+  When a client is deleted, all its projects will be deleted as well.
+
   ## Fields
 
     - label: must be a unique identifier of the client record. Any

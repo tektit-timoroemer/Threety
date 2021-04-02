@@ -1,15 +1,14 @@
 defmodule Fourty.ValidationTest do
-  use ExUnit.Case
+  use Fourty.DataCase
+  import Fourty.Setup
 
-  # these tests are based on existing schemas - 
+  # these tests are based on existing schemas
 
   describe "test validate_time_sequence" do
     alias Fourty.Costs.WorkItem
-    @work_item_init %WorkItem{account_id: "1", user_id: "1", date_as_of: ~D[2021-03-20]}
     test "start time > end time" do
-      t = 
-        @work_item_init
-        |> WorkItem.changeset(%{time_from: "00:01", time_to: "00:00"})
+      wi = work_item_fixture()
+      t = WorkItem.changeset(wi, %{time_from: "00:01", time_to: "00:00"})
       refute t.valid?
       assert Keyword.has_key?(t.errors, :time_from)
       assert Keyword.has_key?(t.errors, :time_to)
@@ -18,24 +17,20 @@ defmodule Fourty.ValidationTest do
 
   describe "test duration_does_not_match_time" do
     alias Fourty.Costs.WorkItem
-    @work_item_init %WorkItem{account_id: "1", user_id: "1", date_as_of: ~D[2021-03-20]}
     test "correct case" do
-      t =
-        @work_item_init
-        |> WorkItem.changeset(%{duration: ":10", time_from: "00:00", time_to: "00:10"})
+      wi = work_item_fixture()
+      t = WorkItem.changeset(wi, %{duration: ":10", time_from: "00:00", time_to: "00:10"})
       assert t.valid?
     end
     test "difference less than duration" do
-      t =
-        @work_item_init
-        |> WorkItem.changeset(%{duration: ":10", time_from: "00:01", time_to: "00:10"})
+      wi = work_item_fixture()
+      t = WorkItem.changeset(wi, %{duration: ":10", time_from: "00:01", time_to: "00:10"})
       refute t.valid?
       assert Keyword.has_key?(t.errors, :duration)
     end
     test "difference more than duration" do
-      t =
-        @work_item_init
-        |> WorkItem.changeset(%{duration: ":10", time_from: "00:00", time_to: "00:11"})
+      wi = work_item_fixture()
+      t = WorkItem.changeset(wi, %{duration: ":10", time_from: "00:00", time_to: "00:11"})
       refute t.valid?
       assert Keyword.has_key?(t.errors, :duration)
     end
@@ -43,70 +38,72 @@ defmodule Fourty.ValidationTest do
 
   describe "test validate_time_of_day" do
     alias Fourty.Costs.WorkItem
-    @work_item_init %WorkItem{account_id: "1", user_id: "1", date_as_of: ~D[2021-03-20]}
-    test "empty/nil" do
-      t =
-        @work_item_init
-        |> WorkItem.changeset(%{duration: ":01"})
+    test "correct case" do
+      wi = work_item_fixture()
+      t = WorkItem.changeset(wi, %{duration: ":01"})
       assert t.valid?
     end
     test "valid time 00:00-01:00" do
-      t = 
-        @work_item_init
-        |> WorkItem.changeset(%{time_from: "0", time_to: "1"})
+      wi = work_item_fixture()
+      t = WorkItem.changeset(wi, %{duration: "1", time_from: "0", time_to: "1"})
       assert t.valid?
     end
-    test "invalid time 1" do
-      t = 
-        @work_item_init
-        |> WorkItem.changeset(%{time_from: "-1", time_to: "24:00"})
+    test "invalid time - negative" do
+      wi = work_item_fixture()
+      t = WorkItem.changeset(wi, %{time_from: "-1", time_to: "24:00"})
       refute t.valid?
       assert Keyword.has_key?(t.errors, :time_from)
       refute Keyword.has_key?(t.errors, :time_to)
     end
-    test "invalid time 2" do
-      t =
-        @work_item_init
-        |> WorkItem.changeset(%{time_from: "0", time_to: "24:01"})
+    test "invalid time - past midnight" do
+      wi = work_item_fixture()
+      t = WorkItem.changeset(wi, %{time_from: "0", time_to: "24:01"})
       refute t.valid?
       refute Keyword.has_key?(t.errors, :time_from)
       assert Keyword.has_key?(t.errors, :time_to)
     end
   end
 
+  describe "test at most one" do
+    alias Fourty.Accounting.Withdrawal
+    test "correct case" do
+      wd = withdrawal_fixture()
+      assert is_nil(wd.work_item_id)
+      t = Withdrawal.changeset(wd, %{label: "test"})
+      assert t.valid?
+    end
+    test "work_item set" do
+      wi = work_item_fixture()
+      wd = wi.withdrawal
+      refute is_nil(wd.work_item_id)
+      t = Withdrawal.changeset(wd, %{})
+      assert t.valid?
+    end
+  end
 
   describe "at least one" do
     alias Fourty.Accounting.Deposit
-    @deposit_init %Deposit{account_id: "1", order_id: "1"}
     test "standard case - two fields" do
-      c =
-        @deposit_init
-        |> Deposit.changeset(%{description: "test", amount_cur: "1", amount_dur: "2"})
-
+      d = deposit_fixture()
+      c = Deposit.changeset(d, %{description: "test", amount_cur: "1", amount_dur: "2"})
       assert c.valid?
     end
 
     test "standard case - first field" do
-      c =
-        @deposit_init
-        |> Deposit.changeset(%{description: "test", amount_cur: "1"})
-
+      d = deposit_fixture()
+      c = Deposit.changeset(d, %{description: "test", amount_cur: "1"})
       assert c.valid?
     end
 
     test "standard case - second field" do
-      c =
-        @deposit_init
-        |> Deposit.changeset(%{description: "test", amount_dur: "2"})
-
+      d = deposit_fixture()
+      c = Deposit.changeset(d, %{description: "test", amount_dur: "2"})
       assert c.valid?
     end
 
     test "error case - none" do
-      c =
-        @deposit_init
-        |> Deposit.changeset(%{description: "test"})
-
+      d = deposit_fixture()
+      c = Deposit.changeset(d, %{amount_cur: "", amount_dur: ""})
       refute c.valid?
       assert Keyword.has_key?(c.errors, :amount_cur)
       assert Keyword.has_key?(c.errors, :amount_dur)
@@ -121,11 +118,10 @@ defmodule Fourty.ValidationTest do
         %Account{}
         |> Account.changeset(%{
           project_id: "1",
-          name: "test",
+          label: "test",
           date_start: ~D[2010-04-17],
           date_end: ~D[2010-04-18]
         })
-
       assert c.valid?
     end
 
@@ -134,7 +130,7 @@ defmodule Fourty.ValidationTest do
         %Account{}
         |> Account.changeset(%{
           project_id: "1",
-          name: "test",
+          label: "test",
           date_start: ~D[2010-04-18],
           date_end: ~D[2010-04-18]
         })
@@ -147,7 +143,7 @@ defmodule Fourty.ValidationTest do
         %Account{}
         |> Account.changeset(%{
           project_id: "1",
-          name: "test",
+          label: "test",
           date_start: ~D[2010-04-19],
           date_end: ~D[2010-04-18]
         })
@@ -158,7 +154,7 @@ defmodule Fourty.ValidationTest do
     test "ignore, if none given" do
       c =
         %Account{}
-        |> Account.changeset(%{project_id: "1", name: "test"})
+        |> Account.changeset(%{project_id: "1", label: "test"})
 
       assert c.valid?
     end
@@ -166,7 +162,7 @@ defmodule Fourty.ValidationTest do
     test "ignore if date_start not given" do
       c =
         %Account{}
-        |> Account.changeset(%{project_id: "1", name: "test", date_end: ~D[2010-04-18]})
+        |> Account.changeset(%{project_id: "1", label: "test", date_end: ~D[2010-04-18]})
 
       assert c.valid?
     end
@@ -174,7 +170,7 @@ defmodule Fourty.ValidationTest do
     test "ignore if date_end not given" do
       c =
         %Account{}
-        |> Account.changeset(%{project_id: "1", name: "test", date_start: ~D[2010-04-18]})
+        |> Account.changeset(%{project_id: "1", label: "test", date_start: ~D[2010-04-18]})
 
       assert c.valid?
     end

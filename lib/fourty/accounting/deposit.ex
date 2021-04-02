@@ -38,7 +38,7 @@ defmodule Fourty.Accounting.Deposit do
     |> assoc_constraint(:account)
     |> assoc_constraint(:order)
     |> Validations.validate_at_least_one([:amount_cur, :amount_dur])
-    |> Validations.validate_exactly_one([:order_id])
+    |> Validations.validate_at_most_one([:order_id])
   end
 end
  

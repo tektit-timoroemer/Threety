@@ -8,7 +8,7 @@
     <%= my_label("withdrawals", "amount_dur") %>
     <%= my_duration_value(@withdrawal.amount_dur) %><br />
 
-    <%= my_label("withdrawals", "description_long") %>
-    <%= my_longtext_value(@withdrawal.description) %><br />
+    <%= my_label("withdrawals", "label_long") %>
+    <%= my_longtext_value(@withdrawal.label) %><br />
 
-    <%= my_action("global", "edit", Routes.withdrwl_path(@conn, :edit, @withdrawal)) %>
+    <%= my_action("global", "edit", Routes.withdrawal_path(@conn, :edit, @withdrawal)) %>

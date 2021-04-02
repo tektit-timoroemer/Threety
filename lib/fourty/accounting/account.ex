@@ -16,7 +16,11 @@ defmodule Fourty.Accounting.Account do
   system until explicitly removed.
 
   An account always belongs to a single project but a project can have
-  more than one account.
+  more than one account. All accounts within a single project must have
+  a different label.
+
+  Deleting an account will cause all deposits and withdrawals to be
+  deleted as well.
 
   ## Fields
 

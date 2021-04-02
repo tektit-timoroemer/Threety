@@ -21,12 +21,13 @@ defmodule Fourty.Validations do
 
   # ensure that there is exactly none or one of the fields provided
 
-  @validate_exactly_one_msg "exactly_one_required"
-  def validate_exactly_one(changeset, fields) when is_list(fields) do
+  @validate_at_most_one_msg "at_most_one_required"
+  def validate_at_most_one(changeset, fields) when is_list(fields) do
     Enum.map(fields, &get_field(changeset, &1))
     |> Enum.reject(&is_nil/1)
-    |> Enum.count() > 1
-    |> if(do: add_errors(changeset, fields, @validate_exactly_one_msg),
+    |> Enum.count()
+    |> Kernel.>(1)
+    |> if(do: add_errors(changeset, fields, @validate_at_most_one_msg),
          else: changeset)
   end
 

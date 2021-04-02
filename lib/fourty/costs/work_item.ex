@@ -1,4 +1,42 @@
 defmodule Fourty.Costs.WorkItem do
+  @moduledoc """
+
+  The WorkItem schema extends the Withdrawal schema by additional
+  information regarding current work items.
+
+  Work Items belong to a specific user.
+
+  A Work Item can only be removed if its duration is 0 minutes. This is
+  in order to prohibit the invalidation of the accounting history.
+
+  ## Fields
+
+    - label: an optional field to remarks on the work item
+
+    - date_as_of: the date for which the accounting information was
+      created
+
+    - duration: a duration of time; alternatively, the period time_from
+      and time_to can be used. 
+
+    - time_from, time_to: a time period; alternatively, the duration
+      can be set using the field duration.
+
+      All three fields - duration, time_from and time_to - can be set
+      but the duration specified must match the duration given by the
+      period from time_from until time_to.
+
+    - sequence: is an internal field which is used to keep the records
+      within a single day in a user-controllable order.
+
+    - account_id: is the id of the account to which the Work Item is
+      related to. This information is not saved to the database as the
+      account association is kept in the related withdrawal record. In
+      fact, the account_id is needed only to create or modify the Work
+      Item. If the account_id is given, it must point to an existing
+      account record.
+
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -10,7 +48,7 @@ defmodule Fourty.Costs.WorkItem do
     field :time_from, Fourty.TypeDuration
     field :time_to, Fourty.TypeDuration
     field :sequence, :integer, default: 0
-    has_one :withdrwl, Fourty.Accounting.Withdrwl
+    has_one :withdrawal, Fourty.Accounting.Withdrawal
     belongs_to :user, Fourty.Users.User
     timestamps()
   end
@@ -28,7 +66,7 @@ defmodule Fourty.Costs.WorkItem do
       :user_id
     ])
     |> validate_required([:date_as_of, :user_id, :account_id])
-    |> validate_number(:duration, greater_than: 0)
+    |> validate_number(:duration, greater_than_or_equal_to: 0)
     |> validate_time_of_day(:time_from)
     |> validate_time_of_day(:time_to)
     |> validate_time_sequence()
@@ -82,7 +120,7 @@ defmodule Fourty.Costs.WorkItem do
     t = get_field(changeset, :time_to)
 
     if changeset.valid? && (f && t) do
-      if (f < t) do
+      if (f <= t) do
         changeset
       else
         add_error(changeset, :time_from, @validate_time_sequence_msg <> "start")

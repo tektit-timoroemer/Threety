@@ -10,7 +10,7 @@ defmodule Fourty.Repo.Migrations.CreateMissingRefs do
 
 
     alter table(:work_items) do
-      add_if_not_exists(:user_id, references(:users), null: false)
+      add_if_not_exists(:user_id, references(:users, on_delete: :delete_all), null: false)
     end
     create unique_index(:work_items, [:user_id, :date_as_of, :sequence])
 
@@ -20,7 +20,7 @@ defmodule Fourty.Repo.Migrations.CreateMissingRefs do
  
     drop_if_exists index(:withdrawals, [:work_item_id])
     alter table(:work_items) do
-      remove_if_exists(:user_id, references(:users))
+      remove_if_exists(:user_id, references(:users, on_delete: :delete_all))
     end
  
     drop_if_exists index(:work_items, [:user_id, :date_as_of, :sequence])

@@ -7,7 +7,7 @@ defmodule Fourty.Repo.Migrations.CreateProjects do
       add :date_start, :date
       add :date_end, :date
       add :visible, :bool, default: true
-      add :client_id, references(:clients), null: false
+      add :client_id, references(:clients, on_delete: :delete_all), null: false
       timestamps()
     end
 

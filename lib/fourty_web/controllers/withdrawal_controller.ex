@@ -13,7 +13,7 @@ defmodule FourtyWeb.WithdrawalController do
 
   def new(conn, params) do
     changeset = Ecto.Changeset.cast(%Withdrawal{}, params, [:wrktm_id])
-    withdrawal = 
+    _withdrawal = 
       Ecto.Changeset.apply_changes(changeset)
       |> Fourty.Repo.preload(wrktm: [:user])
     # create list of accounts to choose from

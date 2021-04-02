@@ -11,6 +11,9 @@ defmodule Fourty.Clients.Project do
   - there is no connection between the date_start and date_end dates of
   the associated accounts.
 
+  If a project is deleted, all related/associated orders and accounts
+  will be deleted as well.
+
   ## Fields
 
     - label: the unique name or identifier of this project. This text

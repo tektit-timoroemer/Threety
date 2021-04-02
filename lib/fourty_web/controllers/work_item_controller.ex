@@ -155,7 +155,7 @@ defmodule FourtyWeb.WorkItemController do
     {adm_only, _assigns} = Map.pop(conn.assigns, :adm_only, false)
     work_item = Costs.get_work_item!(id)
     case Costs.update_work_item(work_item, work_item_params) do
-      {:ok, %{work_item: work_item, withdrwl: _withdrwl}} ->
+      {:ok, %{work_item: work_item, withdrawal: _withdrawal}} ->
         redirect_path = if adm_only do
           Routes.work_item_user_path(conn, :show, work_item.user_id, work_item)
         else

@@ -52,36 +52,40 @@ defmodule Fourty.SetupTest do
 			refute a1.project_id == a2.project_id
  		end
 
- 		test "deposit - different account, order" do
+ 		test "deposit - different accounts" do
  			d1 = deposit_fixture()
  			d2 = deposit_fixture()
  			refute same_deposits?(d1, d2)
  			refute d1.account_id == d2.account_id
- 			refute d1.order_id == d2.order_id
+ 			assert is_nil(d1.order_id)
+ 			assert d1.order_id == d2.order_id
  		end
 
- 		test "deposit - same account, different order" do
+ 		test "deposit - same accounts" do
  			d1 = deposit_fixture()
  			d2 = deposit_fixture(%{account_id: d1.account_id})
  			refute same_deposits?(d1, d2)
  			assert d1.account_id == d2.account_id
- 			refute d1.order_id == d2.order_id
- 		end
-
- 		test "deposit - different account, same order" do
- 			d1 = deposit_fixture()
- 			d2 = deposit_fixture(%{order_id: d1.order_id})
- 			refute same_deposits?(d1, d2)
- 			refute d1.account_id == d2.account_id
+ 			assert is_nil(d1.order_id)
  			assert d1.order_id == d2.order_id
  		end
 
- 		test "deposit - same account, same order" do
- 			d1 = deposit_fixture()
- 			d2 = deposit_fixture(%{account_id: d1.account_id, order_id: d1.order_id})
- 			refute same_deposits?(d1, d2)
- 			assert d1.account_id == d2.account_id
- 			assert d1.order_id == d2.order_id
+ 		test "withdrawal - different accounts" do
+ 			wd1 = withdrawal_fixture()
+ 			wd2 = withdrawal_fixture()
+ 			refute same_withdrawals?(wd1, wd2)
+ 			refute wd1.account_id == wd2.account_id
+ 			assert is_nil(wd1.work_item_id)
+ 			assert wd1.work_item_id == wd2.work_item_id
+ 		end
+
+ 		test "withdrawal - same accounts" do
+ 			wd1 = withdrawal_fixture()
+ 			wd2 = withdrawal_fixture(%{account_id: wd1.account_id})
+ 			refute same_withdrawals?(wd1, wd2)
+ 			assert wd1.account_id == wd2.account_id
+ 			assert is_nil(wd1.work_item_id)
+ 			assert wd1.work_item_id == wd2.work_item_id
  		end
 
  		test "user" do

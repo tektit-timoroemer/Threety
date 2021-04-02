@@ -6,7 +6,7 @@ defmodule Fourty.Repo.Migrations.CreateWithdrawals do
       add :amount_cur, :bigint
       add :amount_dur, :bigint
       add :label, :string
-      add :account_id, references(:accounts), null: false
+      add :account_id, references(:accounts, on_delete: :delete_all), null: false
 #     add :work_item_id, references(:work_items)
       timestamps()
     end

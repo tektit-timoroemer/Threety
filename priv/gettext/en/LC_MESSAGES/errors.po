@@ -96,15 +96,14 @@ msgstr ""
 msgid "must be equal to %{number}"
 msgstr ""
 
-#: lib/fourty_web/templates/account/form.html.eex:4
-#: lib/fourty_web/templates/client/form.html.eex:4 lib/fourty_web/templates/deposit/form.html.eex:4
-#: lib/fourty_web/templates/deposit/form_edit.html.eex:4 lib/fourty_web/templates/order/form.html.eex:4
-#: lib/fourty_web/templates/project/form.html.eex:4 lib/fourty_web/templates/withdrwl/form.html.eex:4
 msgid "error_alert"
 msgstr "There are problems with your input, please see details below."
 
-msgid "first date must not be after second date"
+msgid "date_order_error"
 msgstr "First date must not be after second date"
+
+msgid "at_most_one_required"
+msgstr "Multiple references - only one is permitted."
 
 msgid "at_least_one_needed"
 msgstr "At least one must be given"
@@ -116,10 +115,10 @@ msgid "duration_does_not_match_time"
 msgstr "Given Duration does not match duration from Start and End Time"
 
 msgid "time_sequence_error_start"
-msgstr "Start Time must be before End Time"
+msgstr "Start Time must be same as or before End Time"
 
 msgid "time_sequence_error_end"
-msgstr "End Time must be after Start Time"
+msgstr "End Time must be same as or after Start Time"
 
 msgid "time_format_error"
 msgstr "Time must be between 0:00 and 24:00"

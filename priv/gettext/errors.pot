@@ -11,6 +11,9 @@
 msgid "can't be blank"
 msgstr ""
 
+msgid "can't be blank"
+msgstr ""
+
 ## From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
 msgstr ""
@@ -93,22 +96,22 @@ msgstr ""
 msgid "must be equal to %{number}"
 msgstr ""
 
-#: lib/fourty_web/templates/account/form.html.eex:4
-#: lib/fourty_web/templates/client/form.html.eex:4 lib/fourty_web/templates/deposit/form.html.eex:4
-#: lib/fourty_web/templates/deposit/form_edit.html.eex:4 lib/fourty_web/templates/order/form.html.eex:4
-#: lib/fourty_web/templates/project/form.html.eex:4 lib/fourty_web/templates/session/login.html.eex:7
-#: lib/fourty_web/templates/user/edit_pw.html.eex:7 lib/fourty_web/templates/user/form.html.eex:4
-#: lib/fourty_web/templates/withdrwl/form.html.eex:4
 msgid "error_alert"
 msgstr ""
 
 msgid "date_order_error"
 msgstr ""
 
+msgid "at_most_one_required"
+msgstr ""
+
 msgid "at_least_one_needed"
 msgstr ""
 
 msgid "bad_duration_time_combination"
+msgstr ""
+
+msgid "duration_does_not_match_time"
 msgstr ""
 
 msgid "time_sequence_error_start"
@@ -125,7 +128,3 @@ msgstr ""
 
 msgid "wrong_old_pw"
 msgstr ""
-
-msgid "bad_duration_time_combination"
-msgstr ""
-

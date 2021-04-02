@@ -33,11 +33,11 @@ defmodule Fourty.Accounting.Withdrawal do
   @doc false
   def changeset(withdrawal, attrs) do
     withdrawal
-    |> cast(attrs, [:amount_dur, :amount_cur, :label, :account_id, :work_item])
+    |> cast(attrs, [:amount_dur, :amount_cur, :label, :account_id, :work_item_id])
     |> validate_required([:account_id])
     |> assoc_constraint(:account)
     |> assoc_constraint(:work_item)
     |> Validations.validate_at_least_one([:amount_cur, :amount_dur])
-    |> Validations.validate_exactly_one([:work_item])
+    |> Validations.validate_at_most_one([:work_item_id])
   end
 end

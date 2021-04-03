@@ -8,6 +8,25 @@ defmodule Fourty.Accounting do
 
   alias Fourty.Accounting.{Account, Deposit, Withdrawal}
 
+  # account open for transactions
+
+  def account_open?(account, date_as_of) do
+    if is_nil(account.date_start) do
+      if is_nil(account.date_end) do
+        true
+      else
+        Date.compare(account.date_end, date_as_of) == :gt
+      end
+    else
+      if is_nil(account.date_end) do
+        Date.compare(account.date_start, date_as_of) != :gt
+      else
+        Date.compare(account.date_start, date_as_of) != :gt and
+        Date.compare(account.date_end, date_as_of)   == :gt
+      end
+    end
+  end
+
   # create query for retrieval of account aggregates
 
   defp balance_per_account_query(accounts) when is_list(accounts) do
@@ -270,7 +289,11 @@ defmodule Fourty.Accounting do
     do_list_deposits(q)
   end
 
-  def list_deposits(order_id: order_id) do
+  def list_deposits(order_id: nil) do
+    []
+  end
+
+  def list_deposits(order_id: order_id) when not is_nil(order_id) do
     q = from d in Deposit, where: d.order_id == ^order_id
     do_list_deposits(q)
   end
@@ -380,11 +403,6 @@ defmodule Fourty.Accounting do
   """
   def list_withdrawals(account_id: account_id) do
     q = from d in Withdrawal, where: d.account_id == ^account_id
-    do_list_withdrawals(q)
-  end
-
-  def list_withdrawals(task_id: task_id) do
-    q = from d in Withdrawal, where: d.task_id == ^task_id
     do_list_withdrawals(q)
   end
 

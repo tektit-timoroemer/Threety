@@ -32,8 +32,8 @@ defmodule Fourty.Setup do
 
   def same_orders?(o1, o2) do
     Map.equal?(
-      Map.drop(o1, [:deposits]),
-      Map.drop(o2, [:deposits])
+      Map.drop(o1, [:deposits, :project]),
+      Map.drop(o2, [:deposits, :project])
       )
   end
  
@@ -108,6 +108,7 @@ defmodule Fourty.Setup do
     merged_attrs = 
       Map.put_new(attrs, :label, @account_label_prefix <> unique_suffix)
       |> Map.put_new(:project_id, project_fixture().id)
+      |> Map.put_new(:date_start, @work_item_date)
     {:ok, account} = Accounting.create_account(merged_attrs)
     account
   end

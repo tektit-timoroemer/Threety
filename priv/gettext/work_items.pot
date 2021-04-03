@@ -75,3 +75,6 @@ msgstr ""
 
 msgid "invalid_account"
 msgstr ""
+
+msgid "no_valid_accounts"
+msgstr ""

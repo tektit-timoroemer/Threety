@@ -113,9 +113,19 @@ defmodule FourtyWeb.WorkItemController do
     params = Map.put(params, "user_id", user.id)
     changeset = Costs.change_work_item(%WorkItem{}, params)
     accounts = Accounting.get_accounts_for_user(user.id)
-    render(conn, "new.html", changeset: changeset, accounts: accounts,
-      adm_only: adm_only, user_id: user_id, date_as_of: date_as_of, 
-      username: user.username)
+    if length(accounts) == 0 do
+      conn
+      |> put_flash(:error, dgettext("work_items", "no_valid_accounts"))
+      |> redirect(to: if adm_only do
+          Routes.work_item_user_path(conn, :index_date, user_id, to_string(date_as_of))
+        else
+          Routes.work_item_path(conn, :index_date, to_string(date_as_of))
+        end)
+    else
+      render(conn, "new.html", changeset: changeset, accounts: accounts,
+        adm_only: adm_only, user_id: user_id, date_as_of: date_as_of, 
+        username: user.username)
+    end
   end
 
   def create(conn, %{"work_item" => work_item_params}) do

@@ -24,7 +24,7 @@
             <%= dgettext("clients", "label") %>&nbsp;:&nbsp;
             <strong>
               <%= link client.label, to: Routes.client_path(@conn, :show, client.id) %>
-            </strong>s
+            </strong>
           </td>
           <td>
             &nbsp;

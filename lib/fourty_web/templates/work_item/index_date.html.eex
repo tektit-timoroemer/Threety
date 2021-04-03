@@ -18,7 +18,7 @@
           <th class="col-sm-1 text-end"><%= dgettext("work_items", "duration") %></th>
           <th class="col-sm-1 text-end"><%= dgettext("work_items", "time_from") %></th>
           <th class="col-sm-1 text-end"><%= dgettext("work_items", "time_to") %></th>
-          <th class="col-sm-3"><%= dgettext("work_items", "comments") %></th>
+          <th class="col-sm-3"><%= dgettext("work_items", "label") %></th>
           <th class="col-sm-3"><%= dgettext("global", "actions") %></th>
         </tr>
       </thead>
@@ -32,7 +32,7 @@
           <td class="text-end"><%= min2dur(work_item.duration) %></td>
           <td class="text-end"><%= min2dur(work_item.time_from) %></td>
           <td class="text-end"><%= min2dur(work_item.time_to) %></td>
-          <td><%= work_item.comments %></td>
+          <td><%= work_item.label %></td>
           <td>
             <%= if @adm_only do %>
               <%= if n > 1, do: my_action_link("global", "up", Routes.work_item_user_path(@conn, :flip, work_item.user_id, to_string(work_item.date_as_of), work_item.id, Enum.at(@work_items, i - 1).id)) %>

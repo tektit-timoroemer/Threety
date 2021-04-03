@@ -85,3 +85,6 @@ msgstr "Internal Error in Cost.get_items/2: work items must be of same user."
 
 msgid "invalid_account"
 msgstr "Account is not open for transactions."
+
+msgid "no_valid_accounts"
+msgstr "No account open for transactions."

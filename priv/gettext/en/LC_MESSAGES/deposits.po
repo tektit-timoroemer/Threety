@@ -48,7 +48,7 @@ msgstr "Show Deposit"
 
 #: lib/fourty_web/controllers/deposit_controller.ex:10
 msgid "index_account"
-msgstr "List of Deposits on Account: %{name}"
+msgstr "List of Deposits on Account: %{label}"
 
 msgid "index_account_short"
 msgstr "List of Deposits"

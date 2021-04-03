@@ -6,8 +6,8 @@ defmodule FourtyWeb.DepositController do
 
   def index_account(conn, %{"account_id" => account_id}) do
     deposits = Accounting.list_deposits(account_id: account_id)
-    account = Fourty.Accounting.get_account_solo!(account_id)
-    heading = dgettext("deposits", "index_account", name: account.name)
+    account = Accounting.get_account_solo!(account_id)
+    heading = dgettext("deposits", "index_account", label: account.label)
     render(conn, "index.html", deposits: deposits, heading: heading)
   end
 

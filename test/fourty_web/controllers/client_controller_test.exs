@@ -2,17 +2,12 @@ defmodule FourtyWeb.ClientControllerTest do
   use FourtyWeb.ConnCase
 
   alias FourtyWeb.ConnHelper
+  import Fourty.Setup
   import FourtyWeb.Gettext, only: [dgettext: 2]
-  alias Fourty.Clients
 
-  @create_attrs %{name: "some name"}
-  @update_attrs %{name: "some updated name"}
-  @invalid_attrs %{name: nil}
-
-  def fixture(:client) do
-    {:ok, client} = Clients.create_client(@create_attrs)
-    client
-  end
+  @create_attrs %{label: "some label"}
+  @update_attrs %{label: "some updated label"}
+  @invalid_attrs %{label: nil}
 
   describe "test access" do
     setup [:create_client]
@@ -187,7 +182,7 @@ defmodule FourtyWeb.ClientControllerTest do
       assert get_flash(conn, :info) == dgettext("clients", "update_success")
 
       conn = get(conn, Routes.client_path(conn, :index))
-      assert html_response(conn, 200) =~ "some updated name"
+      assert html_response(conn, 200) =~ "some updated label"
       assert get_flash(conn, :info) == dgettext("clients", "update_success")
     end
 
@@ -230,7 +225,7 @@ defmodule FourtyWeb.ClientControllerTest do
   end
 
   defp create_client(_) do
-    client = fixture(:client)
+    client = client_fixture()
     %{client: client}
   end
 end

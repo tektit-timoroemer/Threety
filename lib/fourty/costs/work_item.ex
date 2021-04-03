@@ -87,20 +87,21 @@ defmodule Fourty.Costs.WorkItem do
     end
   end
 
-  # ensure that account is open for transactions
+  # ensure that account is open for transactions on the date_as_of date
 
   @validate_account_msg "invalid_account"
   defp validate_account(changeset) do
-    a = 
-      get_field(changeset, :account_id)
-      |> Fourty.Accounting.get_account_solo!()
-    today = Date.utc_today
-    if is_nil(a.date_start) ||
-       (Date.compare(today, a.date_start) == :lt) ||
-       (a.date_end && Date.compare(a.date_end, today) == :ge) do
-      add_error(changeset, :account_id, @validate_account_msg)
+    if changeset.valid? do
+      d = get_field(changeset, :date_as_of)
+      a = get_field(changeset, :account_id)
+        |> Fourty.Accounting.get_account_solo!()
+      unless Fourty.Accounting.account_open?(a, d) do
+        add_error(changeset, :account_id, @validate_account_msg)
+      else
+        changeset    
+      end
     else
-      changeset    
+      changeset
     end
   end
 

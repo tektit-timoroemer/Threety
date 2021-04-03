@@ -1,50 +1,62 @@
 defmodule Fourty.AccountingTest do
   use Fourty.DataCase
 
+  import Fourty.Setup
   alias Fourty.Accounting
 
   @valid_attrs %{
     date_end: ~D[2010-04-17],
     date_start: ~D[2010-04-17],
-    name: "some name"
+    label: "some label"
     }
   @update_attrs %{
     date_end: ~D[2011-05-18],
     date_start: ~D[2011-05-18],
-    name: "some updated name"
+    label: "some updated label"
   }
   @invalid_attrs %{
     date_end: nil,
     date_start: nil,
-    name: nil
+    label: nil
   }
 
-  @min_account_attrs %{name: "name of account"} # project_id: project_fixture()
-  @min_project_attrs %{name: "name of project"} # client_id: client_fixture()
-  @min_client_attrs %{name: "name of client"}
-
-
-  defp same_accounts?(a1, a2) do
-    # return true if both accounts are identical ignoring any
-    # associations and virtual fields
-    Map.equal?(
-      Map.drop(a1, [:project, :balance_dur, :balance_cur]),
-      Map.drop(a2, [:project, :balance_dur, :balance_cur]))
-  end
-
-  def project_id() do
-    {:ok, client} = 
-      Fourty.Clients.create_client(@min_client_attrs)
-    {:ok, project} =
-      Fourty.Clients.create_project(Map.merge(@min_project_attrs, %{client_id: client.id}))
-    project.id
-  end
-
-  def account_fixture(attrs \\ %{project_id: project_id()}) do
-    {:ok, account} = 
-      Map.merge(@min_account_attrs, attrs)
-      |> Accounting.create_account()
-    account
+  describe "test account_open?" do
+    test "both dates not set" do
+      a = account_fixture(%{date_start: nil, date_end: nil})
+      assert Accounting.account_open?(a, ~D[2020-12-31])
+      assert Accounting.account_open?(a, ~D[2021-01-01])
+      assert Accounting.account_open?(a, ~D[2021-01-31])
+      assert Accounting.account_open?(a, ~D[2021-02-01])
+    end
+    test "date_start set" do
+      a = account_fixture(%{date_start: ~D[2021-01-01], date_end: nil})
+      refute Accounting.account_open?(a, ~D[2020-12-31])
+      assert Accounting.account_open?(a, ~D[2021-01-01])
+      assert Accounting.account_open?(a, ~D[2021-01-31])
+      assert Accounting.account_open?(a, ~D[2021-02-01])
+    end
+    test "date_end set" do
+      a = account_fixture(%{date_start: nil, date_end: ~D[2021-02-01]})
+      assert Accounting.account_open?(a, ~D[2020-12-31])
+      assert Accounting.account_open?(a, ~D[2021-01-01])
+      assert Accounting.account_open?(a, ~D[2021-01-31])
+      refute Accounting.account_open?(a, ~D[2021-02-01])
+    end
+    test "both dates set" do
+      a = account_fixture(%{date_start: ~D[2021-01-01], date_end: ~D[2021-02-01]})
+      refute Accounting.account_open?(a, ~D[2020-12-31])
+      assert Accounting.account_open?(a, ~D[2021-01-01])
+      assert Accounting.account_open?(a, ~D[2021-01-31])
+      refute Accounting.account_open?(a, ~D[2021-02-01])
+    end
+    test "both dates set to same date" do
+      a = account_fixture(%{date_start: ~D[2021-01-15], date_end: ~D[2021-01-15]})
+      refute Accounting.account_open?(a, ~D[2020-12-31])
+      refute Accounting.account_open?(a, ~D[2021-01-01])
+      refute Accounting.account_open?(a, ~D[2021-01-15])
+      refute Accounting.account_open?(a, ~D[2021-01-31])
+      refute Accounting.account_open?(a, ~D[2021-02-01])
+    end
   end
 
   describe "accounts" do
@@ -71,13 +83,14 @@ defmodule Fourty.AccountingTest do
 
     test "create_account/1 with valid data creates an account" do
       assert {:ok, %Account{} = account} =
-        Accounting.create_account(Map.merge(@valid_attrs, %{project_id: project_id()}))
+        Accounting.create_account(
+          Map.merge(@valid_attrs, %{project_id: project_fixture().id}))
 
       assert account.balance_cur == nil
       assert account.balance_dur == nil
       assert account.date_end == ~D[2010-04-17]
       assert account.date_start == ~D[2010-04-17]
-      assert account.name == "some name"
+      assert account.label == "some label"
     end
 
     test "create_account/1 with invalid data returns error changeset" do
@@ -91,7 +104,7 @@ defmodule Fourty.AccountingTest do
       assert account.balance_dur == nil
       assert account.date_end == ~D[2011-05-18]
       assert account.date_start == ~D[2011-05-18]
-      assert account.name == "some updated name"
+      assert account.label == "some updated label"
     end
 
     test "update_account/2 with invalid data returns error changeset" do
@@ -115,39 +128,9 @@ defmodule Fourty.AccountingTest do
   describe "deposits" do
     alias Fourty.Accounting.Deposit
 
-    @valid_attrs %{amount_cur: 42, amount_dur: 43, description: "test deposits"}
-    @update_attrs %{amount_cur: 44, amount_dur: 45, description: "updated deposit"}
-    @invalid_attrs %{amount_cur: nil, amount_dur: nil, description: nil}
-
-    def order_fixture(project_id) do
-      {:ok, order} =
-        Fourty.Clients.create_order(%{project_id: project_id, description: "test order"})
-
-      order
-    end
-
-    def deposit_fixture(account_id \\ nil, order_id \\ nil, attrs \\ %{}) do
-      account =
-        if is_nil(account_id),
-          do: account_fixture(),
-          else: Fourty.Accounting.get_account!(account_id)
-
-      refute is_nil(account)
-
-      order_id = order_id || order_fixture(account.project_id).id
-
-      {:ok, deposit} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Enum.into(%{account_id: account.id, order_id: order_id})
-        |> Accounting.create_deposit()
-
-      deposit
-    end
-
-    def same_deposits?(d1, d2) do
-      Map.equal?(Map.drop(d1, [:account, :order]), Map.drop(d2, [:account, :order]))
-    end
+    @valid_attrs %{amount_cur: 42, amount_dur: 43, label: "test deposits"}
+    @update_attrs %{amount_cur: 44, amount_dur: 45, label: "updated deposit"}
+    @invalid_attrs %{amount_cur: nil, amount_dur: nil, label: nil}
 
     test "list_deposits/account_id returns all deposits for given account" do
       deposit = deposit_fixture()
@@ -156,7 +139,8 @@ defmodule Fourty.AccountingTest do
     end
 
     test "list_deposits/order_id returns all deposits for given order" do
-      deposit = deposit_fixture()
+      order = order_fixture()
+      deposit = deposit_fixture(%{order_id: order.id})
       [d1] = Accounting.list_deposits(order_id: deposit.order_id)
       assert same_deposits?(d1, deposit)
     end
@@ -168,7 +152,7 @@ defmodule Fourty.AccountingTest do
 
     test "create_deposit/1 with valid data creates a deposit" do
       account = account_fixture()
-      order = order_fixture(account.project_id)
+      order = order_fixture(%{project_id: account.project_id})
 
       deposit =
         %{}
@@ -179,7 +163,7 @@ defmodule Fourty.AccountingTest do
       assert {:ok, %Deposit{} = deposit} = deposit
       assert deposit.amount_cur == 42
       assert deposit.amount_dur == 43
-      assert deposit.description == "test deposits"
+      assert deposit.label == "test deposits"
     end
 
     test "create_deposit/1 with invalid data returns error changeset" do
@@ -211,66 +195,57 @@ defmodule Fourty.AccountingTest do
     end
   end
 
-  describe "withdrwls" do
-    alias Fourty.Accounting.Withdrwl
+  describe "withdrawals" do
+    alias Fourty.Accounting.Withdrawal
 
-    @valid_attrs %{amount_cur: 42, amount_dur: 43, description: "test withdrawals"}
-    @update_attrs %{amount_cur: 44, amount_dur: 45, description: "updated withdrawals"}
-    @invalid_attrs %{amount_cur: nil, amount_dur: nil, description: nil}
+    @valid_attrs %{amount_cur: 42, amount_dur: 43, label: "test withdrawals"}
+    @update_attrs %{amount_cur: 44, amount_dur: 45, label: "updated withdrawals"}
+    @invalid_attrs %{amount_cur: nil, amount_dur: nil, label: nil}
 
-    def 
-
-
-    def withdrwl_fixture(attrs \\ %{account_id: account_fixture().id}) do
-      attrs = Map.merge(@valid_attrs, attrs)
-      {:ok, withdrwl} = Accounting.create_withdrwl(attrs)
-      withdrwl
+    test "list_withdrawals/0 returns all withdrawals" do
+      withdrawal = withdrawal_fixture()
+      assert Accounting.list_withdrawals(account_id: withdrawal.account_id) == [withdrawal]
     end
 
-    test "list_withdrwls/0 returns all withdrwls" do
-      withdrwl = withdrwl_fixture()
-      assert Accounting.list_withdrwls(:withdrwls) == [withdrwl]
+    test "get_withdrawal!/1 returns the withdrawal with given id" do
+      withdrawal = withdrawal_fixture()
+      assert Accounting.get_withdrawal!(withdrawal.id) == withdrawal
     end
 
-    test "get_withdrwl!/1 returns the withdrwl with given id" do
-      withdrwl = withdrwl_fixture()
-      assert Accounting.get_withdrwl!(withdrwl.id) == withdrwl
+    test "create_withdrawal/1 with valid data creates a withdrawal" do
+      a = account_fixture()
+      attrs = Map.merge(@valid_attrs, %{account_id: a.id})
+      assert {:ok, %Withdrawal{} = withdrawal} = Accounting.create_withdrawal(attrs)
+      assert withdrawal.amount_cur == 42
+      assert withdrawal.amount_dur == 43
     end
 
-    test "create_withdrwl/1 with valid data creates a withdrwl" do
-      assert {:ok, %Withdrwl{} = withdrwl} = Accounting.create_withdrwl(@valid_attrs)
-      assert withdrwl.amount_cur == 42
-      assert withdrwl.amount_dur == 42
-      assert withdrwl.rate_cur_per_hour == "some rate_cur_per_hour"
+    test "create_withdrawal/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Accounting.create_withdrawal(@invalid_attrs)
     end
 
-    test "create_withdrwl/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Accounting.create_withdrwl(@invalid_attrs)
+    test "update_withdrawal/2 with valid data updates the withdrawal" do
+      withdrawal = withdrawal_fixture()
+      assert {:ok, %Withdrawal{} = withdrawal} = Accounting.update_withdrawal(withdrawal, @update_attrs)
+      assert withdrawal.amount_cur == 44
+      assert withdrawal.amount_dur == 45
     end
 
-    test "update_withdrwl/2 with valid data updates the withdrwl" do
-      withdrwl = withdrwl_fixture()
-      assert {:ok, %Withdrwl{} = withdrwl} = Accounting.update_withdrwl(withdrwl, @update_attrs)
-      assert withdrwl.amount_cur == 43
-      assert withdrwl.amount_dur == 43
-      assert withdrwl.rate_cur_per_hour == "some updated rate_cur_per_hour"
+    test "update_withdrawal/2 with invalid data returns error changeset" do
+      withdrawal = withdrawal_fixture()
+      assert {:error, %Ecto.Changeset{}} = Accounting.update_withdrawal(withdrawal, @invalid_attrs)
+      assert withdrawal == Accounting.get_withdrawal!(withdrawal.id)
     end
 
-    test "update_withdrwl/2 with invalid data returns error changeset" do
-      withdrwl = withdrwl_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounting.update_withdrwl(withdrwl, @invalid_attrs)
-      assert withdrwl == Accounting.get_withdrwl!(withdrwl.id)
+    test "delete_withdrawal/1 deletes the withdrawal" do
+      withdrawal = withdrawal_fixture()
+      assert {:ok, %Withdrawal{}} = Accounting.delete_withdrawal(withdrawal)
+      assert_raise Ecto.NoResultsError, fn -> Accounting.get_withdrawal!(withdrawal.id) end
     end
 
-    test "delete_withdrwl/1 deletes the withdrwl" do
-      withdrwl = withdrwl_fixture()
-      assert {:ok, %Withdrwl{}} = Accounting.delete_withdrwl(withdrwl)
-      assert_raise Ecto.NoResultsError, fn -> Accounting.get_withdrwl!(withdrwl.id) end
-    end
-
-    test "change_withdrwl/1 returns a withdrwl changeset" do
-      withdrwl = withdrwl_fixture()
-      assert %Ecto.Changeset{} = Accounting.change_withdrwl(withdrwl)
+    test "change_withdrawal/1 returns a withdrawal changeset" do
+      withdrawal = withdrawal_fixture()
+      assert %Ecto.Changeset{} = Accounting.change_withdrawal(withdrawal)
     end
   end
 end

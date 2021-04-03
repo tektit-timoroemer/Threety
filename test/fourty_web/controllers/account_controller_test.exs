@@ -2,38 +2,21 @@ defmodule FourtyWeb.AccountControllerTest do
   use FourtyWeb.ConnCase
 
   alias FourtyWeb.ConnHelper
+  import Fourty.Setup
   import FourtyWeb.Gettext, only: [dgettext: 2]
-  alias Fourty.Accounting
 
   @create_attrs %{
     visible: true,
-    date_end: ~D[2010-04-17],
-    date_start: ~D[2010-04-17],
-    name: "some name"
+    date_end: ~D[2021-02-01],
+    date_start: ~D[2021-01-01],
+    label: "some label"
   }
   @update_attrs %{
     date_end: ~D[2011-05-18],
     date_start: ~D[2011-05-18],
-    name: "some updated name"
+    label: "some updated label"
   }
-  @invalid_attrs %{date_end: nil, date_start: nil, name: nil, visible: nil}
-
-  def fixture(:client) do
-    {:ok, client} = Fourty.Clients.create_client(%{name: "test client"})
-    client
-  end
-
-  def fixture(:project) do
-    {:ok, project} =
-      Fourty.Clients.create_project(%{name: "test project", client_id: fixture(:client).id})
-    project
-  end
-
-  def fixture(:account) do
-    attrs = Map.merge(@create_attrs, %{project_id: fixture(:project).id})
-    {:ok, account} = Accounting.create_account(attrs)
-    account
-  end
+  @invalid_attrs %{date_end: nil, date_start: nil, label: nil, visible: nil}
 
   describe "test access" do
     setup [:create_account]
@@ -151,7 +134,7 @@ defmodule FourtyWeb.AccountControllerTest do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
 
-      project = fixture(:project)
+      project = project_fixture()
       conn = get(conn, Routes.account_path(conn, :new, project))
       assert html_response(conn, 200) =~ dgettext("accounts", "new")
     end
@@ -162,7 +145,7 @@ defmodule FourtyWeb.AccountControllerTest do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
 
-      project = fixture(:project)
+      project = project_fixture()
       attrs = Map.merge(@create_attrs, %{client_id: project.client_id, project_id: project.id})
       conn = post(conn, Routes.account_path(conn, :create), account: attrs)
 
@@ -179,7 +162,7 @@ defmodule FourtyWeb.AccountControllerTest do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
 
-      project = fixture(:project)
+      project = project_fixture()
       attrs = Map.merge(@invalid_attrs, %{client_id: project.client_id, project_id: project.id})
       conn = post(conn, Routes.account_path(conn, :create), account: attrs)
       heading = Gettext.dgettext(FourtyWeb.Gettext, "accounts", "new")
@@ -211,7 +194,7 @@ defmodule FourtyWeb.AccountControllerTest do
       assert redirected_to(conn) == Routes.account_path(conn, :show, account)
 
       conn = get(conn, Routes.account_path(conn, :show, account))
-      assert html_response(conn, 200) =~ "some updated name"
+      assert html_response(conn, 200) =~ "some updated label"
       assert get_flash(conn, :info) == dgettext("accounts", "update_success")
     end
 
@@ -243,7 +226,7 @@ defmodule FourtyWeb.AccountControllerTest do
   end
 
   defp create_account(_) do
-    account = fixture(:account)
+    account = account_fixture()
     %{account: account}
   end
 end

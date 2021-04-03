@@ -2,46 +2,12 @@ defmodule FourtyWeb.DepositControllerTest do
   use FourtyWeb.ConnCase
 
   alias FourtyWeb.ConnHelper
+  import Fourty.Setup
   import FourtyWeb.Gettext, only: [dgettext: 2, dgettext: 3]
-  alias Fourty.Accounting
 
-  @create_attrs %{amount_cur: 42, amount_dur: 43, description: "a deposit"}
-  @update_attrs %{amount_cur: 44, amount_dur: 45, description: "another deposit"}
-  @invalid_attrs %{amount_cur: nil, amount_dur: nil, description: nil}
-
-  def fixture(:deposit) do
-    account = fixture(:account)
-    order = fixture(:order, account.project_id)
-    attrs = Map.merge(@create_attrs, %{account_id: account.id, order_id: order.id})
-    {:ok, deposit} = Accounting.create_deposit(attrs)
-    deposit
-  end
-
-  def fixture(:client) do
-    {:ok, client} = Fourty.Clients.create_client(%{name: "test client"})
-    client
-  end
-
-  def fixture(:project) do
-    {:ok, project} =
-      Fourty.Clients.create_project(%{name: "test project", client_id: fixture(:client).id})
-
-    project
-  end
-
-  def fixture(:account) do
-    {:ok, account} =
-      Accounting.create_account(%{name: "test account", project_id: fixture(:project).id})
-
-    account
-  end
-
-  def fixture(:order, project_id) do
-    {:ok, order} =
-      Fourty.Clients.create_order(%{description: "test order", project_id: project_id})
-
-    order
-  end
+  @create_attrs %{amount_cur: 42, amount_dur: 43, label: "a deposit"}
+  @update_attrs %{amount_cur: 44, amount_dur: 45, label: "another deposit"}
+  @invalid_attrs %{amount_cur: nil, amount_dur: nil, label: nil}
 
   describe "test access" do
 
@@ -151,9 +117,9 @@ defmodule FourtyWeb.DepositControllerTest do
     test "lists all deposits for given account", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
-      account = fixture(:account)
+      account = account_fixture()
       conn = get(conn, Routes.deposit_path(conn, :index_account, account.id))
-      assert html_response(conn, 200) =~ dgettext("deposits", "index_account", name: account.label)
+      assert html_response(conn, 200) =~ dgettext("deposits", "index_account", label: account.label)
     end
   end
 
@@ -161,11 +127,11 @@ defmodule FourtyWeb.DepositControllerTest do
     test "lists all deposits for given order", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
-      order = fixture(:order, fixture(:project).id)
+      order = order_fixture()
       conn = get(conn, Routes.deposit_path(conn, :index_order, order.id))
 
       assert html_response(conn, 200) =~
-               dgettext("deposits", "index_order", name: order.description)
+               dgettext("deposits", "index_order", label: order.label)
     end
   end
 
@@ -173,7 +139,7 @@ defmodule FourtyWeb.DepositControllerTest do
     test "renders form", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
-      order = fixture(:order, fixture(:project).id)
+      order = order_fixture()
       conn = get(conn, Routes.deposit_path(conn, :new, order.id))
       assert html_response(conn, 200) =~ dgettext("deposits", "new")
     end
@@ -183,9 +149,8 @@ defmodule FourtyWeb.DepositControllerTest do
     test "redirects to show when data is valid", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
-      account = fixture(:account)
-      order = fixture(:order, account.project_id)
-      attrs = Map.merge(@create_attrs, %{account_id: account.id, order_id: order.id})
+      order = order_fixture()
+      attrs = Map.merge(@create_attrs, %{account_id: order.account_id, order_id: order.id})
       conn = post(conn, Routes.deposit_path(conn, :create), deposit: attrs)
       assert %{id: id} = redirected_params(conn)
       assert redirected_to(conn) == Routes.deposit_path(conn, :show, id)
@@ -198,9 +163,8 @@ defmodule FourtyWeb.DepositControllerTest do
     test "renders errors when data is invalid", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
-      account = fixture(:account)
-      order = fixture(:order, account.project_id)
-      attrs = Map.merge(@invalid_attrs, %{account_id: account.id, order_id: order.id})
+      order = order_fixture()
+      attrs = Map.merge(@invalid_attrs, %{account_id: order.account_id, order_id: order.id})
       conn = post(conn, Routes.deposit_path(conn, :create), deposit: attrs)
       assert html_response(conn, 200) =~ dgettext("deposits", "new")
     end
@@ -256,7 +220,7 @@ defmodule FourtyWeb.DepositControllerTest do
   end
 
   defp create_deposit(_) do
-    deposit = fixture(:deposit)
+    deposit = deposit_fixture()
     %{deposit: deposit}
   end
 end

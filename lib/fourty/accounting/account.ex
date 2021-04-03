@@ -9,7 +9,8 @@ defmodule Fourty.Accounting.Account do
   Accounts can only be used for transactions in the period [date_start,
   date_end]. This permits to add accounts before allowing any
   transactions on the account. If further permits to close accounts for
-  further transactions.
+  further transactions. If no date_start is specified, the account is
+  considered open for transactions.
 
   An account can be made not visible in order to hide it from any
   reports. However, all accounts and transactions will be kept in the
@@ -31,7 +32,7 @@ defmodule Fourty.Accounting.Account do
 
     - date_start: the date on which this account is open for
     transactions. The date_start date must occur before the date_end
-    date.
+    date. 
 
     - date_end: the date when the account is closed for any further
     transactions. The date_end date must occur on or after the

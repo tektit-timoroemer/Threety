@@ -10,7 +10,7 @@
     @deposit.account.id)) %><br />
 
   <%= my_label("orders", "order") %>
-  <%= my_text_link(@deposit.order.label, Routes.order_path(@conn,
+  <%= if @deposit.order_id, do: my_text_link(@deposit.order.label, Routes.order_path(@conn,
     :show, @deposit.order.id)) %><br />
 
   <%= my_label("deposits", "amount_cur") %>

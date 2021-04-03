@@ -48,7 +48,7 @@ msgstr "List of All Projects"
 
 #: lib/fourty_web/controllers/project_controller.ex:14
 msgid "index_client"
-msgstr "List of the Project for %{name}"
+msgstr "List of the Project for %{label}"
 
 #, elixir-format
 #: lib/fourty_web/templates/layout/root.html.leex:28

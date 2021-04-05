@@ -11,14 +11,11 @@ defmodule FourtyWeb.WithdrawalController do
     render(conn, "index.html", withdrawals: withdrawals, heading: heading)
   end
 
-  def new(conn, params) do
-    changeset = Ecto.Changeset.cast(%Withdrawal{}, params, [:wrktm_id])
-    _withdrawal = 
-      Ecto.Changeset.apply_changes(changeset)
-      |> Fourty.Repo.preload(wrktm: [:user])
+  def new(conn, _params) do
+    changeset = Accounting.change_withdrawal(%Withdrawal{})
     # create list of accounts to choose from
-#    accounts = Accounting.get_accounts()
-    render(conn, "new.html", changeset: changeset)
+    accounts = Accounting.get_all_accounts()
+    render(conn, "new.html", changeset: changeset, accounts: accounts)
   end
 
   def create(conn, %{"withdrawal" => withdrawal_params}) do
@@ -64,6 +61,6 @@ defmodule FourtyWeb.WithdrawalController do
 
     conn
     |> put_flash(:info, dgettext("withdrawals", "delete success"))
-    |> redirect(to: Routes.withdrawal_path(conn, :index))
+    |> redirect(to: Routes.withdrawal_path(conn, :index_account, withdrawal.account_id))
   end
 end

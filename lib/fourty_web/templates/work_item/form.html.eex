@@ -37,9 +37,9 @@
     </div>
   </div>
 
-  <%= my_label(f, "work_items", :comments) %>
-  <%= my_longtext_input(f, :comments) %><br />
-  <%= error_tag(f, :comments) %>
+  <%= my_label(f, "work_items", :label) %>
+  <%= my_longtext_input(f, :label) %><br />
+  <%= error_tag(f, :label) %>
 
   <%= my_label(f, "work_items", :account_id) %>
   <%= my_select_input(f, :account_id, @accounts) %><br />

@@ -60,9 +60,3 @@ msgstr ""
 
 msgid "calendar-plus-fill"
 msgstr ""
-
-msgid "caret-down-square"
-msgstr ""
-
-msgid "caret-up-square"
-msgstr ""

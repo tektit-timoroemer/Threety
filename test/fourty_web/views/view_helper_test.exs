@@ -63,7 +63,7 @@ defmodule Fourty.ViewHelperTest do
 
       assert l ==
                ~s'<input class="form-control is-valid" ' <>
-                 ~s'id="project_label" label="project[label]" type="text" ' <>
+                 ~s'id="project_label" name="project[label]" type="text" ' <>
                  ~s'value="TEST NAME" required>'
 
       # optional field: visible
@@ -72,7 +72,7 @@ defmodule Fourty.ViewHelperTest do
 
       assert l ==
                ~s'<input class="form-control is-valid" ' <>
-                 ~s'id="project_visible" label="project[visible]" ' <>
+                 ~s'id="project_visible" name="project[visible]" ' <>
                  ~s'type="text" value="true">'
 
       # field with errors
@@ -81,7 +81,7 @@ defmodule Fourty.ViewHelperTest do
 
       assert l ==
                ~s'<input class="form-control is-invalid" ' <>
-                 ~s'id="project_client_id" label="project[client_id]" ' <>
+                 ~s'id="project_client_id" name="project[client_id]" ' <>
                  ~s'type="text" required>'
     end
 
@@ -103,7 +103,7 @@ defmodule Fourty.ViewHelperTest do
 
       assert l ==
                ~s'<textarea class="form-control is-valid" ' <>
-                 ~s'id="project_label" label="project[label]" required>' <>
+                 ~s'id="project_label" name="project[label]" required>' <>
                  ~s'\nTEST NAME</textarea>'
 
       # optional field: visible
@@ -112,7 +112,7 @@ defmodule Fourty.ViewHelperTest do
 
       assert l ==
                ~s'<textarea class="form-control is-valid" ' <>
-                 ~s'id="project_visible" label="project[visible]">' <>
+                 ~s'id="project_visible" name="project[visible]">' <>
                  ~s'\ntrue</textarea>'
 
       # field with errors
@@ -121,7 +121,7 @@ defmodule Fourty.ViewHelperTest do
 
       assert l ==
                ~s'<textarea class="form-control is-invalid" ' <>
-                 ~s'id="project_client_id" label="project[client_id]" required>' <>
+                 ~s'id="project_client_id" name="project[client_id]" required>' <>
                  ~s'\n</textarea>'
     end
 
@@ -138,9 +138,9 @@ defmodule Fourty.ViewHelperTest do
       l = safe_to_string(my_checkbox_input(f, :visible))
 
       assert l ==
-               ~s'<input label="project[visible]" type="hidden" ' <>
+               ~s'<input name="project[visible]" type="hidden" ' <>
                  ~s'value="false"><input class="form-check-input is-valid" ' <>
-                 ~s'id="project_visible" label="project[visible]" ' <>
+                 ~s'id="project_visible" name="project[visible]" ' <>
                  ~s'type="checkbox" value="true" checked>'
     end
 

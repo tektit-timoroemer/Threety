@@ -50,9 +50,6 @@ msgstr "Saturday"
 msgid "weekday7"
 msgstr "Sunday"
 
-msgid "today"
-msgstr "Today"
-
 msgid "calendar-minus-fill"
 msgstr "previous day"
 

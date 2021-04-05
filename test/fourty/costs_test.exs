@@ -159,7 +159,7 @@ defmodule Fourty.CostsTest do
         %{user_id: u.id, account_id: a.id, date_as_of: a.date_start})
       assert {:ok, %WorkItem{} = work_item} = Costs.create_work_item(attrs)
 
-      {:error, :withdrawal, %Ecto.Changeset{}, %{}} = 
+      {:error, :work_item, %Ecto.Changeset{}, %{}} = 
         Costs.update_work_item(work_item, @invalid_attrs)
       assert same_work_items_and_withdrawals?(work_item, Costs.get_work_item!(work_item.id))
     end

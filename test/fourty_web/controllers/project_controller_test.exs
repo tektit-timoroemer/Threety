@@ -2,27 +2,20 @@ defmodule FourtyWeb.ProjectControllerTest do
   use FourtyWeb.ConnCase
 
   alias FourtyWeb.ConnHelper
+  import Fourty.Setup
   import FourtyWeb.Gettext, only: [dgettext: 2, dgettext: 3]
-  alias Fourty.Clients
 
-  @create_attrs %{name: "some name"}
-  @update_attrs %{name: "some updated name"}
-  @invalid_attrs %{name: nil}
-
-  @client_create_attrs %{name: "some client name"}
-
-  def fixture(:client) do
-    {:ok, client} = Clients.create_client(@client_create_attrs)
-    client
-  end
-
-  def fixture(:project, client) do
-    {:ok, project} = Clients.create_project(Map.merge(@create_attrs, %{client_id: client.id}))
-    project
-  end
+  @create_attrs %{label: "some label"}
+  @update_attrs %{label: "some updated label"}
+  @invalid_attrs %{label: nil}
 
   describe "test access" do
-    setup [:create_project]
+
+    setup do
+      client = client_fixture()
+      project = project_fixture(%{client_id: client.id})
+      {:ok, client: client, project: project}
+    end
 
     test "test access - non-existing user",
       %{conn: conn, client: client, project: project} do
@@ -140,24 +133,24 @@ defmodule FourtyWeb.ProjectControllerTest do
   end
 
   describe "index_client" do
-    setup [:create_client]
 
-    test "list projects for given client", %{conn: conn, client: client} do
+    test "list projects for given client", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+      client = client_fixture()
 
       conn = get(conn, Routes.project_path(conn, :index_client, client.id))
       assert html_response(conn, 200) =~
-               dgettext("projects", "index_client", name: "some client name")
+               dgettext("projects", "index_client", label: client.label)
     end
   end
 
   describe "new project" do
-    setup [:create_client]
 
-    test "renders form", %{conn: conn, client: client} do
+    test "renders form", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+      client = client_fixture()
 
       conn = get(conn, Routes.project_path(conn, :new, client.id))
       assert html_response(conn, 200) =~ dgettext("projects", "new")
@@ -165,11 +158,11 @@ defmodule FourtyWeb.ProjectControllerTest do
   end
 
   describe "create project" do
-    setup [:create_client]
-
-    test "redirects to show when data is valid", %{conn: conn, client: client} do
+ 
+    test "redirects to show when data is valid", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+      client = client_fixture()
 
       conn =
         post(conn, Routes.project_path(conn, :create),
@@ -184,9 +177,10 @@ defmodule FourtyWeb.ProjectControllerTest do
       assert get_flash(conn, :info) == dgettext("projects", "create_success")
     end
 
-    test "renders errors when data is invalid", %{conn: conn, client: client} do
+    test "renders errors when data is invalid", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+      client = client_fixture()
 
       conn =
         post(conn, Routes.project_path(conn, :create),
@@ -198,44 +192,49 @@ defmodule FourtyWeb.ProjectControllerTest do
   end
 
   describe "edit project" do
-    setup [:create_project]
 
-    test "renders form for editing chosen project", %{conn: conn, project: project} do
+    test "renders form for editing chosen project", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+      project = project_fixture()
+
       conn = get(conn, Routes.project_path(conn, :edit, project))
       assert html_response(conn, 200) =~ dgettext("projects", "edit")
     end
   end
 
   describe "update project" do
-    setup [:create_project]
 
-    test "redirects when data is valid", %{conn: conn, project: project} do
+    test "redirects when data is valid", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+      project = project_fixture()
+
       conn = put(conn, Routes.project_path(conn, :update, project), project: @update_attrs)
       assert redirected_to(conn) == Routes.project_path(conn, :show, project)
 
       conn = get(conn, Routes.project_path(conn, :show, project))
-      assert html_response(conn, 200) =~ "some updated name"
+      assert html_response(conn, 200) =~ "some updated label"
       assert get_flash(conn, :info) == dgettext("projects", "update_success")
     end
 
-    test "renders errors when data is invalid", %{conn: conn, project: project} do
+    test "renders errors when data is invalid", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+      project =project_fixture()
+
       conn = put(conn, Routes.project_path(conn, :update, project), project: @invalid_attrs)
       assert html_response(conn, 200) =~ dgettext("projects", "edit")
     end
   end
 
   describe "delete project" do
-    setup [:create_project]
 
-    test "deletes chosen project", %{conn: conn, project: project} do
+    test "deletes chosen project", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+      project = project_fixture()
+
       conn = delete(conn, Routes.project_path(conn, :delete, project))
       assert redirected_to(conn) == Routes.project_path(conn, :index)
       assert get_flash(conn, :info) == dgettext("projects", "delete_success")
@@ -245,14 +244,4 @@ defmodule FourtyWeb.ProjectControllerTest do
     end
   end
 
-  defp create_project(_) do
-    client = fixture(:client)
-    project = fixture(:project, client)
-    %{client: client, project: project}
-  end
-
-  defp create_client(_) do
-    client = fixture(:client)
-    %{client: client}
-  end
 end

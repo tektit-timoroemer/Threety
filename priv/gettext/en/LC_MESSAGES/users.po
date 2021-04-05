@@ -85,4 +85,3 @@ msgstr "User successfully deleted."
 
 msgid "create_success"
 msgstr "User successfully created."
-

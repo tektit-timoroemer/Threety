@@ -98,6 +98,11 @@ defmodule Fourty.Costs do
   def get_work_item!(id) do
     Repo.get!(WorkItem, id)
     |> Repo.preload([:user, withdrawal: [:account]])
+    |> copy_account_id()    
+  end
+
+  defp copy_account_id(%WorkItem{} = w) do
+    Map.put(w, :account_id, w.withdrawal.account_id)
   end
 
   @doc """
@@ -192,8 +197,8 @@ defmodule Fourty.Costs do
         amount_cur: amount_cur, amount_dur: duration,
         label: label, account_id: account_id})
     Multi.new()
-    |> Multi.update(:withdrawal, withdrawal_cs)
     |> Multi.update(:work_item, work_item_cs)
+    |> Multi.update(:withdrawal, withdrawal_cs)
     |> Repo.transaction()
   end
 

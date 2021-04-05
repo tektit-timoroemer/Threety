@@ -11,17 +11,20 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2\n"
 
-#, elixir-format
-#: lib/fourty_web/controllers/work_item_controller.ex:13
-#: lib/fourty_web/templates/layout/root.html.leex:28
 msgid "index_today"
 msgstr "Today's Work Items"
 
-msgid "index_date"
-msgstr "%{user} Work Items for %{date}"
+msgid "my_index_today"
+msgstr "My Work Items for Today"
 
-msgid "my"
-msgstr "My"
+msgid "my_index_date"
+msgstr "My Work Items for %{date}"
+
+msgid "others_index_date"
+msgstr "%{name}'s Work Items for %{date}"
+
+msgid "others_index_today"
+msgstr "%{name}'s Work Items for Today"
 
 msgid "new"
 msgstr "Add Work Item"
@@ -88,3 +91,6 @@ msgstr "Account is not open for transactions."
 
 msgid "no_valid_accounts"
 msgstr "No account open for transactions."
+
+msgid "flip_failed"
+msgstr "Reordering of work items failed. Details: %{details}."

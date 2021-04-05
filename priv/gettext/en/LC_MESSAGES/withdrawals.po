@@ -24,7 +24,7 @@ msgid "label"
 msgstr "Description"
 
 msgid "index_account"
-msgstr "List of All Withdrawals for %{name}"
+msgstr "List of All Withdrawals for %{label}"
 
 
 msgid "new"

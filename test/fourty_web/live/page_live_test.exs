@@ -3,6 +3,7 @@ defmodule FourtyWeb.PageLiveTest do
 
   import Phoenix.LiveViewTest
 
+  @tag :skip
   test "disconnected and connected render", %{conn: conn} do
   	{:error, :nosession} = live(conn, "/")
 

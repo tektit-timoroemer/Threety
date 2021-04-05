@@ -31,8 +31,8 @@ defmodule FourtyWeb.WorkItemController do
     user_id = Map.get(params, "user_id", "0")
     date_as_of = get_date_as_of(params)
     conn = case Costs.flip_sequence(item1, item2) do
-      {:error, last_step, _failure_info} ->
-        put_flash(conn, :info, dgettext("work_items", "flip_failed", last_step))
+      {:error, last_step, _failure_info, %{}} ->
+        put_flash(conn, :info, dgettext("work_items", "flip_failed", details: last_step))
       {:ok, _} -> conn
       end
     redirect(conn, to: if adm_only do
@@ -70,10 +70,10 @@ defmodule FourtyWeb.WorkItemController do
 
     # have date, now prepare a nice label for the heading
 
-    date_label = if (date_as_of == today) do
-      dgettext("global", "today")
+    {msgid_suffix, date_label} = if (date_as_of == today) do
+      {"today", ""}
     else
-      ViewHelpers.date_with_weekday(date_as_of)
+      {"date", ViewHelpers.date_with_weekday(date_as_of)}
     end
 
     # need ot determine the user for which to display the work items:
@@ -81,16 +81,15 @@ defmodule FourtyWeb.WorkItemController do
     # also prepare a name for the heading
 
     user_id = Map.get(params, "user_id", "0")
-    { user, name } = 
+    { user, msgid } = 
       if user_id == "0" do
-        {get_session(conn, :current_user), 
-          dgettext("work_items", "my")}
+        {get_session(conn, :current_user), "my_index_"}
       else
-        user = Fourty.Users.get_user!(user_id)
-        {user, user.username <> "'s"}
+        {Fourty.Users.get_user!(user_id), "others_index_"}
       end
 
-    heading = dgettext("work_items", "index_date", user: name, date: date_label)
+    heading = Gettext.dgettext(FourtyWeb.Gettext, "work_items", 
+      msgid <> msgid_suffix, name: user.username, date: date_label)
     work_items = Costs.list_work_items(user.id, date_as_of)
     render(conn, "index_date.html",
       work_items: work_items, heading: heading, date_as_of: date_as_of,
@@ -134,7 +133,11 @@ defmodule FourtyWeb.WorkItemController do
       {:ok, work_item} ->
         conn
         |> put_flash(:info, dgettext("work_items", "create_success"))
-        |> redirect(to: Routes.work_item_path(conn, :show, work_item))
+        |> redirect(to: if adm_only do
+            Routes.work_item_user_path(conn, :show, work_item.user_id, work_item.id)
+           else
+            Routes.work_item_path(conn, :show, work_item.id)
+           end)
       {:error, %Ecto.Changeset{} = changeset} ->
         user_id = Ecto.Changeset.get_field(changeset, :user_id)
         user = get_user(conn, user_id)

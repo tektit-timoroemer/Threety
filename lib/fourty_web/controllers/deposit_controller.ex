@@ -18,6 +18,10 @@ defmodule FourtyWeb.DepositController do
   end
 
   def new(conn, params) do
+    
+  end
+
+  def new_order(conn, params) do
     changeset = Ecto.Changeset.cast(%Deposit{}, params, [:order_id])
 
     deposit =
@@ -33,7 +37,7 @@ defmodule FourtyWeb.DepositController do
       {:ok, deposit} ->
         conn
         |> put_flash(:info, dgettext("deposits", "create_success"))
-        |> redirect(to: Routes.deposit_path(conn, :show, deposit))
+        |> redirect(to: Routes.deposit_path(conn, :show, deposit.id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         deposit =

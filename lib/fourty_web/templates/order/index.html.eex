@@ -59,7 +59,7 @@
               <%= my_action_link("global", "show", Routes.order_path(@conn, :show, order)) %>
               <%= my_action_link("global", "edit", Routes.order_path(@conn, :edit, order)) %>
               <%= my_action_link("global", "delete", Routes.order_path(@conn, :delete, order)) %>
-              <%= my_action_link("deposits", "xfer", Routes.deposit_path(@conn, :new, order)) %>
+              <%= my_action_link("deposits", "xfer", Routes.deposit_path(@conn, :new_order, order)) %>
               <%= my_action_link("deposits", "index_order_short", Routes.deposit_path(@conn, :index_order, order)) %>
             </td>
           </tr>

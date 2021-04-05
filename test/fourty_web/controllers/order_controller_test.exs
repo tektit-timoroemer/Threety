@@ -2,52 +2,12 @@ defmodule FourtyWeb.OrderControllerTest do
   use FourtyWeb.ConnCase
 
   alias FourtyWeb.ConnHelper
+  import Fourty.Setup
   import FourtyWeb.Gettext, only: [dgettext: 2, dgettext: 3]
-  alias Fourty.Clients
 
-  @create_attrs %{amount: 42, date: ~D[2010-04-17], description: "some description"}
-  @update_attrs %{amount: 43, date: ~D[2011-05-18], description: "some updated description"}
-  @invalid_attrs %{amount: nil, date: nil, description: nil}
-
-  def fixture(:client) do
-    {:ok, client} = Clients.create_client(%{name: "test client"})
-    client
-  end
-
-  def fixture(:project) do
-    {:ok, project} =
-      Clients.create_project(%{name: "test project", client_id: fixture(:client).id})
-    project
-  end
-
-  def fixture(:account) do
-    {:ok, account} = Fourty.Accounting.create_account(%{
-      name: "test account", project_id: fixture(:project).id})
-    account
-  end
-
-  def fixture(:order) do
-    attrs = Map.merge(@create_attrs, %{project_id: fixture(:project).id})
-    {:ok, order} = Clients.create_order(attrs)
-    order
-  end
-
-  defp create_fixtures(_) do
-    {:ok, client}  = Clients.create_client(%{
-      name: "test client"})
-    {:ok, project} = Clients.create_project(%{
-      name: "test project", client_id: client.id})
-    {:ok, account} = Fourty.Accounting.create_account(%{
-      name: "test account", project_id: project.id})
-    attrs = Map.merge(@create_attrs, %{project_id: project.id})
-    {:ok, order} = Clients.create_order(attrs)
-    %{client: client, project: project, account: account, order: order}
-  end
-
-  defp create_order(_) do
-    order = fixture(:order)
-    %{order: order}
-  end
+  @create_attrs %{amount: 42, date: ~D[2010-04-17], label: "some label"}
+  @update_attrs %{amount: 43, date: ~D[2011-05-18], label: "some updated label"}
+  @invalid_attrs %{amount: nil, date: nil, label: nil}
 
   describe "test access" do
     
@@ -171,7 +131,14 @@ defmodule FourtyWeb.OrderControllerTest do
   end
 
   describe "various index listings" do
-    setup [:create_fixtures]
+
+    setup do
+      client = client_fixture()
+      project = project_fixture(%{client_id: client.id})
+      account = account_fixture(%{project_id: project.id})
+      order = order_fixture(%{project_id: project.id})
+      {:ok, order: order, project: project, account: account, client: client}
+    end
 
     test "lists all orders", %{conn: conn} do
       ConnHelper.setup_admin()
@@ -181,25 +148,56 @@ defmodule FourtyWeb.OrderControllerTest do
       assert html_response(conn, 200) =~ dgettext("orders", "index")
     end
 
-    test "lists all orders for given account", %{conn: conn, account: account} do
+    test "lists all orders for given account",
+      %{conn: conn, account: account} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+
       conn = get(conn, Routes.order_path(conn, :index_account, account.id))
-      assert html_response(conn, 200) =~ dgettext("orders", "index_account", name: "test account")
+      assert html_response(conn, 200) =~
+        dgettext("orders", "index_account", label: account.label)
+
+      # some other account
+
+      account = account_fixture()
+      conn = get(conn, Routes.order_path(conn, :index_account, account.id))
+      assert html_response(conn, 200) =~
+        dgettext("orders", "index_account", label: account.label)
     end
 
-    test "lists all orders for given project", %{conn: conn, project: project} do
+    test "lists all orders for given project",
+      %{conn: conn, project: project} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+
       conn = get(conn, Routes.order_path(conn, :index_project, project.id))
-      assert html_response(conn, 200) =~ dgettext("orders", "index_project", name: "test project")
+      assert html_response(conn, 200) =~
+        dgettext("orders", "index_project", label: project.label)
+
+      # some other project
+
+      project = project_fixture()
+      conn = get(conn, Routes.order_path(conn, :index_project, project.id))
+      assert html_response(conn, 200) =~
+        dgettext("orders", "index_project", label: project.label)
     end
 
-    test "lists all orders for given client", %{conn: conn, client: client} do
+    test "lists all orders for given client",
+      %{conn: conn, client: client} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+
       conn = get(conn, Routes.order_path(conn, :index_client, client.id))
-      assert html_response(conn, 200) =~ dgettext("orders", "index_client", name: "test client")
+      assert html_response(conn, 200) =~
+        dgettext("orders", "index_client", label: client.label)
+
+      # some other client
+
+      client = client_fixture()
+
+      conn = get(conn, Routes.order_path(conn, :index_client, client.id))
+      assert html_response(conn, 200) =~
+        dgettext("orders", "index_client", label: client.label)
     end
 
   end
@@ -209,7 +207,7 @@ defmodule FourtyWeb.OrderControllerTest do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
 
-      conn = get(conn, Routes.order_path(conn, :new, fixture(:project).id))
+      conn = get(conn, Routes.order_path(conn, :new, project_fixture().id))
       assert html_response(conn, 200) =~ dgettext("orders", "new")
     end
   end
@@ -219,9 +217,9 @@ defmodule FourtyWeb.OrderControllerTest do
     test "redirects to show when data is valid", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+      project = project_fixture()
 
-
-      attrs = Map.merge(@create_attrs, %{project_id: fixture(:project).id})
+      attrs = Map.merge(@create_attrs, %{project_id: project.id})
       conn = post(conn, Routes.order_path(conn, :create), order: attrs)
 
       assert %{id: id} = redirected_params(conn)
@@ -235,31 +233,32 @@ defmodule FourtyWeb.OrderControllerTest do
     test "renders errors when data is invalid", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+      project = project_fixture()
 
-      attrs = Map.merge(@invalid_attrs, %{project_id: fixture(:project).id})
+      attrs = Map.merge(@invalid_attrs, %{project_id: project.id})
       conn = post(conn, Routes.order_path(conn, :create), order: attrs)
       assert html_response(conn, 200) =~ dgettext("orders", "new")
     end
   end
 
   describe "edit order" do
-    setup [:create_order]
 
-    test "renders form for editing chosen order", %{conn: conn, order: order} do
+    test "renders form for editing chosen order", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+      order = order_fixture()
 
-      conn = get(conn, Routes.order_path(conn, :edit, order))
+      conn = get(conn, Routes.order_path(conn, :edit, order.id))
       assert html_response(conn, 200) =~ dgettext("orders", "edit")
     end
   end
 
   describe "update order" do
-    setup [:create_order]
 
-    test "redirects when data is valid", %{conn: conn, order: order} do
+    test "redirects when data is valid", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+      order = order_fixture()
 
       conn = put(conn, Routes.order_path(conn, :update, order), order: @update_attrs)
       assert redirected_to(conn) == Routes.order_path(conn, :show, order)
@@ -269,9 +268,10 @@ defmodule FourtyWeb.OrderControllerTest do
       assert get_flash(conn, :info) == dgettext("orders", "update_success")
     end
 
-    test "renders errors when data is invalid", %{conn: conn, order: order} do
+    test "renders errors when data is invalid", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+      order = order_fixture()
 
       conn = put(conn, Routes.order_path(conn, :update, order), order: @invalid_attrs)
       assert html_response(conn, 200) =~ dgettext("orders", "edit")
@@ -279,11 +279,11 @@ defmodule FourtyWeb.OrderControllerTest do
   end
 
   describe "delete order" do
-    setup [:create_order]
 
-    test "deletes chosen order", %{conn: conn, order: order} do
+    test "deletes chosen order", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
+      order = order_fixture()
 
       conn = delete(conn, Routes.order_path(conn, :delete, order))
       assert redirected_to(conn) == Routes.order_path(conn, :index)

@@ -10,13 +10,19 @@
 msgid ""
 msgstr ""
 
-#, elixir-format
-#: lib/fourty_web/controllers/work_item_controller.ex:13
-#: lib/fourty_web/templates/layout/root.html.leex:28
 msgid "index_today"
 msgstr ""
 
-msgid "index_date"
+msgid "my_index_today"
+msgstr ""
+
+msgid "my_index_date"
+msgstr ""
+
+msgid "others_index_date"
+msgstr ""
+
+msgid "others_index_today"
 msgstr ""
 
 msgid "new"

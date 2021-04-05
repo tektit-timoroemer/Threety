@@ -7,7 +7,7 @@
           <th class="col-sm-2"><%= dgettext("withdrawals", "date_time") %></th>
           <th class="col-sm-1 text-end"><%= dgettext("withdrawals", "amount_cur") %></th>
           <th class="col-sm-1 text-end"><%= dgettext("withdrawals", "amount_dur") %></th>
-          <th class="col-sm-3"><%= dgettext("withdrawals", "description") %></th>
+          <th class="col-sm-3"><%= dgettext("withdrawals", "label") %></th>
           <th class="col-sm-2"><%= dgettext("global", "actions") %></th>
         </tr>
       </thead>
@@ -17,11 +17,11 @@
           <td><%= my_date_time(withdrawal.inserted_at) %></td>
           <td class="text-end"><%= int2cur(withdrawal.amount_cur) %></td>
           <td class="text-end"><%= min2dur(withdrawal.amount_dur) %></td>
-          <td><%= withdrawal.description %></td>
+          <td><%= withdrawal.label %></td>
           <td>
-            <%= my_action_link("global", "show", Routes.withdrawal_path(@conn, :show, withdrawal)) %>
-            <%= my_action_link("global", "edit", Routes.withdrawal_path(@conn, :edit, withdrawal)) %>
-            <%= my_action_link("global", "delete", Routes.withdrawal_path(@conn, :delete, withdrawal)) %>
+            <%= my_action_link("global", "show", Routes.withdrawal_path(@conn, :show, withdrawal.id)) %>
+            <%= my_action_link("global", "edit", Routes.withdrawal_path(@conn, :edit, withdrawal.id)) %>
+            <%= my_action_link("global", "delete", Routes.withdrawal_path(@conn, :delete, withdrawal.id)) %>
           </td>
         </tr>
       <% end %>

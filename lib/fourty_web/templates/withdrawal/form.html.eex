@@ -13,13 +13,13 @@
   <%= my_duration_input(f, :amount_dur) %><br />
   <%= error_tag(f, :amount_dur) %>
 
-  <%= my_label("withdrawals", "description") %>
-  <%= my_longtext_input(f, :description) %><br />
-  <%= error_tag(f, :description) %>
+  <%= my_label("withdrawals", "label") %>
+  <%= my_longtext_input(f, :label) %><br />
+  <%= error_tag(f, :label) %>
 
   <%= my_submit() %>
   <%= if Ecto.Changeset.get_field(@changeset, :id),
         do: my_back_link(Routes.withdrawal_path(@conn, :show, @withdrawal.id)),
-        else: my_back_link(Routes.withdrawal_path(@conn, :index)) %>
+        else: my_back_link(Routes.withdrawal_path(@conn, :index_account, 0)) %>
 
 <% end %>

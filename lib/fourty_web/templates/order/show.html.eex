@@ -24,6 +24,6 @@
 
     <%= my_action("global", "edit", Routes.order_path(@conn, :edit, @order)) %>
     <%= my_action("orders", "index", Routes.order_path(@conn, :index)) %>
-    <%= my_action("deposits", "transfer", Routes.deposit_path(@conn, :new, @order.id)) %>
+    <%= my_action("deposits", "transfer", Routes.deposit_path(@conn, :new_order, @order.id)) %>
   </div>
 </div>

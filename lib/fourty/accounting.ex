@@ -209,6 +209,20 @@ defmodule Fourty.Accounting do
   end
 
   @doc """
+  Returns the complete list of all visible accounts;
+  suitable for dropdown lists.
+  """
+
+  def get_all_accounts() do
+    q =
+      from a in Account,
+        select: [key: a.label, value: a.id],
+        where: [visible: true],
+        order_by: a.id
+    Repo.all(q)
+  end
+
+  @doc """
   Creates a account.
 
   ## Examples

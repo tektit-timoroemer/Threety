@@ -118,17 +118,18 @@ defmodule Fourty.Setup do
       to_string(Fourty.Repo.aggregate(Users.User, :count))
     email = username <> @user_email_suffix
     merged_attrs =
-      Map.merge(attrs,
-        %{username: username, email: email, rate: @user_rate})
+      Map.merge(
+        %{username: username, email: email, rate: @user_rate},
+        attrs)
     {:ok, user} = Users.create_user(merged_attrs)
     user
   end
 
   def work_item_fixture(attrs \\ %{}) do
     merged_attrs = 
-      Map.merge(attrs,
-        %{duration: @work_item_duration,
-          date_as_of: @work_item_date})
+      Map.merge(
+        %{duration: @work_item_duration, date_as_of: @work_item_date},
+        attrs)
       |> Map.put_new(:account_id, 
           account_fixture(%{date_start: @work_item_date}).id)
       |> Map.put_new(:user_id, user_fixture().id)
@@ -138,7 +139,7 @@ defmodule Fourty.Setup do
 
   def deposit_fixture(attrs \\ %{}) do
     merged_attrs =
-      Map.merge(attrs, %{amount_cur: 100})
+      Map.merge(%{amount_cur: 100}, attrs)
       |> Map.put_new(:account_id, account_fixture().id)
     {:ok, deposit} = Accounting.create_deposit(merged_attrs)
     deposit
@@ -146,7 +147,7 @@ defmodule Fourty.Setup do
 
   def withdrawal_fixture(attrs \\ %{}) do
     merged_attrs =
-      Map.merge(attrs, %{amount_cur: 100})
+      Map.merge(%{amount_cur: 100}, attrs)
       |> Map.put_new(:account_id, account_fixture().id)
     {:ok, withdrawal} = Accounting.create_withdrawal(merged_attrs)
     withdrawal

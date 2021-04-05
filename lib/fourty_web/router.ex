@@ -57,12 +57,11 @@ defmodule FourtyWeb.Router do
     get "/accounts/project/:project_id/new", AccountController, :new
     get "/accounts/project/:project_id", AccountController, :index_project
     get "/accounts/client/:client_id", AccountController, :index_client
-    resources "/dpsts", DepositController, except: [:new, :index]
-    get "/dpsts/order/:order_id/new", DepositController, :new
+    resources "/dpsts", DepositController, except: [:index]
+    get "/dpsts/order/:order_id/new", DepositController, :new_order
     get "/dpsts/account/:account_id", DepositController, :index_account
     get "/dpsts/order/:order_id", DepositController, :index_order
-    resources "/wdrws", WithdrawalController, except: [:new, :index]
-    get "/wdrws/wrktm/:wrktm_id/new", WithdrawalController, :new
+    resources "/wdrws", WithdrawalController, except: [:index]
     get "/wdrws/account/:account_id", WithdrawalController, :index_account
     #
     resources "/wrktms/user/:user_id", WorkItemController,

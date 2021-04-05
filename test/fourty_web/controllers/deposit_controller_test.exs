@@ -11,7 +11,7 @@ defmodule FourtyWeb.DepositControllerTest do
 
   describe "test access" do
 
-    test "test access - non-existing user", %{conn: conn} do
+    test "non-existing user", %{conn: conn} do
       conn = get(conn, Routes.deposit_path(conn, :index_account, 0))
       assert html_response(conn, 302) =~ "redirected"
       assert redirected_to(conn) == ConnHelper.homepage_path(conn)
@@ -22,7 +22,7 @@ defmodule FourtyWeb.DepositControllerTest do
       assert redirected_to(conn) == ConnHelper.homepage_path(conn)
       assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
 
-      conn = get(conn, Routes.deposit_path(conn, :new, 0))
+      conn = get(conn, Routes.deposit_path(conn, :new_order, 0))
       assert html_response(conn, 302) =~ "redirected"
       assert redirected_to(conn) == ConnHelper.homepage_path(conn)
       assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
@@ -60,53 +60,53 @@ defmodule FourtyWeb.DepositControllerTest do
       assert get_flash(conn, :error) == dgettext("sessions", "no_authentication")
     end
 
-    test "test access - user w/o admin rights", %{conn: conn} do
+    test "user w/o admin rights", %{conn: conn} do
       ConnHelper.setup_user()
       conn0 = ConnHelper.login_user(conn, "user")
 
-      conn = get(conn0, Routes.deposit_path(conn, :index_account, 0))
+      conn = get(conn0, Routes.deposit_path(conn0, :index_account, 0))
       assert html_response(conn, 302) =~ "redirected"
       assert redirected_to(conn) == ConnHelper.homepage_path(conn)
       assert get_flash(conn, :error) == dgettext("sessions", "insufficient_access_rights")
 
-      conn = get(conn0, Routes.deposit_path(conn, :index_order, 0))
+      conn = get(conn0, Routes.deposit_path(conn0, :index_order, 0))
       assert html_response(conn, 302) =~ "redirected"
       assert redirected_to(conn) == ConnHelper.homepage_path(conn)
       assert get_flash(conn, :error) == dgettext("sessions", "insufficient_access_rights")
 
-      conn = get(conn0, Routes.deposit_path(conn, :new, 0))
+      conn = get(conn0, Routes.deposit_path(conn0, :new_order, 0))
       assert html_response(conn, 302) =~ "redirected"
       assert redirected_to(conn) == ConnHelper.homepage_path(conn)
       assert get_flash(conn, :error) == dgettext("sessions", "insufficient_access_rights")
 
       attrs = Map.merge(@create_attrs, %{account_id: 0, order_id: 0})
-      conn = post(conn0, Routes.deposit_path(conn, :create), deposit: attrs)
+      conn = post(conn0, Routes.deposit_path(conn0, :create), deposit: attrs)
       assert html_response(conn, 302) =~ "redirected"
       assert redirected_to(conn) == ConnHelper.homepage_path(conn)
       assert get_flash(conn, :error) == dgettext("sessions", "insufficient_access_rights")
 
       attrs = Map.merge(@invalid_attrs, %{account_id: 0, order_id: 0})
-      conn = post(conn0, Routes.deposit_path(conn, :create), deposit: attrs)
+      conn = post(conn0, Routes.deposit_path(conn0, :create), deposit: attrs)
       assert html_response(conn, 302) =~ "redirected"
       assert redirected_to(conn) == ConnHelper.homepage_path(conn)
       assert get_flash(conn, :error) == dgettext("sessions", "insufficient_access_rights")
 
-      conn = get(conn0, Routes.deposit_path(conn, :edit, 0))
+      conn = get(conn0, Routes.deposit_path(conn0, :edit, 0))
       assert html_response(conn, 302) =~ "redirected"
       assert redirected_to(conn) == ConnHelper.homepage_path(conn)
       assert get_flash(conn, :error) == dgettext("sessions", "insufficient_access_rights")
 
-      conn = put(conn0, Routes.deposit_path(conn, :update, 0), deposit: @update_attrs)
+      conn = put(conn0, Routes.deposit_path(conn0, :update, 0), deposit: @update_attrs)
       assert html_response(conn, 302) =~ "redirected"
       assert redirected_to(conn) == ConnHelper.homepage_path(conn)
       assert get_flash(conn, :error) == dgettext("sessions", "insufficient_access_rights")
 
-      conn = put(conn0, Routes.deposit_path(conn, :update, 0), deposit: @invalid_attrs)
+      conn = put(conn0, Routes.deposit_path(conn0, :update, 0), deposit: @invalid_attrs)
       assert html_response(conn, 302) =~ "redirected"
       assert redirected_to(conn) == ConnHelper.homepage_path(conn)
       assert get_flash(conn, :error) == dgettext("sessions", "insufficient_access_rights")
 
-      conn = delete(conn0, Routes.deposit_path(conn, :delete, 0))
+      conn = delete(conn0, Routes.deposit_path(conn0, :delete, 0))
       assert html_response(conn, 302) =~ "redirected"
       assert redirected_to(conn) == ConnHelper.homepage_path(conn)
       assert get_flash(conn, :error) == dgettext("sessions", "insufficient_access_rights")
@@ -135,12 +135,18 @@ defmodule FourtyWeb.DepositControllerTest do
     end
   end
 
-  describe "new deposit" do
+  describe "new deposit w/o order" do
+    test "renders form", %{conn: conn} do
+      true
+    end
+  end
+
+  describe "new deposit for order" do
     test "renders form", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
       order = order_fixture()
-      conn = get(conn, Routes.deposit_path(conn, :new, order.id))
+      conn = get(conn, Routes.deposit_path(conn, :new_order, order.id))
       assert html_response(conn, 200) =~ dgettext("deposits", "new")
     end
   end
@@ -149,8 +155,10 @@ defmodule FourtyWeb.DepositControllerTest do
     test "redirects to show when data is valid", %{conn: conn} do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
-      order = order_fixture()
-      attrs = Map.merge(@create_attrs, %{account_id: order.account_id, order_id: order.id})
+      account = account_fixture()
+      order = order_fixture(%{project_id: account.project_id})
+
+      attrs = Map.merge(@create_attrs, %{order_id: order.id, account_id: account.id})
       conn = post(conn, Routes.deposit_path(conn, :create), deposit: attrs)
       assert %{id: id} = redirected_params(conn)
       assert redirected_to(conn) == Routes.deposit_path(conn, :show, id)
@@ -164,7 +172,8 @@ defmodule FourtyWeb.DepositControllerTest do
       ConnHelper.setup_admin()
       conn = ConnHelper.login_user(conn, "admin")
       order = order_fixture()
-      attrs = Map.merge(@invalid_attrs, %{account_id: order.account_id, order_id: order.id})
+
+      attrs = Map.merge(@invalid_attrs, %{order_id: order.id})
       conn = post(conn, Routes.deposit_path(conn, :create), deposit: attrs)
       assert html_response(conn, 200) =~ dgettext("deposits", "new")
     end

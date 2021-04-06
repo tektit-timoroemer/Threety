@@ -52,7 +52,7 @@ msgstr ""
 msgid "label"
 msgstr ""
 
-msgid "account_id"
+msgid "account"
 msgstr ""
 
 msgid "withdrwl_description"

@@ -53,7 +53,7 @@ msgstr "End Time (hh:mm)"
 msgid "label"
 msgstr "Comments"
 
-msgid "account_id"
+msgid "account"
 msgstr "Account"
 
 msgid "user"

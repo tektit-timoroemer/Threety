@@ -39,23 +39,17 @@ defmodule Fourty.Costs do
   # {:ok, [changeset for item1, changeset for item2]}
 
   defp get_items(item_list) when length(item_list) == 2 do
-    q = from w in WorkItem, where: w.id in ^item_list, 
-      join: wd in assoc(w, :withdrawal),
-      select: {w, account_id: wd.account_id} 
+    q = from w in WorkItem, where: w.id in ^item_list
     items = Repo.all(q)
     if length(items) != 2 do
       {:error, "invalid_no_of_items"}
     else
-      [{item1, account1}, {item2, account2}] = items
-      item1 = Map.replace(item1, :account_id, account1[:account_id])
-      item2 = Map.replace(item2, :account_id, account2[:account_id])
+      [item1, item2] = items
       cond do
       item1.date_as_of != item2.date_as_of ->
         {:error, "items_not_same_date"}
       item1.user_id != item2.user_id ->
         {:error, "items_not_same_user"}
-      item1.account_id != item2.account_id ->
-        {:error, "items_not_same_account"}
       true ->
         # need to consider unique constraint for sequence numbers ...
         item1a_cs = Ecto.Changeset.change(item1, %{sequence: 0})
@@ -98,9 +92,13 @@ defmodule Fourty.Costs do
 
   """
   def get_work_item!(id) do
-    Repo.get!(WorkItem, id)
-    |> Repo.preload([:user, withdrawal: [:account]])
-    |> copy_account_id()    
+    q = from w in WorkItem,
+      inner_join: u in assoc(w, :user),
+      inner_join: wd in assoc(w, :withdrawal),
+      inner_join: a in assoc(wd, :account),
+      preload: [user: u, withdrawal: {wd, [account: a]}]
+    Repo.get!(q, id)
+    |> copy_account_id()
   end
 
   defp copy_account_id(%WorkItem{} = w) do

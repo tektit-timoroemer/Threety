@@ -26,6 +26,74 @@ defmodule Fourty.CostsTest do
       time_to: nil,
     }
 
+    test "flip items - ok case" do
+      u = user_fixture()
+      d = ~D[2021-04-01]
+      w1 = work_item_fixture(%{user_id: u.id, date_as_of: d})
+      w2 = work_item_fixture(%{user_id: u.id, date_as_of: d})
+
+      assert w1.sequence == 1
+      assert w2.sequence == 2
+      {:ok, %{update_item2: w2, update_item1b: w1}} = Costs.flip_sequence(w1.id, w2.id)
+      assert w1.sequence == 2
+      assert w2.sequence == 1
+    end
+
+    test "flip items - fail case: same item" do
+      w = work_item_fixture()
+      {:error, step, details, %{}} = Costs.flip_sequence(w.id, w.id)
+      assert step == :get_items
+      assert details == "invalid_no_of_items"
+    end
+
+    test "flip items - fail case: non-existing items" do
+      u = user_fixture()
+      d = ~D[2021-04-01]
+      w1 = work_item_fixture(%{user_id: u.id, date_as_of: d})
+      w2 = work_item_fixture(%{user_id: u.id, date_as_of: d})
+
+      assert w1.sequence == 1
+      assert w2.sequence == 2
+
+      {:ok, _} = Costs.delete_work_item(w1)
+      {:error, step, details, %{}} = Costs.flip_sequence(w1.id, w2.id)
+      assert step == :get_items
+      assert details == "invalid_no_of_items"
+
+      {:ok, _} = Costs.delete_work_item(w2)
+      {:error, step, details, %{}} = Costs.flip_sequence(w1.id, w2.id)
+      assert step == :get_items
+      assert details == "invalid_no_of_items"
+    end
+
+    test "flip items - fail case: different dates" do
+      u = user_fixture()
+      d1 = ~D[2021-04-01]
+      d2 = ~D[2021-04-02]
+      w1 = work_item_fixture(%{user_id: u.id, date_as_of: d1})
+      w2 = work_item_fixture(%{user_id: u.id, date_as_of: d2})
+
+      assert w1.sequence == 1
+      assert w2.sequence == 1
+      {:error, step, details, %{}} = Costs.flip_sequence(w1.id, w2.id)
+      assert step == :get_items
+      assert details == "items_not_same_date"
+    end
+
+    test "flip items - fail case: different users" do
+      u1 = user_fixture()
+      u2 = user_fixture()
+      d = ~D[2021-04-01]
+      w1 = work_item_fixture(%{user_id: u1.id, date_as_of: d})
+      w2 = work_item_fixture(%{user_id: u2.id, date_as_of: d})
+
+      assert w1.sequence == 1
+      assert w2.sequence == 1
+      {:error, step, details, %{}} = Costs.flip_sequence(w1.id, w2.id)
+      assert step == :get_items
+      assert details == "items_not_same_user"
+    end
+
     test "get_rate_for_user - for non-existing users" do
       assert Users.get_rate_for_user!(nil) == 0
       assert Users.get_rate_for_user!(0) == 0

@@ -62,7 +62,7 @@ msgstr "For User"
 msgid "date_as_of"
 msgstr "On Date"
 
-msgid "withdrwl_description"
+msgid "withdrwl_label"
 msgstr "on %{date_as_of} by user %{user_id} with rate %{rate}"
 
 msgid "create_success"

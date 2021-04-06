@@ -13,17 +13,24 @@
   <%= if @deposit.order_id, do: my_text_link(@deposit.order.label, Routes.order_path(@conn,
     :show, @deposit.order.id)) %><br />
 
-  <%= my_label("deposits", "amount_cur") %>
-  <%= my_currency_input(f, :amount_cur) %><br />
-  <%= error_tag(f, :amount_cur) %>
-
-  <%= my_label("deposits", "amount_dur") %>
-  <%= my_duration_input(f, :amount_dur) %><br />
-  <%= error_tag(f, :amount_dur) %>
-
-  <%= my_label("deposits", "label") %>
-  <%= my_longtext_input(f, :label) %><br />
-  <%= error_tag(f, :label) %>
+  <div class="row align-items-end">
+    <div class="col-sm-6">
+      <%= my_label("deposits", "amount_cur") %>
+    </div>
+    <div class="col-sm-6">
+      <%= my_label("deposits", "amount_dur") %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <%= my_currency_input(f, :amount_cur) %>
+      <%= error_tag(f, :amount_cur) %>
+    </div>
+    <div class="col-sm-6">
+      <%= my_duration_input(f, :amount_dur) %><br />
+      <%= error_tag(f, :amount_dur) %>
+    </div>
+  </div>
 
   <%= my_submit() %>
   <%= my_back_link(Routes.deposit_path(@conn, :show, @deposit))%>

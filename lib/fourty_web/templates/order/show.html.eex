@@ -16,11 +16,22 @@
     <%= my_label("orders", "date_eff") %>
     <%= my_date_value(@order.date_eff) %><br />
 
-    <%= my_label("orders", "amount_cur") %>
-    <%= my_currency_value(@order.amount_cur) %><br />
-
-    <%= my_label("orders", "amount_dur") %>
-    <%= my_duration_value(@order.amount_dur) %><br />
+    <div class="row align-items-end">
+        <div class="col-sm-6">
+            <%= my_label("orders", "amount_cur") %>
+        </div>
+        <div class="col-sm-6">
+            <%= my_label("orders", "amount_dur") %>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <%= my_currency_value(@order.amount_cur) %>
+        </div>
+        <div class="col-sm-6">
+            <%= my_duration_value(@order.amount_dur) %><br />
+        </div>
+    </div>
 
     <%= my_action("global", "edit", Routes.order_path(@conn, :edit, @order)) %>
     <%= my_action("orders", "index", Routes.order_path(@conn, :index)) %>

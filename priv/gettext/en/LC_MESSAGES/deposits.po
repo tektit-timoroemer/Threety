@@ -11,21 +11,15 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2\n"
 
-#, elixir-format
-#: lib/fourty_web/templates/deposit/new.html.eex:1
 msgid "new"
 msgstr "Deposit to Account"
 
 msgid "account"
 msgstr "Account"
 
-#: lib/fourty_web/templates/deposit/index.html.eex:8
-#: lib/fourty_web/templates/deposit/index_order.html.eex:9
 msgid "amount_cur"
 msgstr "Amount (€)"
 
-#: lib/fourty_web/templates/deposit/index.html.eex:9
-#: lib/fourty_web/templates/deposit/index_order.html.eex:10
 msgid "amount_dur"
 msgstr "Amount (h)"
 
@@ -41,8 +35,6 @@ msgstr "Book"
 msgid "transfer"
 msgstr "Book to Account"
 
-#, elixir-format
-#: lib/fourty_web/templates/deposit/show.html.eex:1
 msgid "show"
 msgstr "Show Deposit"
 
@@ -57,7 +49,7 @@ msgid "index_order"
 msgstr "List of Deposits for Order:"
 
 msgid "index_order_short"
-msgstr "Orders"
+msgstr "Deposits"
 
 #: lib/fourty_web/templates/deposit/index.html.eex:7
 #: lib/fourty_web/templates/deposit/index_order.html.eex:8

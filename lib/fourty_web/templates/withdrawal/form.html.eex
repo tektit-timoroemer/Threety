@@ -5,13 +5,24 @@
     </div>
   <% end %>
 
-  <%= my_label("withdrawals", "amount_cur") %>
-  <%= my_currency_input(f, :amount_cur) %><br />
-  <%= error_tag(f, :amount_cur) %>
-
-  <%= my_label("withdrawals", "amount_dur") %>
-  <%= my_duration_input(f, :amount_dur) %><br />
-  <%= error_tag(f, :amount_dur) %>
+  <div class="row align-items-end">
+    <div class="col-sm-6">
+      <%= my_label("withdrawals", "amount_cur") %>
+    </div>
+    <div class="col-sm-6">
+      <%= my_label("withdrawals", "amount_dur") %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <%= my_currency_input(f, :amount_cur) %>
+      <%= error_tag(f, :amount_cur) %>
+    </div>
+    <div class="col-sm-6">
+      <%= my_duration_input(f, :amount_dur) %><br />
+      <%= error_tag(f, :amount_dur) %>
+    </div>
+  </div>
 
   <%= my_label("withdrawals", "label") %>
   <%= my_longtext_input(f, :label) %><br />

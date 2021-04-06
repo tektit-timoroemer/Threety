@@ -39,26 +39,28 @@ defmodule Fourty.Costs do
   # {:ok, [changeset for item1, changeset for item2]}
 
   defp get_items(item_list) when length(item_list) == 2 do
-    q = from w in WorkItem, where: w.id in ^item_list
+    q = from w in WorkItem, where: w.id in ^item_list, 
+      join: wd in assoc(w, :withdrawal),
+      select: {w, account_id: wd.account_id} 
     items = Repo.all(q)
     if length(items) != 2 do
       {:error, "invalid_no_of_items"}
     else
-      [item1, item2] = items
+      [{item1, account1}, {item2, account2}] = items
+      item1 = Map.replace(item1, :account_id, account1[:account_id])
+      item2 = Map.replace(item2, :account_id, account2[:account_id])
       cond do
       item1.date_as_of != item2.date_as_of ->
         {:error, "items_not_same_date"}
       item1.user_id != item2.user_id ->
         {:error, "items_not_same_user"}
+      item1.account_id != item2.account_id ->
+        {:error, "items_not_same_account"}
       true ->
-        # note: need to set account_id because it is required but virtual
-        # also need to consider unique constraint for sequence numbers ...
-        item1a_cs = Fourty.Costs.WorkItem.changeset(item1, %{account_id: 0})
-        |> Changeset.change(sequence: 0)
-        item2_cs = Fourty.Costs.WorkItem.changeset(item2, %{account_id: 0})
-        |> Changeset.change(sequence: item1.sequence)
-        item1b_cs = Fourty.Costs.WorkItem.changeset(item1, %{account_id: 0})
-        |> Changeset.change(sequence: item2.sequence)
+        # need to consider unique constraint for sequence numbers ...
+        item1a_cs = Ecto.Changeset.change(item1, %{sequence: 0})
+        item2_cs = Ecto.Changeset.change(item2, %{sequence: item1.sequence})
+        item1b_cs = Ecto.Changeset.change(item1, %{sequence: item2.sequence})
         {:ok, %{item1a: item1a_cs, item2: item2_cs, item1b: item1b_cs}}
       end
     end   

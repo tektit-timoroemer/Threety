@@ -2,11 +2,22 @@
 <div class="row row-cols-auto">
   <div class="col-sm-3 p-3 border bg-light">
 
-    <%= my_label("withdrawals", "amount_cur") %>
-    <%= my_currency_value(@withdrawal.amount_cur) %><br />
-
-    <%= my_label("withdrawals", "amount_dur") %>
-    <%= my_duration_value(@withdrawal.amount_dur) %><br />
+    <div class="row align-items-end">
+      <div class="col-sm-6">
+		    <%= my_label("withdrawals", "amount_cur") %>
+      </div>
+      <div class="col-sm-6">
+    		<%= my_label("withdrawals", "amount_dur") %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+		    <%= my_currency_value(@withdrawal.amount_cur) %>
+      </div>
+      <div class="col-sm-6">
+    		<%= my_duration_value(@withdrawal.amount_dur) %><br />
+       </div>
+    </div>
 
     <%= my_label("withdrawals", "label_long") %>
     <%= my_longtext_value(@withdrawal.label) %><br />

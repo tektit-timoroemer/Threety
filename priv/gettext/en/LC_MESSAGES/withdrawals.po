@@ -23,29 +23,26 @@ msgstr "Date / Time"
 msgid "label"
 msgstr "Description"
 
+msgid "label_long"
+msgstr "Withdrawal Description"
+
 msgid "index_account"
 msgstr "List of All Withdrawals for %{label}"
-
 
 msgid "new"
 msgstr "Add Withdrawal"
 
-
 msgid "create success"
 msgstr "Withdrawal successfully added."
-
 
 msgid "delete success"
 msgstr "Withdrawal successfully removed."
 
-
 msgid "edit"
 msgstr "Edit Withdrawal"
 
-
 msgid "show"
 msgstr "Show Withdrawal"
-
 
 msgid "update success"
 msgstr "Withdrawal successfully updated."

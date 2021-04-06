@@ -49,6 +49,7 @@ defmodule Fourty.Costs.WorkItem do
     field :time_to, Fourty.TypeDuration
     field :sequence, :integer, default: 0
     has_one :withdrawal, Fourty.Accounting.Withdrawal
+    has_one :account, through: [:withdrawal, :account]
     belongs_to :user, Fourty.Users.User
     timestamps()
   end
@@ -88,6 +89,7 @@ defmodule Fourty.Costs.WorkItem do
   end
 
   # ensure that account is open for transactions on the date_as_of date
+  # but check only if either date_as_of or account_id has changed ...
 
   @validate_account_msg "invalid_account"
   defp validate_account(changeset) do

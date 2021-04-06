@@ -23,13 +23,24 @@
   <%= my_date_input(f, :date_eff) %><br />
   <%= error_tag(f, :date_eff) %>
 
-  <%= my_label("orders", "amount_cur") %>
-  <%= my_currency_input(f, :amount_cur) %><br />
-  <%= error_tag(f, :amount_cur) %>
-
-  <%= my_label("orders", "amount_dur") %>
-  <%= my_duration_input(f, :amount_dur) %><br />
-  <%= error_tag(f, :amount_dur) %>
+  <div class="row align-items-end">
+    <div class="col-sm-6">
+      <%= my_label("orders", "amount_cur") %>
+    </div>
+    <div class="col-sm-6">
+      <%= my_label("orders", "amount_dur") %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <%= my_currency_input(f, :amount_cur) %>
+      <%= error_tag(f, :amount_cur) %>
+    </div>
+    <div class="col-sm-6">
+      <%= my_duration_input(f, :amount_dur) %><br />
+      <%= error_tag(f, :amount_dur) %>
+    </div>
+  </div>
 
   <%= my_submit() %>
   <%= if id = Ecto.Changeset.get_field(@changeset, :id),

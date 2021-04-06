@@ -18,23 +18,45 @@
   <%= my_label("orders", "date_eff") %>
   <%= my_date_value(@deposit.order.date_eff) %><br />
 
-  <%= my_label("orders", "amount_cur") %>
-  <%= my_currency_value(@deposit.order.amount_cur) %><br />
-
-  <%= my_label("orders", "amount_dur") %>
-  <%= my_duration_value(@deposit.order.amount_dur) %><br />
-
+  <div class="row align-items-end">
+    <div class="col-sm-6">
+      <%= my_label("orders", "amount_cur") %>
+    </div>
+    <div class="col-sm-6">
+      <%= my_label("orders", "amount_dur") %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <%= my_currency_value(@deposit.order.amount_cur) %>
+    </div>
+    <div class="col-sm-6">
+      <%= my_duration_value(@deposit.order.amount_dur) %><br />
+    </div>
+  </div>
+  
   <%= my_label("deposits", "account") %>
   <%= my_select_input(f, :account_id, @accounts) %><br />
 
-  <%= my_label("deposits", "amount_cur") %>
-  <%= my_currency_input(f, :amount_cur) %><br />
-  <%= error_tag(f, :amount_cur) %>
-
-  <%= my_label("deposits", "amount_dur") %>
-  <%= my_duration_input(f, :amount_dur) %><br />
-  <%= error_tag(f, :amount_dur) %>
-
+  <div class="row align-items-end">
+    <div class="col-sm-6">
+      <%= my_label("deposits", "amount_cur") %>
+    </div>
+    <div class="col-sm-6">
+      <%= my_label("deposits", "amount_dur") %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <%= my_currency_input(f, :amount_cur) %>
+      <%= error_tag(f, :amount_cur) %>
+    </div>
+    <div class="col-sm-6">
+      <%= my_duration_input(f, :amount_dur) %><br />
+      <%= error_tag(f, :amount_dur) %>
+    </div>
+  </div>
+  
   <%= my_label("deposits", "label") %>
   <%= my_longtext_input(f, :label) %><br />
   <%= error_tag(f, :label) %>

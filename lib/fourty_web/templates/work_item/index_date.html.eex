@@ -1,6 +1,6 @@
 <h1><%= @heading %></h1>
 <div class="row row-cols-auto">
-  <div class="col-sm-11 p-3 border bg-light">
+  <div class="col-sm-12 p-3 border bg-light">
     <%= if @adm_only do %>
       <%= my_icon_action("calendar-minus-fill", Routes.work_item_user_path(@conn, :index_date, @user_id, to_string( Date.add(@date_as_of,-1))))%>
       <%= my_action("work_items", "new", Routes.work_item_user_path(@conn, :new, @user_id, to_string(@date_as_of))) %>
@@ -18,7 +18,8 @@
           <th class="col-sm-1 text-end"><%= dgettext("work_items", "duration") %></th>
           <th class="col-sm-1 text-end"><%= dgettext("work_items", "time_from") %></th>
           <th class="col-sm-1 text-end"><%= dgettext("work_items", "time_to") %></th>
-          <th class="col-sm-3"><%= dgettext("work_items", "label") %></th>
+          <th class="col-sm-2"><%= dgettext("work_items", "label") %></th>
+          <th class="col-sm-2"><%= dgettext("work_items", "account") %></th>
           <th class="col-sm-3"><%= dgettext("global", "actions") %></th>
         </tr>
       </thead>
@@ -32,6 +33,7 @@
           <td class="text-end"><%= min2dur(work_item.time_from) %></td>
           <td class="text-end"><%= min2dur(work_item.time_to) %></td>
           <td><%= work_item.label %></td>
+          <td><%= work_item.account.label %></td>
           <td>
             <%= if @adm_only do %>
               <%= if n > 1, do: my_action_link("global", "up", Routes.work_item_user_path(@conn, :flip, work_item.user_id, to_string(work_item.date_as_of), work_item.id, Enum.at(@work_items, i - 1).id)) %>

@@ -175,13 +175,11 @@ defmodule Fourty.CostsTest do
 
       attrs = Map.merge(valid_attrs, %{time_from: 1, time_to: 0})
       assert {:error, %Ecto.Changeset{} = cs} = Costs.create_work_item(attrs)
-      assert List.keyfind(cs.errors, :duration, 0)
       assert List.keyfind(cs.errors, :time_from, 0)
       assert List.keyfind(cs.errors, :time_to, 0)
 
       attrs = Map.merge(valid_attrs, %{time_from: "23:59", time_to: "24:01"})
       assert {:error, %Ecto.Changeset{} = cs} = Costs.create_work_item(attrs)
-      assert List.keyfind(cs.errors, :duration, 0)
       assert List.keyfind(cs.errors, :time_to, 0)
 
       attrs = Map.merge(valid_attrs, %{time_from: "24:00", time_to: "24:00", duration: 2})

@@ -93,18 +93,19 @@ defmodule Fourty.Costs.WorkItem do
 
   @validate_account_msg "invalid_account"
   defp validate_account(changeset) do
-    if changeset.valid? do
-      d = get_field(changeset, :date_as_of)
-      a = get_field(changeset, :account_id)
-        |> Fourty.Accounting.get_account_solo!()
-      unless Fourty.Accounting.account_open?(a, d) do
-        add_error(changeset, :account_id, @validate_account_msg)
-      else
-        changeset    
+    c = if changeset.valid? do
+      d = get_change(changeset, :date_as_of)
+      a = get_change(changeset, :account_id)
+      unless is_nil(a) and is_nil(d) do
+        df = (d || get_field(changeset, :date_as_of))
+        af = (a || get_field(changeset, :account_id))
+        ar = Fourty.Accounting.get_account_solo!(af)
+        unless Fourty.Accounting.account_open?(ar, df) do
+          add_error(changeset, :account_id, @validate_account_msg)
+        end
       end
-    else
-      changeset
     end
+    c || changeset
   end
 
   @validate_time_of_day_msg "time_format_error"
@@ -173,33 +174,20 @@ defmodule Fourty.Costs.WorkItem do
 
   @validate_combination_msg "bad_duration_time_combination"
   defp validate_combination(changeset) do
-    d = get_field(changeset, :duration)
-    f = get_field(changeset, :time_from)
-    t = get_field(changeset, :time_to)
-    c = changeset
-
-    unless c.valid? && (d || (f && t)) do
-      c =
-        unless(d,
-          do: add_error(c, :duration, @validate_combination_msg),
-          else: c
-        )
-
-      c =
-        unless(f,
-          do: add_error(c, :time_from, @validate_combination_msg),
-          else: c
-        )
-
-#     c =
-        unless(t,
-          do: add_error(c, :time_to, @validate_combination_msg),
-          else: c
-        )
+    if changeset.valid? do
+      d = get_field(changeset, :duration)
+      f = get_field(changeset, :time_from)
+      t = get_field(changeset, :time_to)
+      unless (d || (f && t)) do
+        c = unless(d, do: add_error(changeset, :duration, @validate_combination_msg), else: changeset)
+        c = unless(f, do: add_error(c, :time_from, @validate_combination_msg), else: c)
+        unless(t, do: add_error(c, :time_to, @validate_combination_msg), else: c)
+      else
+        changeset
+      end
     else
-      c
+      changeset 
     end
-
   end
 
 end

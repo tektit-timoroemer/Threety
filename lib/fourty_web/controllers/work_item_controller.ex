@@ -61,11 +61,10 @@ defmodule FourtyWeb.WorkItemController do
 
     date_as_of = get_date_as_of(params)
     today = Date.utc_today
-    if Date.compare(date_as_of, today) == :gt do
-      put_flash(conn, :info, dgettext("work_items", "date_reset_to_today"))
-      today
+    {conn, date_as_of} = if Date.compare(date_as_of, today) == :gt do
+      {put_flash(conn, :info, dgettext("work_items", "date_reset_to_today")), today}
     else
-      date_as_of
+      {conn, date_as_of}
     end
 
     # have date, now prepare a nice label for the heading
@@ -81,7 +80,7 @@ defmodule FourtyWeb.WorkItemController do
     # also prepare a name for the heading
 
     user_id = Map.get(params, "user_id", "0")
-    { user, msgid } = 
+    {user, msgid} = 
       if user_id == "0" do
         {get_session(conn, :current_user), "my_index_"}
       else

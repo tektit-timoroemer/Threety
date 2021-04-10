@@ -1,0 +1,32 @@
+<h1><%= Gettext.dgettext(FourtyWeb.Gettext, "work_items", "index_account") %></h1>
+<h2><%= link(@account.label, to: Routes.account_path(@conn, :show, @account.id)) %></h2>
+<div class="row row-cols-auto">
+  <div class="col-sm-9 p-3 border bg-light">
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th class="col-sm-1"><%= dgettext("work_items", "date_as_of") %></th>
+          <th class="col-sm-1"><%= dgettext("users", "username") %></th>
+          <th class="col-sm-1 text-end"><%= dgettext("withdrawals", "amount_dur") %></th>
+          <th class="col-sm-1 text-end"><%= dgettext("withdrawals", "amount_cur") %></th>
+          <th class="col-sm-2"><%= dgettext("withdrawals", "label") %></th>
+          <th class="col-sm-2"><%= dgettext("global", "actions") %></th>
+        </tr>
+      </thead>
+      <tbody>
+       <%= for work_item <- @work_items do %>
+        <tr>
+          <td><%= work_item.date_as_of %>
+          <td><%= work_item.user.username %></td>
+          <td class="text-end"><%= min2dur(work_item.duration) %></td>
+          <td class="text-end"><%= int2cur(work_item.withdrawal.amount_cur) %></td>
+          <td><%= work_item.withdrawal.label %></td>
+          <td>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

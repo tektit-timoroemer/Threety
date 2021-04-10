@@ -26,6 +26,9 @@ msgstr "%{name}'s Work Items for %{date}"
 msgid "others_index_today"
 msgstr "%{name}'s Work Items for Today"
 
+msgid "index_account"
+msgstr "List of Work Items for Account:"
+
 msgid "new"
 msgstr "Add Work Item"
 
@@ -53,7 +56,7 @@ msgstr "End Time (hh:mm)"
 msgid "label"
 msgstr "Comments"
 
-msgid "account"
+msgid "account_id"
 msgstr "Account"
 
 msgid "user"

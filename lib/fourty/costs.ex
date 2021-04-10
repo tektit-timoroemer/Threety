@@ -60,6 +60,16 @@ defmodule Fourty.Costs do
     end   
   end
 
+  def list_work_items(account_id: account_id) do
+    q = from w in WorkItem,
+      inner_join: wd in assoc(w, :withdrawal),
+      inner_join: u in assoc(w, :user),
+      where: wd.account_id == ^account_id,
+      order_by: [desc: w.date_as_of, asc: w.sequence],
+      preload: [:withdrawal, :user]
+    Repo.all(q)
+  end
+
   @doc """
   Returns the list of work_items a the given user and date
 

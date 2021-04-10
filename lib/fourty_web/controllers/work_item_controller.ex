@@ -42,12 +42,17 @@ defmodule FourtyWeb.WorkItemController do
       end)
   end
 
-  # display all work_items for the given account and user
+  # display all work_items for the given account
 
-  def index_account(conn, _params) do
-    conn
-    |> put_flash(:info, "not yet implemented")
-    |> redirect(to: Routes.session_path(conn, :index))
+  def index_account(conn, params) do
+  #  conn
+  #  |> put_flash(:info, "not yet implemented")
+  #  |> redirect(to: Routes.session_path(conn, :index))
+    account_id = Map.get(params, "account_id", 0)
+    account = Accounting.get_account_solo!(account_id)
+    work_items = Costs.list_work_items(account_id: account_id)
+    render(conn, "index_account.html",
+      work_items: work_items, account: account)
   end
 
   # index_date:

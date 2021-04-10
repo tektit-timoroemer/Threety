@@ -25,6 +25,9 @@ msgstr ""
 msgid "others_index_today"
 msgstr ""
 
+msgid "index_account"
+msgstr ""
+
 msgid "new"
 msgstr ""
 
@@ -52,7 +55,7 @@ msgstr ""
 msgid "label"
 msgstr ""
 
-msgid "account"
+msgid "account_id"
 msgstr ""
 
 msgid "withdrwl_description"

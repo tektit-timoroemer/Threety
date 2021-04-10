@@ -17,8 +17,10 @@ defmodule FourtyWeb.DepositController do
     render(conn, "index_order.html", deposits: deposits, order: order)
   end
 
-  def new(conn, params) do
-    
+  def new(conn, _params) do
+    conn
+    |> put_flash(:info, "not yet implemented")
+    |> redirect(to: Routes.session_path(conn, :index))
   end
 
   def new_order(conn, params) do

@@ -6,6 +6,7 @@
 ##
 ## Use "mix gettext.extract --merge" or "mix gettext.merge"
 ## to merge POT files into PO files.
+
 msgid ""
 msgstr ""
 "Language: en\n"
@@ -65,9 +66,6 @@ msgstr "For User"
 msgid "date_as_of"
 msgstr "On Date"
 
-msgid "withdrwl_label"
-msgstr "on %{date_as_of} by user %{user_id} with rate %{rate}"
-
 msgid "create_success"
 msgstr "Work Item successfully created."
 
@@ -76,6 +74,9 @@ msgstr "Work Item successfully updated."
 
 msgid "delete_success"
 msgstr "Work Item successfully deleted."
+
+msgid "withdrawal_label"
+msgstr "on %{date_as_of} by user %{user_id} with rate %{rate}"
 
 msgid "date_reset_to_today"
 msgstr "Cannot use date in future, using today's date instead."
@@ -97,3 +98,4 @@ msgstr "No account open for transactions."
 
 msgid "flip_failed"
 msgstr "Reordering of work items failed. Details: %{details}."
+

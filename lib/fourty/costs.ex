@@ -81,13 +81,11 @@ defmodule Fourty.Costs do
   """
   def list_work_items(user_id, date_as_of) do
     q = from w in WorkItem,
-#      inner_join: a in assoc(w, :account),
       inner_join: wd in assoc(w, :withdrawal),
       inner_join: a in assoc(wd, :account),
       where: w.user_id == ^user_id and
         w.date_as_of == ^date_as_of,
       order_by: w.sequence,
-#      preload: [account: a]
       preload: [withdrawal: {wd, [account: a]}]
     Repo.all(q)
   end
@@ -110,8 +108,6 @@ defmodule Fourty.Costs do
     q = from w in WorkItem,
       inner_join: u in assoc(w, :user),
       inner_join: wd in assoc(w, :withdrawal),
-#      inner_join: a in assoc(w, :account),
-#      preload: [user: u, account: a, withdrawal: wd]
       inner_join: a in assoc(wd, :account),
       preload: [user: u, withdrawal: {wd, [account: a]}]
     Repo.get!(q, id)

@@ -51,6 +51,13 @@ defmodule FourtyWeb.WorkItemController do
     account_id = Map.get(params, "account_id", 0)
     account = Accounting.get_account_solo!(account_id)
     work_items = Costs.list_work_items(account_id: account_id)
+    # format list of work items such that repetitive dates are listed
+    # only once (secondary occurances are replaced by a blank value)
+    |> Stream.transform("", fn wi, pd ->
+          if pd == wi.date_as_of,
+            do: {[Map.replace(wi, :date_as_of, "")], pd},
+          else: {[wi], wi.date_as_of} end)
+    |> Enum.to_list()
     render(conn, "index_account.html",
       work_items: work_items, account: account)
   end

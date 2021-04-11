@@ -23,6 +23,9 @@
           <td class="text-end"><%= int2cur(work_item.withdrawal.amount_cur) %></td>
           <td><%= work_item.withdrawal.label %></td>
           <td>
+            <%= my_action_link("global", "show", Routes.work_item_user_path(@conn, :show, work_item.user_id, work_item)) %>
+            <%= my_action_link("global", "edit", Routes.work_item_user_path(@conn, :edit, work_item.user_id, work_item)) %>
+            <%= my_action_link("global", "delete", Routes.work_item_user_path(@conn, :delete, work_item.user_id, work_item)) %>
           </td>
         </tr>
       <% end %>

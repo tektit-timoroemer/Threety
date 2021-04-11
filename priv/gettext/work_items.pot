@@ -58,7 +58,10 @@ msgstr ""
 msgid "account_id"
 msgstr ""
 
-msgid "withdrwl_description"
+msgid "user"
+msgstr ""
+
+msgid "date_as_of"
 msgstr ""
 
 msgid "create_success"
@@ -68,6 +71,9 @@ msgid "update_success"
 msgstr ""
 
 msgid "delete_success"
+msgstr ""
+
+msgid "withdrawal_label"
 msgstr ""
 
 msgid "date_reset_to_today"
@@ -86,4 +92,7 @@ msgid "invalid_account"
 msgstr ""
 
 msgid "no_valid_accounts"
+msgstr ""
+
+msgid "flip_failed"
 msgstr ""
